@@ -1,0 +1,11 @@
+# Local runtime, weights/caches and raw GPU artifacts
+/.venv/
+/hf/
+/weights/
+__pycache__/
+*.pyc
+
+# Large profiler traces stay local; keep their hashes/retrieval notes in the study.
+/report/*/raw/traces/
+/report/**/*.pt.trace.json
+/report/**/*.pt.trace.json.gz

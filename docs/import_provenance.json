@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-02",
+  "source_repository": "Frontier-Blog",
+  "note": "Hashes describe actual local working-tree bytes, including any uncommitted edits. Adapted notes are historical leads, not fresh measurements. No historical results imported.",
+  "sources": {
+    "target.md": "67fa03b361d402948abed3e50391f51985377903e69518994a23b02c15be8594",
+    "docs/models.md": "fa347d2018da903cf42f043244728ab3026566d708a1a64da91e6bc3f0dbb98d",
+    "reproduce/README.md": "6e76c3992e7ea1c579fce4442a476115efd35b68fd99de721195210f08f11ccf",
+    "bench/serve.sh": "93e94bdb37a2d6114055015798aff59198c57b59ce2ef2917f8cfa4c2c5e30d4",
+    "teach_me/03_traces_and_components.md": "0b0a24cb2a5e051b430eda2b85ae3bc2e9d81c8f3c788a871ccf5055bea97f73",
+    "teach_me/04_live_kv_memory.md": "946680a4b67024940be52fe7a93e6d8163681fc2d8cce4eddfaa9bed3e968ba2",
+    ".claude/skills/serving/SKILL.md": "cc4873249c81c2b69be783fbaacdbda70efc90a336aa801b07fed98e7d3de76f",
+    "reproduce/v4-0731.md": "e9922f325fed0f562d3c55cb83ba48bcd58793cf2bb880fc75641f5c44156afa",
+    "reproduce/v41.md": "aab9ca373afa5512efa0c4301617e326358bf8dbebbc257ff098e178595c6cc4",
+    "reproduce/mimo-v26.md": "4ad3f3abaef692b9ff30db8ef7df7aa7723cc41f37d260ccf2fc928927200e80",
+    "reproduce/qwen-38-bf16.md": "7b49de04bf77c4a773d8e9ef80b2f57e215fe60fec69b855a4ccf6ec64408a8a",
+    "reproduce/glm-53.md": "453357e90523cdd444288a97d1fbfb5f079b1a4838dd7179e9f0fe444284d97d",
+    "bench/trace_breakdown.py": "7c9a448705256cfe5703a3ab95659c5ecbc7390768b7936e8f476d8076bf8bdb",
+    "bench/blog_layers.py": "449532d635cad9bf7d6257aef923be9dc30afc6291ce9b671de30fec61dffc9d"
+  },
+  "verbatim_copies": [
+    "bench/trace_breakdown.py",
+    "bench/blog_layers.py"
+  ],
+  "adapted_documents": [
+    "docs/model_architectures.md",
+    "docs/gpu_setup_and_fixes.md"
+  ]
+}
