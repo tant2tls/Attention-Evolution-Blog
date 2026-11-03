@@ -98,3 +98,17 @@ session ID.
   41.7 GiB pool), which would overstate the per-block reservation 8×. Analysis now dedupes the backing
   storages of the per-layer cache tensors (`storage_ptr`, `storage_nbytes` from the probe):
   1 storage per rank for both Llama (46.9 GiB, 327680 B/block) and V4 (41.7 GiB, 1002240 B/block).
+
+## B7 (fallback record): MiMo V2.6 cannot start with `--kv-cache-dtype fp8`
+
+- **Symptom:** session `mimo-fp8-smoke1` failed during engine startup (dummy forward) on all workers:
+  `vllm/vllm_flash_attn/cute/interface.py:784 _flash_attn_fwd: AssertionError: fp8_kv_dequant requires fp16 or bf16 Q`
+  ([log](logs/mimo-v26__mimo-fp8-smoke1.log)). Exit 2 after 227 s; shutdown verified.
+- **Cause:** MiMo resolves to `MiMoV2OmniForCausalLM` with the `FLASH_ATTN_DIFFKV` backend (separate K/V
+  head dims, attention sinks); the log shows `Diff-KV with sinks: upgrading FlashAttention 3 -> 4`. The FA4
+  CuTe path in this build dequantizes FP8 KV only for an FP16/BF16 query, and the FP8-KV configuration
+  hands it a non-BF16 query. This is a runtime/backend limitation, not a study-code bug (the probe wrapper is
+  a pass-through frame in the stack).
+- **Action (policy, not a workaround):** FP8 failure preserved; next attempt `--kv-cache-dtype auto`
+  (session `mimo-auto-smoke1`). No backend forcing or kernel patching.
+- **Rerun needed:** n/a. The selected MiMo deployment records `fallback_reason` with this entry.

@@ -1,0 +1,435 @@
+W1103 06:21:05.418000 134937 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 06:21:05.419000 134937 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 06:21:05.419000 134937 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+(MainProcess pid=134937) INFO 11-03 06:21:14 [startup.py:96] non-default args: {'tokenizer': '/root/attn-study/weights/mimo-v26', 'trust_remote_code': True, 'max_model_len': 132096, 'tensor_parallel_size': 8, 'enable_expert_parallel': True, 'enable_prefix_caching': False, 'gpu_memory_utilization': 0.82, 'max_num_batched_tokens': 8192, 'max_num_seqs': 8, 'language_model_only': True, 'enable_chunked_prefill': True, 'worker_extension_cls': 'attn_probe.AttnProbeExt', 'async_scheduling': False, 'model': '/root/attn-study/weights/mimo-v26'}
+(MainProcess pid=134937) WARNING 11-03 06:21:14 [interface.py:1480] Unknown vLLM environment variable detected: VLLM_VENV
+(MainProcess pid=134937) WARNING 11-03 06:21:14 [arg_utils.py:1988] The global random seed is set to 0. Since VLLM_ENABLE_V1_MULTIPROCESSING is set to False, this may affect the random state of the Python process that launched vLLM.
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/transformers/configuration_utils.py:723: FutureWarning: `rope_scaling` is deprecated and will be removed in a future version. Set `rope_parameters` instead, with `rope_type` and `rope_theta` included.
+  warnings.warn(
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/transformers/modeling_rope_utils.py:1164: FutureWarning: `rope_config_validation` is deprecated and has been removed. Its functionality has been moved to RotaryEmbeddingConfigMixin.validate_rope method. PreTrainedConfig inherits this class, so please call self.validate_rope() instead. Also, make sure to use the new rope_parameters syntax. You can call self.standardize_rope_params() in the meantime.
+  warnings.warn(
+(MainProcess pid=134937) INFO 11-03 06:21:14 [model.py:756] Resolved architecture: MiMoV2OmniForCausalLM
+(MainProcess pid=134937) INFO 11-03 06:21:14 [model.py:2194] Using max model len 132096
+(MainProcess pid=134937) WARNING 11-03 06:21:14 [model.py:1128] Model does not support mm_device_do_normalize, forcing mm_device_do_normalize = False.
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/transformers/configuration_utils.py:723: FutureWarning: `rope_scaling` is deprecated and will be removed in a future version. Set `rope_parameters` instead, with `rope_type` and `rope_theta` included.
+  warnings.warn(
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/transformers/modeling_rope_utils.py:1164: FutureWarning: `rope_config_validation` is deprecated and has been removed. Its functionality has been moved to RotaryEmbeddingConfigMixin.validate_rope method. PreTrainedConfig inherits this class, so please call self.validate_rope() instead. Also, make sure to use the new rope_parameters syntax. You can call self.standardize_rope_params() in the meantime.
+  warnings.warn(
+(MainProcess pid=134937) INFO 11-03 06:21:15 [model.py:976] All limits of multimodal modalities supported by the model are set to 0, running in text-only mode.
+(MainProcess pid=134937) INFO 11-03 06:21:15 [model.py:1033] Disabled mm_prefix attention mode because multimodal inputs are configuration-disabled. Attention backends without mm_prefix support may now be selected.
+(MainProcess pid=134937) INFO 11-03 06:21:16 [scheduler.py:310] Chunked prefill is enabled with max_num_batched_tokens=8192.
+(MainProcess pid=134937) INFO 11-03 06:21:16 [kernel.py:510] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(MainProcess pid=134937) INFO 11-03 06:21:20 [compilation.py:317] Enabled custom fusions: norm_quant, act_quant, allreduce_rms
+[transformers] The following generation flags are not valid and may be ignored: ['top_p']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+(MainProcess pid=134937) INFO 11-03 06:21:21 [core.py:149] Initializing a V1 LLM engine (v0.33.0rc1.dev450+g17e675965) with config: model='/root/attn-study/weights/mimo-v26', speculative_config=None, tokenizer='/root/attn-study/weights/mimo-v26', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=132096, download_dir=None, load_format=auto, tensor_parallel_size=8, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=fp8, quantization_config=None, enforce_eager=False, aux_output_config=AuxOutputConfig(enable_return_routed_experts=False, max_bytes=None), kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, custom_histogram_buckets=None, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=/root/attn-study/weights/mimo-v26, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.NONE: 0>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['+quant_fp8', 'all', '+quant_fp8'], 'ir_enable_torch_wrap': False, 'splitting_ops': [], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'cudagraph_decoder_replay': True, 'decoder_replay_cudagraph_capture_sizes': [], 'decoder_replay_trim_threshold': 768, 'compile_sizes': [], 'compile_ranges_endpoints': [64, 8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': True, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'fuse_allreduce_rms': True, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 16, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native']), enable_flashinfer_autotune=True, enable_rocm_segmented_attn_autotune=False, enable_cutedsl_warmup=True, enable_jit_warmup=True, monokernel=False, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None, rdna_hybrid_w4a16_prefill_dequant='disable')
+(MainProcess pid=134937) WARNING 11-03 06:21:21 [system_utils.py:157] We must use the `spawn` multiprocessing start method. Overriding VLLM_WORKER_MULTIPROC_METHOD to 'spawn'. See https://docs.vllm.ai/en/latest/usage/troubleshooting.html#python-multiprocessing for more information. Reasons: CUDA is initialized
+(MainProcess pid=134937) INFO 11-03 06:21:21 [multiproc_executor.py:167] DP group leader: node_rank=0, node_rank_within_dp=0, master_addr=127.0.0.1, mq_connect_ip=172.25.1.2 (local), world_size=8, local_world_size=8
+(MainProcess pid=134937) INFO 11-03 06:21:21 [numa_utils.py:575] Automatic NUMA binding unavailable on this host; starting unbound. Enable debug logging for the skip reason.
+(MainProcess pid=134937) INFO 11-03 06:21:21 [numa_utils.py:575] Automatic NUMA binding unavailable on this host; starting unbound. Enable debug logging for the skip reason.
+(MainProcess pid=134937) INFO 11-03 06:21:21 [numa_utils.py:575] Automatic NUMA binding unavailable on this host; starting unbound. Enable debug logging for the skip reason.
+(MainProcess pid=134937) INFO 11-03 06:21:21 [numa_utils.py:575] Automatic NUMA binding unavailable on this host; starting unbound. Enable debug logging for the skip reason.
+(MainProcess pid=134937) INFO 11-03 06:21:21 [numa_utils.py:575] Automatic NUMA binding unavailable on this host; starting unbound. Enable debug logging for the skip reason.
+W1103 06:21:23.587000 135428 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 06:21:23.587000 135429 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 06:21:23.587000 135432 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 06:21:23.587000 135433 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 06:21:23.588000 135428 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 06:21:23.588000 135429 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 06:21:23.588000 135432 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 06:21:23.588000 135428 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+W1103 06:21:23.588000 135429 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+W1103 06:21:23.588000 135433 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 06:21:23.588000 135432 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+W1103 06:21:23.588000 135433 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+W1103 06:21:23.595000 135434 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 06:21:23.596000 135434 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 06:21:23.596000 135434 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+W1103 06:21:23.598000 135427 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 06:21:23.599000 135427 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 06:21:23.600000 135427 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+W1103 06:21:23.619000 135431 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 06:21:23.619000 135430 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 06:21:23.619000 135431 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 06:21:23.620000 135431 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+W1103 06:21:23.619000 135430 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 06:21:23.620000 135430 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+(VllmWorker-0 pid=135428) INFO 11-03 06:21:36 [worker_base.py:331] Injected <class 'attn_probe.AttnProbeExt'> into <class 'vllm.v1.worker.gpu_worker.Worker'> for extended collective_rpc calls ['probe_arm', 'probe_fetch', 'probe_info', 'probe_mem', 'probe_state_buffers']
+(VllmWorker-2 pid=135427) INFO 11-03 06:21:36 [worker_base.py:331] Injected <class 'attn_probe.AttnProbeExt'> into <class 'vllm.v1.worker.gpu_worker.Worker'> for extended collective_rpc calls ['probe_arm', 'probe_fetch', 'probe_info', 'probe_mem', 'probe_state_buffers']
+(VllmWorker-4 pid=135434) INFO 11-03 06:21:36 [worker_base.py:331] Injected <class 'attn_probe.AttnProbeExt'> into <class 'vllm.v1.worker.gpu_worker.Worker'> for extended collective_rpc calls ['probe_arm', 'probe_fetch', 'probe_info', 'probe_mem', 'probe_state_buffers']
+(VllmWorker-7 pid=135433) INFO 11-03 06:21:36 [worker_base.py:331] Injected <class 'attn_probe.AttnProbeExt'> into <class 'vllm.v1.worker.gpu_worker.Worker'> for extended collective_rpc calls ['probe_arm', 'probe_fetch', 'probe_info', 'probe_mem', 'probe_state_buffers']
+(VllmWorker-1 pid=135432) INFO 11-03 06:21:36 [worker_base.py:331] Injected <class 'attn_probe.AttnProbeExt'> into <class 'vllm.v1.worker.gpu_worker.Worker'> for extended collective_rpc calls ['probe_arm', 'probe_fetch', 'probe_info', 'probe_mem', 'probe_state_buffers']
+(VllmWorker-3 pid=135430) INFO 11-03 06:21:36 [worker_base.py:331] Injected <class 'attn_probe.AttnProbeExt'> into <class 'vllm.v1.worker.gpu_worker.Worker'> for extended collective_rpc calls ['probe_arm', 'probe_fetch', 'probe_info', 'probe_mem', 'probe_state_buffers']
+(VllmWorker-6 pid=135431) INFO 11-03 06:21:36 [worker_base.py:331] Injected <class 'attn_probe.AttnProbeExt'> into <class 'vllm.v1.worker.gpu_worker.Worker'> for extended collective_rpc calls ['probe_arm', 'probe_fetch', 'probe_info', 'probe_mem', 'probe_state_buffers']
+(VllmWorker-5 pid=135429) INFO 11-03 06:21:37 [worker_base.py:331] Injected <class 'attn_probe.AttnProbeExt'> into <class 'vllm.v1.worker.gpu_worker.Worker'> for extended collective_rpc calls ['probe_arm', 'probe_fetch', 'probe_info', 'probe_mem', 'probe_state_buffers']
+(Worker pid=135428) INFO 11-03 06:21:39 [parallel_state.py:1935] world_size=8 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_ea3f86458f314ef88d5c8fadf4aab0d4 backend=nccl
+(Worker pid=135427) INFO 11-03 06:21:41 [parallel_state.py:1935] world_size=8 rank=2 local_rank=2 distributed_init_method=file:///tmp/vllm_dist_ea3f86458f314ef88d5c8fadf4aab0d4 backend=nccl
+(Worker pid=135434) INFO 11-03 06:21:41 [parallel_state.py:1935] world_size=8 rank=4 local_rank=4 distributed_init_method=file:///tmp/vllm_dist_ea3f86458f314ef88d5c8fadf4aab0d4 backend=nccl
+(Worker pid=135433) INFO 11-03 06:21:41 [parallel_state.py:1935] world_size=8 rank=7 local_rank=7 distributed_init_method=file:///tmp/vllm_dist_ea3f86458f314ef88d5c8fadf4aab0d4 backend=nccl
+(Worker pid=135432) INFO 11-03 06:21:41 [parallel_state.py:1935] world_size=8 rank=1 local_rank=1 distributed_init_method=file:///tmp/vllm_dist_ea3f86458f314ef88d5c8fadf4aab0d4 backend=nccl
+(Worker pid=135429) INFO 11-03 06:21:41 [parallel_state.py:1935] world_size=8 rank=5 local_rank=5 distributed_init_method=file:///tmp/vllm_dist_ea3f86458f314ef88d5c8fadf4aab0d4 backend=nccl
+(Worker pid=135431) INFO 11-03 06:21:41 [parallel_state.py:1935] world_size=8 rank=6 local_rank=6 distributed_init_method=file:///tmp/vllm_dist_ea3f86458f314ef88d5c8fadf4aab0d4 backend=nccl
+(Worker pid=135430) INFO 11-03 06:21:41 [parallel_state.py:1935] world_size=8 rank=3 local_rank=3 distributed_init_method=file:///tmp/vllm_dist_ea3f86458f314ef88d5c8fadf4aab0d4 backend=nccl
+(Worker pid=135428) INFO 11-03 06:21:41 [pynccl.py:148] vLLM is using nccl==2.30.7
+(Worker pid=135428) INFO 11-03 06:21:45 [cuda_communicator.py:375] Using ['FLASHINFER', 'CUSTOM', 'SYMM_MEM', 'PYNCCL'] all-reduce backends (in dispatch order) for group 'tp:0' out of potential backends: ['FLASHINFER_PCIE_IPC', 'FLASHINFER', 'NCCL_SYMM_MEM', 'QUICK_REDUCE', 'AITER_CUSTOM', 'CUSTOM', 'SYMM_MEM', 'PYNCCL'].
+(Worker pid=135428) INFO 11-03 06:21:46 [cuda_communicator.py:375] Using ['PYNCCL'] all-reduce backends (in dispatch order) for group 'ep:0' out of potential backends: ['FLASHINFER_PCIE_IPC', 'FLASHINFER', 'NCCL_SYMM_MEM', 'QUICK_REDUCE', 'AITER_CUSTOM', 'CUSTOM', 'SYMM_MEM', 'PYNCCL'].
+(Worker pid=135428) INFO 11-03 06:21:46 [parallel_state.py:2391] rank 0 in world size 8 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank 0, EPLB rank N/A
+(Worker pid=135428) INFO 11-03 06:21:46 [gpu_worker.py:520] Using V2 Model Runner
+(Worker pid=135428) WARNING 11-03 06:21:46 [flashinfer.py:151] FlashInfer's precompiled kernels are missing or do not match flashinfer-python 0.7.2.post1 (flashinfer-cubin not installed, flashinfer-jit-cache not installed). FlashInfer then downloads and compiles kernels at startup, which can take several minutes, or fails to import mismatched ones. Run `vllm download-kernels` in this Python environment to install them.
+(Worker_TP4_EP4 pid=135434) WARNING 11-03 06:21:47 [mimo_audio.py:1254] Audio tokenizer not found at /root/attn-study/weights/mimo-v26/audio_tokenizer, audio encoding disabled
+(Worker_TP2_EP2 pid=135427) WARNING 11-03 06:21:47 [mimo_audio.py:1254] Audio tokenizer not found at /root/attn-study/weights/mimo-v26/audio_tokenizer, audio encoding disabled
+(Worker_TP6_EP6 pid=135431) WARNING 11-03 06:21:47 [mimo_audio.py:1254] Audio tokenizer not found at /root/attn-study/weights/mimo-v26/audio_tokenizer, audio encoding disabled
+(Worker_TP1_EP1 pid=135432) WARNING 11-03 06:21:47 [mimo_audio.py:1254] Audio tokenizer not found at /root/attn-study/weights/mimo-v26/audio_tokenizer, audio encoding disabled
+(Worker_TP7_EP7 pid=135433) WARNING 11-03 06:21:47 [mimo_audio.py:1254] Audio tokenizer not found at /root/attn-study/weights/mimo-v26/audio_tokenizer, audio encoding disabled
+(Worker_TP3_EP3 pid=135430) WARNING 11-03 06:21:47 [mimo_audio.py:1254] Audio tokenizer not found at /root/attn-study/weights/mimo-v26/audio_tokenizer, audio encoding disabled
+(Worker_TP5_EP5 pid=135429) WARNING 11-03 06:21:47 [mimo_audio.py:1254] Audio tokenizer not found at /root/attn-study/weights/mimo-v26/audio_tokenizer, audio encoding disabled
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:21:47 [model_runner.py:399] Loading model from scratch...
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:21:47 [cuda.py:571] Using backend AttentionBackendEnum.FLASH_ATTN for vit attention
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:21:47 [mm_encoder_attention.py:372] Using AttentionBackendEnum.FLASH_ATTN for MMEncoderAttention.
+(Worker_TP0_EP0 pid=135428) WARNING 11-03 06:21:47 [mimo_audio.py:1254] Audio tokenizer not found at /root/attn-study/weights/mimo-v26/audio_tokenizer, audio encoding disabled
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:21:48 [__init__.py:778] Selected FlashInferFp8DeepGEMMDynamicBlockScaledKernel for Fp8LinearMethod
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:21:48 [deep_gemm.py:233] deep_gemm not found in site-packages, trying vendored vllm.third_party.deep_gemm
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:21:48 [deep_gemm.py:260] DeepGEMM PDL enabled on vllm.third_party.deep_gemm.
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:21:48 [deep_gemm.py:172] DeepGEMM E8M0 enabled on current platform.
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:21:48 [mimo_v2.py:354] Using FLASH_ATTN_DIFFKV for attention.
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:21:48 [flash_attn.py:1122] Using FlashAttention version 3
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:21:48 [fa_utils.py:162] Diff-KV with sinks: upgrading FlashAttention 3 -> 4
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:21:48 [expert_map_manager.py:250] [EP Rank 0/8] Expert parallelism is enabled. Expert placement strategy: linear. Local/global number of experts: 32/256. Experts local to global index map: 0->0, 1->1, 2->2, 3->3, 4->4, 5->5, 6->6, 7->7, 8->8, 9->9, 10->10, 11->11, 12->12, 13->13, 14->14, 15->15, 16->16, 17->17, 18->18, 19->19, 20->20, 21->21, 22->22, 23->23, 24->24, 25->25, 26->26, 27->27, 28->28, 29->29, 30->30, 31->31.
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:21:48 [fused_humming_moe.py:125] Using grouped_contiguous gemm for humming moe
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:21:48 [mxfp4.py:844] Using 'HUMMING' Mxfp4 MoE backend.
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:21:48 [base_loader.py:95] Initializing model took 0.612812 seconds
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:21:48 [weight_utils.py:1125] Filesystem type for checkpoints: FUSE.GOCRYPTFS. Checkpoint size: 161.06 GiB. Available RAM: 291.41 GiB.
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:21:48 [weight_utils.py:1148] Auto-prefetch is disabled because the filesystem (FUSE.GOCRYPTFS) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+Loading safetensors checkpoint shards:   0% Completed | 0/129 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards:   2% Completed | 2/129 [00:02<02:44,  1.29s/it]
+Loading safetensors checkpoint shards:   2% Completed | 3/129 [00:03<02:01,  1.04it/s]
+Loading safetensors checkpoint shards:   3% Completed | 4/129 [00:03<01:31,  1.37it/s]
+Loading safetensors checkpoint shards:   4% Completed | 5/129 [00:03<01:13,  1.68it/s]
+Loading safetensors checkpoint shards:   5% Completed | 6/129 [00:04<01:02,  1.96it/s]
+Loading safetensors checkpoint shards:   5% Completed | 7/129 [00:04<00:55,  2.21it/s]
+Loading safetensors checkpoint shards:   6% Completed | 8/129 [00:04<00:49,  2.42it/s]
+Loading safetensors checkpoint shards:   7% Completed | 9/129 [00:05<00:46,  2.59it/s]
+Loading safetensors checkpoint shards:   8% Completed | 10/129 [00:05<00:45,  2.64it/s]
+Loading safetensors checkpoint shards:   9% Completed | 11/129 [00:05<00:44,  2.64it/s]
+Loading safetensors checkpoint shards:   9% Completed | 12/129 [00:06<00:43,  2.67it/s]
+Loading safetensors checkpoint shards:  10% Completed | 13/129 [00:06<00:41,  2.80it/s]
+Loading safetensors checkpoint shards:  11% Completed | 14/129 [00:06<00:39,  2.88it/s]
+Loading safetensors checkpoint shards:  12% Completed | 15/129 [00:07<00:38,  2.94it/s]
+Loading safetensors checkpoint shards:  12% Completed | 16/129 [00:07<00:38,  2.92it/s]
+Loading safetensors checkpoint shards:  13% Completed | 17/129 [00:07<00:38,  2.89it/s]
+Loading safetensors checkpoint shards:  16% Completed | 20/129 [00:07<00:19,  5.69it/s]
+Loading safetensors checkpoint shards:  18% Completed | 23/129 [00:08<00:11,  8.84it/s]
+Loading safetensors checkpoint shards:  20% Completed | 26/129 [00:08<00:08, 12.10it/s]
+Loading safetensors checkpoint shards:  22% Completed | 29/129 [00:08<00:06, 15.23it/s]
+Loading safetensors checkpoint shards:  25% Completed | 32/129 [00:08<00:05, 18.08it/s]
+Loading safetensors checkpoint shards:  27% Completed | 35/129 [00:08<00:04, 20.50it/s]
+Loading safetensors checkpoint shards:  29% Completed | 38/129 [00:08<00:04, 22.34it/s]
+Loading safetensors checkpoint shards:  32% Completed | 41/129 [00:08<00:03, 23.72it/s]
+Loading safetensors checkpoint shards:  34% Completed | 44/129 [00:08<00:03, 24.61it/s]
+Loading safetensors checkpoint shards:  36% Completed | 47/129 [00:08<00:03, 25.05it/s]
+Loading safetensors checkpoint shards:  39% Completed | 50/129 [00:09<00:03, 25.39it/s]
+Loading safetensors checkpoint shards:  41% Completed | 53/129 [00:09<00:02, 25.65it/s]
+Loading safetensors checkpoint shards:  43% Completed | 56/129 [00:09<00:02, 25.75it/s]
+Loading safetensors checkpoint shards:  46% Completed | 59/129 [00:09<00:02, 26.08it/s]
+Loading safetensors checkpoint shards:  48% Completed | 62/129 [00:09<00:02, 26.24it/s]
+Loading safetensors checkpoint shards:  50% Completed | 65/129 [00:09<00:02, 26.04it/s]
+Loading safetensors checkpoint shards:  53% Completed | 68/129 [00:09<00:02, 25.99it/s]
+Loading safetensors checkpoint shards:  55% Completed | 71/129 [00:09<00:02, 26.03it/s]
+Loading safetensors checkpoint shards:  57% Completed | 74/129 [00:09<00:02, 26.01it/s]
+Loading safetensors checkpoint shards:  60% Completed | 77/129 [00:10<00:02, 25.91it/s]
+Loading safetensors checkpoint shards:  62% Completed | 80/129 [00:10<00:01, 25.81it/s]
+Loading safetensors checkpoint shards:  64% Completed | 83/129 [00:10<00:01, 25.53it/s]
+Loading safetensors checkpoint shards:  67% Completed | 86/129 [00:10<00:01, 25.21it/s]
+Loading safetensors checkpoint shards:  69% Completed | 89/129 [00:10<00:01, 24.91it/s]
+Loading safetensors checkpoint shards:  71% Completed | 92/129 [00:10<00:01, 24.80it/s]
+Loading safetensors checkpoint shards:  74% Completed | 95/129 [00:10<00:01, 24.62it/s]
+Loading safetensors checkpoint shards:  76% Completed | 98/129 [00:10<00:01, 24.45it/s]
+Loading safetensors checkpoint shards:  78% Completed | 101/129 [00:11<00:01, 24.17it/s]
+Loading safetensors checkpoint shards:  81% Completed | 104/129 [00:11<00:01, 23.84it/s]
+Loading safetensors checkpoint shards:  83% Completed | 107/129 [00:11<00:00, 23.44it/s]
+Loading safetensors checkpoint shards:  85% Completed | 110/129 [00:11<00:00, 23.19it/s]
+Loading safetensors checkpoint shards:  88% Completed | 113/129 [00:11<00:00, 22.97it/s]
+Loading safetensors checkpoint shards:  90% Completed | 116/129 [00:11<00:00, 22.96it/s]
+Loading safetensors checkpoint shards:  92% Completed | 119/129 [00:11<00:00, 22.85it/s]
+Loading safetensors checkpoint shards:  95% Completed | 122/129 [00:12<00:00, 22.49it/s]
+Loading safetensors checkpoint shards:  97% Completed | 125/129 [00:12<00:00, 22.09it/s]
+Loading safetensors checkpoint shards:  99% Completed | 128/129 [00:12<00:00, 21.97it/s]
+Loading safetensors checkpoint shards: 100% Completed | 129/129 [00:12<00:00, 10.44it/s]
+
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:01 [default_loader.py:506] Loading weights took 12.36 seconds
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:03 [mxfp4.py:2321] Using MoEPrepareAndFinalizeNoDPEPModular
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:03 [mxfp4.py:2322] Using HummingGroupedExperts
+(Worker_TP7_EP7 pid=135433) INFO 11-03 06:22:10 [model_runner.py:428] Model loading took 20.1 GiB memory and 23.197309 seconds
+(Worker_TP4_EP4 pid=135434) INFO 11-03 06:22:10 [model_runner.py:428] Model loading took 20.1 GiB memory and 23.708575 seconds
+(Worker_TP5_EP5 pid=135429) INFO 11-03 06:22:10 [model_runner.py:428] Model loading took 20.1 GiB memory and 23.805992 seconds
+(Worker_TP2_EP2 pid=135427) INFO 11-03 06:22:11 [model_runner.py:428] Model loading took 20.1 GiB memory and 24.348675 seconds
+(Worker_TP1_EP1 pid=135432) INFO 11-03 06:22:11 [model_runner.py:428] Model loading took 20.1 GiB memory and 24.423140 seconds
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:11 [model_runner.py:428] Model loading took 20.1 GiB memory and 24.290989 seconds
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:11 [topk_topp_sampler.py:152] Using FlashInfer for top-p & top-k sampling.
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:11 [torch_utils.py:293] Reducing Torch threads from 16 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+(Worker_TP6_EP6 pid=135431) INFO 11-03 06:22:11 [model_runner.py:428] Model loading took 20.1 GiB memory and 24.635474 seconds
+(Worker_TP3_EP3 pid=135430) INFO 11-03 06:22:11 [model_runner.py:428] Model loading took 20.1 GiB memory and 24.672653 seconds
+(MainProcess pid=134937) INFO 11-03 06:22:11 [torch_utils.py:293] Reducing Torch threads from 16 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+(MainProcess pid=134937) INFO 11-03 06:22:11 [utils.py:397] Using LBNHC KV cache layout.
+(MainProcess pid=134937) WARNING 11-03 06:22:11 [kv_cache_planning.py:537] Add 6 padding layers, may waste at most 15.38% KV cache memory
+(Worker_TP6_EP6 pid=135431) WARNING 11-03 06:22:16 [kv_cache_planning.py:537] Add 6 padding layers, may waste at most 15.38% KV cache memory
+(Worker_TP3_EP3 pid=135430) WARNING 11-03 06:22:16 [kv_cache_planning.py:537] Add 6 padding layers, may waste at most 15.38% KV cache memory
+(Worker_TP1_EP1 pid=135432) WARNING 11-03 06:22:16 [kv_cache_planning.py:537] Add 6 padding layers, may waste at most 15.38% KV cache memory
+(Worker_TP2_EP2 pid=135427) WARNING 11-03 06:22:16 [kv_cache_planning.py:537] Add 6 padding layers, may waste at most 15.38% KV cache memory
+(Worker_TP4_EP4 pid=135434) WARNING 11-03 06:22:16 [kv_cache_planning.py:537] Add 6 padding layers, may waste at most 15.38% KV cache memory
+(Worker_TP5_EP5 pid=135429) WARNING 11-03 06:22:16 [kv_cache_planning.py:537] Add 6 padding layers, may waste at most 15.38% KV cache memory
+(Worker_TP7_EP7 pid=135433) WARNING 11-03 06:22:16 [kv_cache_planning.py:537] Add 6 padding layers, may waste at most 15.38% KV cache memory
+(Worker_TP0_EP0 pid=135428) WARNING 11-03 06:22:16 [kv_cache_planning.py:537] Add 6 padding layers, may waste at most 15.38% KV cache memory
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:16 [breakable_cudagraph.py:294] Breakable CUDA graph enabled
+Capturing CUDA graphs (PIECEWISE):   0%|          | 0/5 [00:00<?, ?it/s](Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:17 [flashinfer_all_reduce.py:235] Initialized FlashInfer Allreduce norm fusion workspace with backend=mnnvl
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/dsl.py:2300: UserWarning: Argument aux_data (position 18) cannot be converted to a JitArgument for function 'cutlass___call___vllmvllm_flash_attncuteflash_fwd_sm90FlashAttentionForwardSm90_object_at__Tensorgmemoi64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tens'. Its type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>` is not supported. If the value is known at compile time, annotate it: `aux_data: Constexpr`. Otherwise, implement the `JitArgument` or `DynamicExpression` protocol for type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>`, or register a custom argument adapter.
+  exe_args, func_types, adapted_args = self.generate_mlir_function_types(
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/dsl.py:2300: UserWarning: Argument aux_data (position 18) cannot be converted to a JitArgument for function 'cutlass___call___vllmvllm_flash_attncuteflash_fwd_sm90FlashAttentionForwardSm90_object_at__Tensorgmemoi64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tens'. Its type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>` is not supported. If the value is known at compile time, annotate it: `aux_data: Constexpr`. Otherwise, implement the `JitArgument` or `DynamicExpression` protocol for type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>`, or register a custom argument adapter.
+  exe_args, func_types, adapted_args = self.generate_mlir_function_types(
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/dsl.py:2300: UserWarning: Argument aux_data (position 18) cannot be converted to a JitArgument for function 'cutlass___call___vllmvllm_flash_attncuteflash_fwd_sm90FlashAttentionForwardSm90_object_at__Tensorgmemoi64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tens'. Its type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>` is not supported. If the value is known at compile time, annotate it: `aux_data: Constexpr`. Otherwise, implement the `JitArgument` or `DynamicExpression` protocol for type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>`, or register a custom argument adapter.
+  exe_args, func_types, adapted_args = self.generate_mlir_function_types(
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/dsl.py:2300: UserWarning: Argument aux_data (position 18) cannot be converted to a JitArgument for function 'cutlass___call___vllmvllm_flash_attncuteflash_fwd_sm90FlashAttentionForwardSm90_object_at__Tensorgmemoi64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tens'. Its type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>` is not supported. If the value is known at compile time, annotate it: `aux_data: Constexpr`. Otherwise, implement the `JitArgument` or `DynamicExpression` protocol for type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>`, or register a custom argument adapter.
+  exe_args, func_types, adapted_args = self.generate_mlir_function_types(
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/dsl.py:2300: UserWarning: Argument aux_data (position 18) cannot be converted to a JitArgument for function 'cutlass___call___vllmvllm_flash_attncuteflash_fwd_sm90FlashAttentionForwardSm90_object_at__Tensorgmemoi64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tens'. Its type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>` is not supported. If the value is known at compile time, annotate it: `aux_data: Constexpr`. Otherwise, implement the `JitArgument` or `DynamicExpression` protocol for type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>`, or register a custom argument adapter.
+  exe_args, func_types, adapted_args = self.generate_mlir_function_types(
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/dsl.py:2300: UserWarning: Argument aux_data (position 18) cannot be converted to a JitArgument for function 'cutlass___call___vllmvllm_flash_attncuteflash_fwd_sm90FlashAttentionForwardSm90_object_at__Tensorgmemoi64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tens'. Its type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>` is not supported. If the value is known at compile time, annotate it: `aux_data: Constexpr`. Otherwise, implement the `JitArgument` or `DynamicExpression` protocol for type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>`, or register a custom argument adapter.
+  exe_args, func_types, adapted_args = self.generate_mlir_function_types(
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/dsl.py:2300: UserWarning: Argument aux_data (position 18) cannot be converted to a JitArgument for function 'cutlass___call___vllmvllm_flash_attncuteflash_fwd_sm90FlashAttentionForwardSm90_object_at__Tensorgmemoi64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tens'. Its type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>` is not supported. If the value is known at compile time, annotate it: `aux_data: Constexpr`. Otherwise, implement the `JitArgument` or `DynamicExpression` protocol for type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>`, or register a custom argument adapter.
+  exe_args, func_types, adapted_args = self.generate_mlir_function_types(
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/dsl.py:2300: UserWarning: Argument aux_data (position 18) cannot be converted to a JitArgument for function 'cutlass___call___vllmvllm_flash_attncuteflash_fwd_sm90FlashAttentionForwardSm90_object_at__Tensorgmemoi64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tens'. Its type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>` is not supported. If the value is known at compile time, annotate it: `aux_data: Constexpr`. Otherwise, implement the `JitArgument` or `DynamicExpression` protocol for type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>`, or register a custom argument adapter.
+  exe_args, func_types, adapted_args = self.generate_mlir_function_types(
+Capturing CUDA graphs (PIECEWISE):  20%|██        | 1/5 [00:05<00:22,  5.54s/it]Capturing CUDA graphs (PIECEWISE):  40%|████      | 2/5 [00:06<00:07,  2.65s/it]Capturing CUDA graphs (PIECEWISE):  60%|██████    | 3/5 [00:06<00:03,  1.66s/it]Capturing CUDA graphs (PIECEWISE):  80%|████████  | 4/5 [00:07<00:01,  1.18s/it]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 5/5 [00:07<00:00,  1.09it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 5/5 [00:07<00:00,  1.51s/it]
+Capturing CUDA graphs (FULL):   0%|          | 0/2 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):  50%|█████     | 1/2 [00:00<00:00,  4.78it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00,  5.00it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00,  4.96it/s]
+(Worker_TP2_EP2 pid=135427) INFO 11-03 06:22:25 [model_runner.py:1191] Graph capturing finished in 9 secs, took 0.60 GiB
+(Worker_TP4_EP4 pid=135434) INFO 11-03 06:22:25 [model_runner.py:1191] Graph capturing finished in 9 secs, took 0.60 GiB
+(Worker_TP1_EP1 pid=135432) INFO 11-03 06:22:25 [model_runner.py:1191] Graph capturing finished in 9 secs, took 0.60 GiB
+(Worker_TP3_EP3 pid=135430) INFO 11-03 06:22:25 [model_runner.py:1191] Graph capturing finished in 9 secs, took 0.60 GiB
+(Worker_TP6_EP6 pid=135431) INFO 11-03 06:22:25 [model_runner.py:1191] Graph capturing finished in 9 secs, took 0.60 GiB
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:25 [model_runner.py:1191] Graph capturing finished in 9 secs, took 0.60 GiB
+(Worker_TP5_EP5 pid=135429) INFO 11-03 06:22:25 [model_runner.py:1191] Graph capturing finished in 9 secs, took 0.60 GiB
+(Worker_TP7_EP7 pid=135433) INFO 11-03 06:22:25 [model_runner.py:1191] Graph capturing finished in 9 secs, took 0.60 GiB
+(Worker_TP2_EP2 pid=135427) INFO 11-03 06:22:26 [gpu_worker.py:797] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.8200 is equivalent to --gpu-memory-utilization=0.8122 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.8278. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(Worker_TP1_EP1 pid=135432) INFO 11-03 06:22:26 [gpu_worker.py:797] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.8200 is equivalent to --gpu-memory-utilization=0.8122 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.8278. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(Worker_TP4_EP4 pid=135434) INFO 11-03 06:22:26 [gpu_worker.py:797] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.8200 is equivalent to --gpu-memory-utilization=0.8122 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.8278. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(Worker_TP6_EP6 pid=135431) INFO 11-03 06:22:26 [gpu_worker.py:797] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.8200 is equivalent to --gpu-memory-utilization=0.8122 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.8278. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(Worker_TP3_EP3 pid=135430) INFO 11-03 06:22:26 [gpu_worker.py:797] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.8200 is equivalent to --gpu-memory-utilization=0.8122 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.8278. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:26 [gpu_worker.py:782] Available KV cache memory: 42.66 GiB
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:26 [gpu_worker.py:797] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.8200 is equivalent to --gpu-memory-utilization=0.8122 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.8278. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(Worker_TP5_EP5 pid=135429) INFO 11-03 06:22:26 [gpu_worker.py:797] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.8200 is equivalent to --gpu-memory-utilization=0.8122 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.8278. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(Worker_TP7_EP7 pid=135433) INFO 11-03 06:22:26 [gpu_worker.py:797] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.8200 is equivalent to --gpu-memory-utilization=0.8122 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.8278. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(MainProcess pid=134937) INFO 11-03 06:22:26 [kv_cache_utils.py:1171] GPU KV cache size: 6,044,599 tokens, Maximum concurrency for 132,096 tokens per request: 45.76x
+(MainProcess pid=134937) INFO 11-03 06:22:26 [kv_cache_utils.py:867] kv cache group sizes (16, 16, 16, 16, 16, 16)
+(MainProcess pid=134937) INFO 11-03 06:22:26 [kv_cache_utils.py:868] kv lcm block sizes 16
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:26 [kernel_warmup.py:237] JIT kernel warmup starting.
+(Worker_TP5_EP5 pid=135429) INFO 11-03 06:22:26 [kernel_warmup.py:237] JIT kernel warmup starting.
+(Worker_TP7_EP7 pid=135433) INFO 11-03 06:22:26 [kernel_warmup.py:237] JIT kernel warmup starting.
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:26 [kernel_warmup.py:250] JIT kernel warmup finished in 0.00s.
+(Worker_TP1_EP1 pid=135432) INFO 11-03 06:22:26 [kernel_warmup.py:237] JIT kernel warmup starting.
+(Worker_TP6_EP6 pid=135431) INFO 11-03 06:22:26 [kernel_warmup.py:237] JIT kernel warmup starting.
+(Worker_TP3_EP3 pid=135430) INFO 11-03 06:22:26 [kernel_warmup.py:237] JIT kernel warmup starting.
+(Worker_TP4_EP4 pid=135434) INFO 11-03 06:22:26 [kernel_warmup.py:237] JIT kernel warmup starting.
+(Worker_TP2_EP2 pid=135427) INFO 11-03 06:22:26 [kernel_warmup.py:237] JIT kernel warmup starting.
+(Worker_TP5_EP5 pid=135429) INFO 11-03 06:22:26 [kernel_warmup.py:250] JIT kernel warmup finished in 0.00s.
+(Worker_TP1_EP1 pid=135432) INFO 11-03 06:22:26 [kernel_warmup.py:250] JIT kernel warmup finished in 0.00s.
+(Worker_TP7_EP7 pid=135433) INFO 11-03 06:22:26 [kernel_warmup.py:250] JIT kernel warmup finished in 0.00s.
+(Worker_TP3_EP3 pid=135430) INFO 11-03 06:22:26 [kernel_warmup.py:250] JIT kernel warmup finished in 0.00s.
+(Worker_TP6_EP6 pid=135431) INFO 11-03 06:22:26 [kernel_warmup.py:250] JIT kernel warmup finished in 0.00s.
+(Worker_TP4_EP4 pid=135434) INFO 11-03 06:22:26 [kernel_warmup.py:250] JIT kernel warmup finished in 0.00s.
+(Worker_TP2_EP2 pid=135427) INFO 11-03 06:22:26 [kernel_warmup.py:250] JIT kernel warmup finished in 0.00s.
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:26 [kernel_warmup.py:140] Warming up ll_bf16 router GEMM kernels for shapes: ((4096, 256),).
+DeepGEMM warmup:   0%|          | 0/804 [00:00<?, ?it/s]DeepGEMM warmup: 100%|██████████| 804/804 [00:00<00:00, 11496.18it/s]
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:27 [flashinfer_autotune_cache.py:106] Using legacy FlashInfer autotune cache synchronization for multi-rank deployments until FlashInfer coordinates cache hits.
+(Worker_TP5_EP5 pid=135429) INFO 11-03 06:22:27 [kernel.py:510] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(Worker_TP4_EP4 pid=135434) INFO 11-03 06:22:27 [kernel.py:510] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(Worker_TP7_EP7 pid=135433) INFO 11-03 06:22:27 [kernel.py:510] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:27 [kernel.py:510] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:27 [compilation.py:317] Enabled custom fusions: norm_quant, act_quant, allreduce_rms
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:27 [kernel_warmup.py:539] Using FlashInfer autotune cache file: /var/tmp/attn_study_jit/cu13/vllm/flashinfer_autotune_cache/0.7.2.post1/90a/021747c7b42b254c513acae4fa642ef8d9eceb0fe20c1ff7abfade5c83345a49/autotune_configs_dp0_rank0.json. Pass --disable-flashinfer-autotune to skip autotuning.
+(Worker_TP3_EP3 pid=135430) INFO 11-03 06:22:27 [kernel.py:510] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(Worker_TP1_EP1 pid=135432) INFO 11-03 06:22:27 [kernel.py:510] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(Worker_TP6_EP6 pid=135431) INFO 11-03 06:22:27 [kernel.py:510] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(Worker_TP2_EP2 pid=135427) INFO 11-03 06:22:27 [kernel.py:510] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+2026-11-03 06:22:27,481 - INFO - autotuner.py:1048 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-11-03 06:22:27,481 - INFO - autotuner.py:1048 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-11-03 06:22:27,481 - INFO - autotuner.py:1048 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-11-03 06:22:27,481 - INFO - autotuner.py:1048 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-11-03 06:22:27,481 - INFO - autotuner.py:1048 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-11-03 06:22:27,481 - INFO - autotuner.py:1048 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-11-03 06:22:27,481 - INFO - autotuner.py:1048 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-11-03 06:22:27,481 - INFO - autotuner.py:1048 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+(Worker_TP1_EP1 pid=135432) INFO 11-03 06:22:27 [kernel_warmup.py:414] Running FlashInfer autotune with 8192 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192).
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:27 [kernel_warmup.py:414] Running FlashInfer autotune with 8192 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192).
+(Worker_TP3_EP3 pid=135430) INFO 11-03 06:22:27 [kernel_warmup.py:414] Running FlashInfer autotune with 8192 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192).
+(Worker_TP5_EP5 pid=135429) INFO 11-03 06:22:27 [kernel_warmup.py:414] Running FlashInfer autotune with 8192 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192).
+(Worker_TP4_EP4 pid=135434) INFO 11-03 06:22:27 [kernel_warmup.py:414] Running FlashInfer autotune with 8192 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192).
+(Worker_TP7_EP7 pid=135433) INFO 11-03 06:22:27 [kernel_warmup.py:414] Running FlashInfer autotune with 8192 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192).
+(Worker_TP2_EP2 pid=135427) INFO 11-03 06:22:27 [kernel_warmup.py:414] Running FlashInfer autotune with 8192 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192).
+(Worker_TP6_EP6 pid=135431) INFO 11-03 06:22:27 [kernel_warmup.py:414] Running FlashInfer autotune with 8192 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192).
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/dsl.py:2300: UserWarning: Argument aux_data (position 18) cannot be converted to a JitArgument for function 'cutlass___call___vllmvllm_flash_attncuteflash_fwd_sm90FlashAttentionForwardSm90_object_at__Tensorgmemoi64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i641_None_00'. Its type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>` is not supported. If the value is known at compile time, annotate it: `aux_data: Constexpr`. Otherwise, implement the `JitArgument` or `DynamicExpression` protocol for type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>`, or register a custom argument adapter.
+  exe_args, func_types, adapted_args = self.generate_mlir_function_types(
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/dsl.py:2300: UserWarning: Argument aux_data (position 18) cannot be converted to a JitArgument for function 'cutlass___call___vllmvllm_flash_attncuteflash_fwd_sm90FlashAttentionForwardSm90_object_at__Tensorgmemoi64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i641_None_00'. Its type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>` is not supported. If the value is known at compile time, annotate it: `aux_data: Constexpr`. Otherwise, implement the `JitArgument` or `DynamicExpression` protocol for type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>`, or register a custom argument adapter.
+  exe_args, func_types, adapted_args = self.generate_mlir_function_types(
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/dsl.py:2300: UserWarning: Argument aux_data (position 18) cannot be converted to a JitArgument for function 'cutlass___call___vllmvllm_flash_attncuteflash_fwd_sm90FlashAttentionForwardSm90_object_at__Tensorgmemoi64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i641_None_00'. Its type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>` is not supported. If the value is known at compile time, annotate it: `aux_data: Constexpr`. Otherwise, implement the `JitArgument` or `DynamicExpression` protocol for type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>`, or register a custom argument adapter.
+  exe_args, func_types, adapted_args = self.generate_mlir_function_types(
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/dsl.py:2300: UserWarning: Argument aux_data (position 18) cannot be converted to a JitArgument for function 'cutlass___call___vllmvllm_flash_attncuteflash_fwd_sm90FlashAttentionForwardSm90_object_at__Tensorgmemoi64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i641_None_00'. Its type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>` is not supported. If the value is known at compile time, annotate it: `aux_data: Constexpr`. Otherwise, implement the `JitArgument` or `DynamicExpression` protocol for type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>`, or register a custom argument adapter.
+  exe_args, func_types, adapted_args = self.generate_mlir_function_types(
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/dsl.py:2300: UserWarning: Argument aux_data (position 18) cannot be converted to a JitArgument for function 'cutlass___call___vllmvllm_flash_attncuteflash_fwd_sm90FlashAttentionForwardSm90_object_at__Tensorgmemoi64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i641_None_00'. Its type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>` is not supported. If the value is known at compile time, annotate it: `aux_data: Constexpr`. Otherwise, implement the `JitArgument` or `DynamicExpression` protocol for type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>`, or register a custom argument adapter.
+  exe_args, func_types, adapted_args = self.generate_mlir_function_types(
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/dsl.py:2300: UserWarning: Argument aux_data (position 18) cannot be converted to a JitArgument for function 'cutlass___call___vllmvllm_flash_attncuteflash_fwd_sm90FlashAttentionForwardSm90_object_at__Tensorgmemoi64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i641_None_00'. Its type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>` is not supported. If the value is known at compile time, annotate it: `aux_data: Constexpr`. Otherwise, implement the `JitArgument` or `DynamicExpression` protocol for type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>`, or register a custom argument adapter.
+  exe_args, func_types, adapted_args = self.generate_mlir_function_types(
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/dsl.py:2300: UserWarning: Argument aux_data (position 18) cannot be converted to a JitArgument for function 'cutlass___call___vllmvllm_flash_attncuteflash_fwd_sm90FlashAttentionForwardSm90_object_at__Tensorgmemoi64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i641_None_00'. Its type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>` is not supported. If the value is known at compile time, annotate it: `aux_data: Constexpr`. Otherwise, implement the `JitArgument` or `DynamicExpression` protocol for type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>`, or register a custom argument adapter.
+  exe_args, func_types, adapted_args = self.generate_mlir_function_types(
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/nvidia_cutlass_dsl/dsl_packages/cutlass/base_dsl/dsl.py:2300: UserWarning: Argument aux_data (position 18) cannot be converted to a JitArgument for function 'cutlass___call___vllmvllm_flash_attncuteflash_fwd_sm90FlashAttentionForwardSm90_object_at__Tensorgmemoi64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i64i641_Tensorgmemoi64i641_None_00'. Its type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>` is not supported. If the value is known at compile time, annotate it: `aux_data: Constexpr`. Otherwise, implement the `JitArgument` or `DynamicExpression` protocol for type `<class 'vllm.vllm_flash_attn.cute.utils.AuxData'>`, or register a custom argument adapter.
+  exe_args, func_types, adapted_args = self.generate_mlir_function_types(
+2026-11-03 06:22:30,751 - INFO - autotuner.py:1071 - flashinfer.jit: [Autotuner]: Autotuning process ends
+2026-11-03 06:22:30,751 - INFO - autotuner.py:1071 - flashinfer.jit: [Autotuner]: Autotuning process ends
+2026-11-03 06:22:30,751 - INFO - autotuner.py:1071 - flashinfer.jit: [Autotuner]: Autotuning process ends
+2026-11-03 06:22:30,751 - INFO - autotuner.py:1071 - flashinfer.jit: [Autotuner]: Autotuning process ends
+2026-11-03 06:22:30,773 - INFO - autotuner.py:1071 - flashinfer.jit: [Autotuner]: Autotuning process ends
+2026-11-03 06:22:30,789 - INFO - autotuner.py:1071 - flashinfer.jit: [Autotuner]: Autotuning process ends
+2026-11-03 06:22:30,790 - INFO - autotuner.py:1071 - flashinfer.jit: [Autotuner]: Autotuning process ends
+2026-11-03 06:22:30,801 - INFO - autotuner.py:1071 - flashinfer.jit: [Autotuner]: Autotuning process ends
+Capturing CUDA graphs (PIECEWISE):   0%|          | 0/5 [00:00<?, ?it/s]Capturing CUDA graphs (PIECEWISE):  20%|██        | 1/5 [00:00<00:00,  5.42it/s]Capturing CUDA graphs (PIECEWISE):  40%|████      | 2/5 [00:00<00:00,  5.54it/s]Capturing CUDA graphs (PIECEWISE):  60%|██████    | 3/5 [00:00<00:00,  5.61it/s]Capturing CUDA graphs (PIECEWISE):  80%|████████  | 4/5 [00:00<00:00,  5.62it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 5/5 [00:00<00:00,  5.56it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 5/5 [00:00<00:00,  5.56it/s]
+Capturing CUDA graphs (FULL):   0%|          | 0/4 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):  25%|██▌       | 1/4 [00:00<00:00,  3.71it/s]Capturing CUDA graphs (FULL):  50%|█████     | 2/4 [00:00<00:00,  4.60it/s]Capturing CUDA graphs (FULL):  75%|███████▌  | 3/4 [00:00<00:00,  4.92it/s]Capturing CUDA graphs (FULL): 100%|██████████| 4/4 [00:00<00:00,  5.12it/s]Capturing CUDA graphs (FULL): 100%|██████████| 4/4 [00:00<00:00,  4.88it/s]
+(Worker_TP1_EP1 pid=135432) INFO 11-03 06:22:33 [model_runner.py:1191] Graph capturing finished in 3 secs, took 0.06 GiB
+(Worker_TP1_EP1 pid=135432) INFO 11-03 06:22:33 [gpu_worker.py:1013] CUDA graph pool memory: 0.06 GiB (actual), 0.62 GiB (estimated), difference: 0.56 GiB (955.0%).
+(Worker_TP1_EP1 pid=135432) INFO 11-03 06:22:33 [gpu_worker.py:1076] Free memory on device (76.91/79.18 GiB) on startup. Desired GPU memory utilization is (0.82, 64.93 GiB). Actual usage is 21.33 GiB for consumed memory (weights + non-torch), 0.94 GiB for peak activation, and 0.06 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=45582414562` (42.45 GiB) to fit into requested memory, or `--kv-cache-memory=58453981184` (54.44 GiB) to fully utilize gpu memory. Current kv cache memory in use is 42.66 GiB.
+(Worker_TP2_EP2 pid=135427) INFO 11-03 06:22:33 [model_runner.py:1191] Graph capturing finished in 3 secs, took 0.06 GiB
+(Worker_TP2_EP2 pid=135427) INFO 11-03 06:22:33 [gpu_worker.py:1013] CUDA graph pool memory: 0.06 GiB (actual), 0.62 GiB (estimated), difference: 0.56 GiB (955.0%).
+(Worker_TP2_EP2 pid=135427) INFO 11-03 06:22:33 [gpu_worker.py:1076] Free memory on device (76.91/79.18 GiB) on startup. Desired GPU memory utilization is (0.82, 64.93 GiB). Actual usage is 21.33 GiB for consumed memory (weights + non-torch), 0.94 GiB for peak activation, and 0.06 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=45582414562` (42.45 GiB) to fit into requested memory, or `--kv-cache-memory=58453981184` (54.44 GiB) to fully utilize gpu memory. Current kv cache memory in use is 42.66 GiB.
+(Worker_TP6_EP6 pid=135431) INFO 11-03 06:22:33 [model_runner.py:1191] Graph capturing finished in 3 secs, took 0.06 GiB
+(Worker_TP6_EP6 pid=135431) INFO 11-03 06:22:33 [gpu_worker.py:1013] CUDA graph pool memory: 0.06 GiB (actual), 0.62 GiB (estimated), difference: 0.56 GiB (955.0%).
+(Worker_TP6_EP6 pid=135431) INFO 11-03 06:22:33 [gpu_worker.py:1076] Free memory on device (76.91/79.18 GiB) on startup. Desired GPU memory utilization is (0.82, 64.93 GiB). Actual usage is 21.33 GiB for consumed memory (weights + non-torch), 0.94 GiB for peak activation, and 0.06 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=45582414562` (42.45 GiB) to fit into requested memory, or `--kv-cache-memory=58453981184` (54.44 GiB) to fully utilize gpu memory. Current kv cache memory in use is 42.66 GiB.
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:33 [model_runner.py:1191] Graph capturing finished in 3 secs, took 0.06 GiB
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:33 [gpu_worker.py:1013] CUDA graph pool memory: 0.06 GiB (actual), 0.62 GiB (estimated), difference: 0.56 GiB (955.0%).
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:33 [gpu_worker.py:1076] Free memory on device (76.91/79.18 GiB) on startup. Desired GPU memory utilization is (0.82, 64.93 GiB). Actual usage is 21.33 GiB for consumed memory (weights + non-torch), 0.94 GiB for peak activation, and 0.06 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=45582414562` (42.45 GiB) to fit into requested memory, or `--kv-cache-memory=58453981184` (54.44 GiB) to fully utilize gpu memory. Current kv cache memory in use is 42.66 GiB.
+(Worker_TP3_EP3 pid=135430) INFO 11-03 06:22:33 [model_runner.py:1191] Graph capturing finished in 3 secs, took 0.06 GiB
+(Worker_TP3_EP3 pid=135430) INFO 11-03 06:22:33 [gpu_worker.py:1013] CUDA graph pool memory: 0.06 GiB (actual), 0.62 GiB (estimated), difference: 0.56 GiB (955.0%).
+(Worker_TP3_EP3 pid=135430) INFO 11-03 06:22:33 [gpu_worker.py:1076] Free memory on device (76.91/79.18 GiB) on startup. Desired GPU memory utilization is (0.82, 64.93 GiB). Actual usage is 21.33 GiB for consumed memory (weights + non-torch), 0.94 GiB for peak activation, and 0.06 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=45582414562` (42.45 GiB) to fit into requested memory, or `--kv-cache-memory=58453981184` (54.44 GiB) to fully utilize gpu memory. Current kv cache memory in use is 42.66 GiB.
+(Worker_TP5_EP5 pid=135429) INFO 11-03 06:22:33 [model_runner.py:1191] Graph capturing finished in 3 secs, took 0.06 GiB
+(Worker_TP5_EP5 pid=135429) INFO 11-03 06:22:33 [gpu_worker.py:1013] CUDA graph pool memory: 0.06 GiB (actual), 0.62 GiB (estimated), difference: 0.56 GiB (955.0%).
+(Worker_TP5_EP5 pid=135429) INFO 11-03 06:22:33 [gpu_worker.py:1076] Free memory on device (76.91/79.18 GiB) on startup. Desired GPU memory utilization is (0.82, 64.93 GiB). Actual usage is 21.33 GiB for consumed memory (weights + non-torch), 0.94 GiB for peak activation, and 0.06 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=45582414562` (42.45 GiB) to fit into requested memory, or `--kv-cache-memory=58453981184` (54.44 GiB) to fully utilize gpu memory. Current kv cache memory in use is 42.66 GiB.
+(Worker_TP7_EP7 pid=135433) INFO 11-03 06:22:34 [model_runner.py:1191] Graph capturing finished in 3 secs, took 0.06 GiB
+(Worker_TP7_EP7 pid=135433) INFO 11-03 06:22:34 [gpu_worker.py:1013] CUDA graph pool memory: 0.06 GiB (actual), 0.62 GiB (estimated), difference: 0.56 GiB (955.0%).
+(Worker_TP7_EP7 pid=135433) INFO 11-03 06:22:34 [gpu_worker.py:1076] Free memory on device (76.91/79.18 GiB) on startup. Desired GPU memory utilization is (0.82, 64.93 GiB). Actual usage is 21.33 GiB for consumed memory (weights + non-torch), 0.94 GiB for peak activation, and 0.06 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=45582414562` (42.45 GiB) to fit into requested memory, or `--kv-cache-memory=58453981184` (54.44 GiB) to fully utilize gpu memory. Current kv cache memory in use is 42.66 GiB.
+(Worker_TP4_EP4 pid=135434) INFO 11-03 06:22:34 [model_runner.py:1191] Graph capturing finished in 3 secs, took 0.06 GiB
+(Worker_TP4_EP4 pid=135434) INFO 11-03 06:22:34 [gpu_worker.py:1013] CUDA graph pool memory: 0.06 GiB (actual), 0.62 GiB (estimated), difference: 0.56 GiB (955.0%).
+(Worker_TP4_EP4 pid=135434) INFO 11-03 06:22:34 [gpu_worker.py:1076] Free memory on device (76.91/79.18 GiB) on startup. Desired GPU memory utilization is (0.82, 64.93 GiB). Actual usage is 21.33 GiB for consumed memory (weights + non-torch), 0.94 GiB for peak activation, and 0.06 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=45582414562` (42.45 GiB) to fit into requested memory, or `--kv-cache-memory=58453981184` (54.44 GiB) to fully utilize gpu memory. Current kv cache memory in use is 42.66 GiB.
+(Worker_TP4_EP4 pid=135434) INFO 11-03 06:22:34 [jit_monitor.py:87] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP7_EP7 pid=135433) INFO 11-03 06:22:34 [jit_monitor.py:87] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:22:34 [jit_monitor.py:87] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP5_EP5 pid=135429) INFO 11-03 06:22:34 [jit_monitor.py:87] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP2_EP2 pid=135427) INFO 11-03 06:22:34 [jit_monitor.py:87] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP3_EP3 pid=135430) INFO 11-03 06:22:34 [jit_monitor.py:87] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP1_EP1 pid=135432) INFO 11-03 06:22:34 [jit_monitor.py:87] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP6_EP6 pid=135431) INFO 11-03 06:22:34 [jit_monitor.py:87] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(MainProcess pid=134937) INFO 11-03 06:22:35 [core.py:430] init engine (profile, create kv cache, warmup model) took 23.43 s
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/transformers/configuration_utils.py:723: FutureWarning: `rope_scaling` is deprecated and will be removed in a future version. Set `rope_parameters` instead, with `rope_type` and `rope_theta` included.
+  warnings.warn(
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/transformers/modeling_rope_utils.py:1164: FutureWarning: `rope_config_validation` is deprecated and has been removed. Its functionality has been moved to RotaryEmbeddingConfigMixin.validate_rope method. PreTrainedConfig inherits this class, so please call self.validate_rope() instead. Also, make sure to use the new rope_parameters syntax. You can call self.standardize_rope_params() in the meantime.
+  warnings.warn(
+(MainProcess pid=134937) INFO 11-03 06:22:36 [hf.py:736] Detected the chat template content format to be 'openai'. You can set `--chat-template-content-format` to override this.
+RESOLVED {"vllm": "0.33.0rc1.dev450+g17e675965", "torch": "2.14.0+cu130", "torch_cuda": "13.0", "python": "3.12.3", "tp": 8, "ep": true, "dp": 1, "pp": 1, "gpu_memory_utilization": 0.82, "kv_cache_dtype": "auto", "block_size": 16, "prefix_caching": false, "num_gpu_blocks": 496990, "max_model_len": 132096, "model_dtype": "torch.bfloat16", "quantization": "fp8", "architectures": "['MiMoV2OmniForCausalLM']", "hf_config_cls": "MiMoV2Config", "max_num_batched_tokens": 8192, "max_num_seqs": 8, "async_scheduling": false, "chunked_prefill": true, "speculative_config": "None", "cudagraph_mode": "FULL_AND_PIECEWISE", "compilation_mode": 0, "cudagraph_capture_sizes": "[1, 2, 4, 8, 16]", "breakable_cudagraph": "1", "use_v2_model_runner": "True", "init_seconds": 82.7}
+POLICY_ERRORS []
+PROBE_INFO_RANK0 {"rank": 0, "version": "attn_probe/2026-11-03.1", "probe_layers": false, "moe": {"module": "language_model.model.layers.1.mlp.experts.routed_experts", "cls": "RoutedExperts", "local_num_experts": 32, "global_num_experts": 256, "use_ep": true}, "info": {"model_cls": "MiMoV2OmniForCausalLM", "layers": [], "probe_layers": false}, "device": 0, "uuid": "08255960-bb4c-4d21-d330-af8df06b607a", "runner": "vllm.v1.worker.gpu.model_runner.GPUModelRunner", "errors": []}
+WARMUP start 2026-11-03T06:22:37.175100Z
+(MainProcess pid=134937) WARNING 11-03 06:22:37 [input_processor.py:417] Passing raw prompts to InputProcessor is deprecated and will be removed in the future. You should instead pass the outputs of Renderer.render_cmpl() or Renderer.render_chat().
+(Worker_TP0_EP0 pid=135428) WARNING 11-03 06:22:37 [jit_monitor.py:143] Triton kernel JIT compilation during inference: _gumbel_sample_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+POINT decode_L1024_B1 rep0 warmup measured attn=None model=5.3412627010047435 ctx=1075..1124 why=[]
+POINT decode_L1024_B2 rep0 warmup measured attn=None model=5.514840969443322 ctx=1075..1124 why=[]
+POINT decode_L1024_B4 rep0 warmup measured attn=None model=6.00690176948905 ctx=1075..1124 why=[]
+POINT decode_L1024_B8 rep0 warmup measured attn=None model=7.0440851405262945 ctx=1075..1124 why=[]
+POINT prefill_L16384 rep0 warmup measured attn=None model=140.00733089447021 hist=None why=[]
+POINT prefill_L131072 rep0 warmup measured attn=None model=207.73926430940628 hist=None why=[]
+WARMUP done 2026-11-03T06:22:43.981102Z
+POINT decode_L1024_B1 rep1 accepted measured attn=None model=5.248066560328007 ctx=1075..1124 why=[]
+POINT decode_L1024_B2 rep1 accepted measured attn=None model=5.469435520619154 ctx=1075..1124 why=[]
+POINT decode_L1024_B4 rep1 accepted measured attn=None model=6.045293421298266 ctx=1075..1124 why=[]
+(MainProcess pid=134937) INFO 11-03 06:22:47 [loggers.py:335] Engine 000: Avg prompt throughput: 16405.7 tokens/s, Avg generation throughput: 279.2 tokens/s, Running: 8 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.2%
+POINT decode_L1024_B8 rep1 accepted measured attn=None model=7.039253749847412 ctx=1075..1124 why=[]
+POINT prefill_L1024 rep1 accepted measured attn=None model=102.39615678787231 hist=None why=[]
+POINT decode_L16384_B1 rep1 accepted measured attn=None model=5.3169938971102235 ctx=16435..16484 why=[]
+POINT decode_L16384_B2 rep1 accepted measured attn=None model=5.56991807192564 ctx=16435..16487 why=[]
+POINT decode_L16384_B4 rep1 accepted measured attn=None model=6.098428195118904 ctx=16435..16491 why=[]
+POINT decode_L16384_B8 rep1 accepted measured attn=None model=7.335251837819815 ctx=16435..16499 why=[]
+POINT prefill_L16384 rep1 accepted measured attn=None model=139.19372572004795 hist=None why=[]
+(MainProcess pid=134937) INFO 11-03 06:22:57 [loggers.py:335] Engine 000: Avg prompt throughput: 32857.1 tokens/s, Avg generation throughput: 207.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.8%
+POINT decode_L65536_B1 rep1 accepted measured attn=None model=5.535710736215115 ctx=65587..65636 why=[]
+POINT decode_L65536_B2 rep1 accepted measured attn=None model=5.7763263888657095 ctx=65587..65645 why=[]
+(MainProcess pid=134937) INFO 11-03 06:23:07 [loggers.py:335] Engine 000: Avg prompt throughput: 39317.3 tokens/s, Avg generation throughput: 84.9 tokens/s, Running: 3 reqs, Waiting: 0 reqs, GPU KV cache usage: 2.5%
+POINT decode_L65536_B4 rep1 accepted measured attn=None model=6.564890228062868 ctx=65587..65661 why=[]
+(MainProcess pid=134937) INFO 11-03 06:23:17 [loggers.py:335] Engine 000: Avg prompt throughput: 45241.3 tokens/s, Avg generation throughput: 25.0 tokens/s, Running: 8 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.1%
+POINT decode_L65536_B8 rep1 accepted measured attn=None model=8.005419528931379 ctx=65587..65693 why=[]
+POINT prefill_L65536 rep1 accepted measured attn=None model=169.63241851329803 hist=None why=[]
+POINT decode_L131072_B1 rep1 accepted measured attn=None model=5.7914867235720155 ctx=131123..131172 why=[]
+(MainProcess pid=134937) INFO 11-03 06:23:27 [loggers.py:335] Engine 000: Avg prompt throughput: 38853.5 tokens/s, Avg generation throughput: 127.2 tokens/s, Running: 2 reqs, Waiting: 0 reqs, GPU KV cache usage: 2.5%
+(Worker_TP0_EP0 pid=135428) WARNING 11-03 06:23:29 [jit_monitor.py:143] CuTeDSL JIT compilation during inference: FlashAttentionForwardCombine. This causes a latency spike; consider extending warmup to cover this shape/config.
+POINT decode_L131072_B2 rep1 accepted measured attn=None model=6.060593290477991 ctx=131123..131189 why=[]
+(MainProcess pid=134937) INFO 11-03 06:23:37 [loggers.py:335] Engine 000: Avg prompt throughput: 38762.5 tokens/s, Avg generation throughput: 29.5 tokens/s, Running: 3 reqs, Waiting: 1 reqs, GPU KV cache usage: 4.1%
+POINT decode_L131072_B4 rep1 accepted measured attn=None model=7.081008650809526 ctx=131123..131221 why=[]
+(MainProcess pid=134937) INFO 11-03 06:23:47 [loggers.py:335] Engine 000: Avg prompt throughput: 39212.5 tokens/s, Avg generation throughput: 66.6 tokens/s, Running: 2 reqs, Waiting: 6 reqs, GPU KV cache usage: 2.4%
+(MainProcess pid=134937) INFO 11-03 06:23:57 [loggers.py:335] Engine 000: Avg prompt throughput: 38739.3 tokens/s, Avg generation throughput: 13.6 tokens/s, Running: 5 reqs, Waiting: 3 reqs, GPU KV cache usage: 8.3%
+(MainProcess pid=134937) INFO 11-03 06:24:07 [loggers.py:335] Engine 000: Avg prompt throughput: 52395.3 tokens/s, Avg generation throughput: 43.6 tokens/s, Running: 8 reqs, Waiting: 0 reqs, GPU KV cache usage: 13.3%
+POINT decode_L131072_B8 rep1 accepted measured attn=None model=8.967736933231354 ctx=131123..131285 why=[]
+POINT prefill_L131072 rep1 accepted measured attn=None model=211.03037218004465 hist=None why=[]
+POINT decode_L1024_B1 rep2 accepted measured attn=None model=5.197969319820404 ctx=1075..1124 why=[]
+POINT decode_L1024_B2 rep2 accepted measured attn=None model=5.441134085804224 ctx=1075..1124 why=[]
+POINT decode_L1024_B4 rep2 accepted measured attn=None model=5.96892865434289 ctx=1075..1124 why=[]
+POINT decode_L1024_B8 rep2 accepted measured attn=None model=6.964179178774357 ctx=1075..1124 why=[]
+POINT prefill_L1024 rep2 accepted measured attn=None model=101.44492864608765 hist=None why=[]
+POINT decode_L16384_B1 rep2 accepted measured attn=None model=5.275082871615886 ctx=16435..16484 why=[]
+(MainProcess pid=134937) INFO 11-03 06:24:17 [loggers.py:335] Engine 000: Avg prompt throughput: 17884.3 tokens/s, Avg generation throughput: 303.7 tokens/s, Running: 2 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.8%
+POINT decode_L16384_B2 rep2 accepted measured attn=None model=5.508298234045506 ctx=16435..16487 why=[]
+POINT decode_L16384_B4 rep2 accepted measured attn=None model=6.09200190141797 ctx=16435..16491 why=[]
+POINT decode_L16384_B8 rep2 accepted measured attn=None model=7.213121292442083 ctx=16435..16499 why=[]
+POINT prefill_L16384 rep2 accepted measured attn=None model=139.694910235703 hist=None why=[]
+POINT decode_L65536_B1 rep2 accepted measured attn=None model=5.49854080080986 ctx=65587..65636 why=[]
+(MainProcess pid=134937) INFO 11-03 06:24:28 [loggers.py:335] Engine 000: Avg prompt throughput: 35647.6 tokens/s, Avg generation throughput: 177.7 tokens/s, Running: 2 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.5%
+POINT decode_L65536_B2 rep2 accepted measured attn=None model=5.768449279367924 ctx=65587..65645 why=[]
+POINT decode_L65536_B4 rep2 accepted measured attn=None model=6.555327988117933 ctx=65587..65661 why=[]
+(MainProcess pid=134937) INFO 11-03 06:24:38 [loggers.py:335] Engine 000: Avg prompt throughput: 39317.6 tokens/s, Avg generation throughput: 81.0 tokens/s, Running: 2 reqs, Waiting: 6 reqs, GPU KV cache usage: 1.7%
+(MainProcess pid=134937) INFO 11-03 06:24:48 [loggers.py:335] Engine 000: Avg prompt throughput: 45867.3 tokens/s, Avg generation throughput: 136.0 tokens/s, Running: 2 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.7%
+POINT decode_L65536_B8 rep2 accepted measured attn=None model=7.954342432618141 ctx=65587..65693 why=[]
+POINT prefill_L65536 rep2 accepted measured attn=None model=170.13718937337399 hist=None why=[]
+POINT decode_L131072_B1 rep2 accepted measured attn=None model=5.798725780844689 ctx=131123..131172 why=[]
+(MainProcess pid=134937) INFO 11-03 06:24:58 [loggers.py:335] Engine 000: Avg prompt throughput: 32286.0 tokens/s, Avg generation throughput: 14.9 tokens/s, Running: 2 reqs, Waiting: 0 reqs, GPU KV cache usage: 3.5%
+POINT decode_L131072_B2 rep2 accepted measured attn=None model=6.100511974543333 ctx=131123..131189 why=[]
+(MainProcess pid=134937) INFO 11-03 06:25:08 [loggers.py:335] Engine 000: Avg prompt throughput: 38704.6 tokens/s, Avg generation throughput: 30.8 tokens/s, Running: 3 reqs, Waiting: 1 reqs, GPU KV cache usage: 5.4%
+POINT decode_L131072_B4 rep2 accepted measured attn=None model=7.029861125051975 ctx=131123..131221 why=[]
+(MainProcess pid=134937) INFO 11-03 06:25:18 [loggers.py:335] Engine 000: Avg prompt throughput: 38609.7 tokens/s, Avg generation throughput: 64.5 tokens/s, Running: 2 reqs, Waiting: 6 reqs, GPU KV cache usage: 3.7%
+(MainProcess pid=134937) INFO 11-03 06:25:28 [loggers.py:335] Engine 000: Avg prompt throughput: 52408.7 tokens/s, Avg generation throughput: 18.0 tokens/s, Running: 6 reqs, Waiting: 2 reqs, GPU KV cache usage: 9.5%
+POINT decode_L131072_B8 rep2 accepted measured attn=None model=8.929451466798783 ctx=131123..131285 why=[]
+(MainProcess pid=134937) INFO 11-03 06:25:41 [loggers.py:335] Engine 000: Avg prompt throughput: 41076.3 tokens/s, Avg generation throughput: 132.6 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%
+POINT prefill_L131072 rep2 accepted measured attn=None model=209.48377794772387 hist=None why=[]
+POINT decode_L1024_B1 rep3 accepted measured attn=None model=5.187013725191354 ctx=1075..1124 why=[]
+POINT decode_L1024_B2 rep3 accepted measured attn=None model=5.395420134812594 ctx=1075..1124 why=[]
+POINT decode_L1024_B4 rep3 accepted measured attn=None model=5.960042904019356 ctx=1075..1124 why=[]
+POINT decode_L1024_B8 rep3 accepted measured attn=None model=6.94235841602087 ctx=1075..1124 why=[]
+POINT prefill_L1024 rep3 accepted measured attn=None model=104.39122906327248 hist=None why=[]
+POINT decode_L16384_B1 rep3 accepted measured attn=None model=5.337274245768786 ctx=16435..16484 why=[]
+POINT decode_L16384_B2 rep3 accepted measured attn=None model=5.51697215616703 ctx=16435..16487 why=[]
+POINT decode_L16384_B4 rep3 accepted measured attn=None model=6.12953345105052 ctx=16435..16491 why=[]
+(MainProcess pid=134937) INFO 11-03 06:25:51 [loggers.py:335] Engine 000: Avg prompt throughput: 22848.0 tokens/s, Avg generation throughput: 246.7 tokens/s, Running: 7 reqs, Waiting: 1 reqs, GPU KV cache usage: 2.0%
+POINT decode_L16384_B8 rep3 accepted measured attn=None model=7.2926515506207945 ctx=16435..16499 why=[]
+POINT prefill_L16384 rep3 accepted measured attn=None model=140.60826167464256 hist=None why=[]
+POINT decode_L65536_B1 rep3 accepted measured attn=None model=5.504544650316238 ctx=65587..65636 why=[]
+POINT decode_L65536_B2 rep3 accepted measured attn=None model=5.7400000023841855 ctx=65587..65645 why=[]
+(MainProcess pid=134937) INFO 11-03 06:26:01 [loggers.py:335] Engine 000: Avg prompt throughput: 37588.6 tokens/s, Avg generation throughput: 132.4 tokens/s, Running: 3 reqs, Waiting: 1 reqs, GPU KV cache usage: 2.4%
+POINT decode_L65536_B4 rep3 accepted measured attn=None model=6.5020998266339305 ctx=65587..65661 why=[]
+(MainProcess pid=134937) INFO 11-03 06:26:11 [loggers.py:335] Engine 000: Avg prompt throughput: 45673.5 tokens/s, Avg generation throughput: 63.5 tokens/s, Running: 6 reqs, Waiting: 2 reqs, GPU KV cache usage: 4.9%
+POINT decode_L65536_B8 rep3 accepted measured attn=None model=7.853825927227735 ctx=65587..65693 why=[]
+POINT prefill_L65536 rep3 accepted measured attn=None model=170.1264287903905 hist=None why=[]
+(MainProcess pid=134937) INFO 11-03 06:26:21 [loggers.py:335] Engine 000: Avg prompt throughput: 39308.4 tokens/s, Avg generation throughput: 139.4 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.7%
+POINT decode_L131072_B1 rep3 accepted measured attn=None model=5.779929622113705 ctx=131123..131172 why=[]
+POINT decode_L131072_B2 rep3 accepted measured attn=None model=6.117012498229742 ctx=131123..131189 why=[]
+(MainProcess pid=134937) INFO 11-03 06:26:31 [loggers.py:335] Engine 000: Avg prompt throughput: 39312.8 tokens/s, Avg generation throughput: 29.8 tokens/s, Running: 2 reqs, Waiting: 2 reqs, GPU KV cache usage: 2.3%
+POINT decode_L131072_B4 rep3 accepted measured attn=None model=7.042001283615828 ctx=131123..131221 why=[]
+(MainProcess pid=134937) INFO 11-03 06:26:44 [loggers.py:335] Engine 000: Avg prompt throughput: 40778.7 tokens/s, Avg generation throughput: 53.4 tokens/s, Running: 1 reqs, Waiting: 7 reqs, GPU KV cache usage: 2.2%
+(MainProcess pid=134937) INFO 11-03 06:26:54 [loggers.py:335] Engine 000: Avg prompt throughput: 38964.6 tokens/s, Avg generation throughput: 13.1 tokens/s, Running: 5 reqs, Waiting: 3 reqs, GPU KV cache usage: 8.1%
+(MainProcess pid=134937) INFO 11-03 06:27:04 [loggers.py:335] Engine 000: Avg prompt throughput: 39041.4 tokens/s, Avg generation throughput: 31.4 tokens/s, Running: 8 reqs, Waiting: 0 reqs, GPU KV cache usage: 13.8%
+POINT decode_L131072_B8 rep3 accepted measured attn=None model=8.888871726989747 ctx=131123..131285 why=[]
+POINT prefill_L131072 rep3 accepted measured attn=None model=210.78687444329262 hist=None why=[]
+SESSION_SUMMARY {"session": "mimo-v26-overhead-s1", "mode": "overhead", "points": [["decode_L1024_B1", 1, "measured"], ["decode_L1024_B2", 1, "measured"], ["decode_L1024_B4", 1, "measured"], ["decode_L1024_B8", 1, "measured"], ["prefill_L1024", 1, "measured"], ["decode_L16384_B1", 1, "measured"], ["decode_L16384_B2", 1, "measured"], ["decode_L16384_B4", 1, "measured"], ["decode_L16384_B8", 1, "measured"], ["prefill_L16384", 1, "measured"], ["decode_L65536_B1", 1, "measured"], ["decode_L65536_B2", 1, "measured"], ["decode_L65536_B4", 1, "measured"], ["decode_L65536_B8", 1, "measured"], ["prefill_L65536", 1, "measured"], ["decode_L131072_B1", 1, "measured"], ["decode_L131072_B2", 1, "measured"], ["decode_L131072_B4", 1, "measured"], ["decode_L131072_B8", 1, "measured"], ["prefill_L131072", 1, "measured"], ["decode_L1024_B1", 2, "measured"], ["decode_L1024_B2", 2, "measured"], ["decode_L1024_B4", 2, "measured"], ["decode_L1024_B8", 2, "measured"], ["prefill_L1024", 2, "measured"], ["decode_L16384_B1", 2, "measured"], ["decode_L16384_B2", 2, "measured"], ["decode_L16384_B4", 2, "measured"], ["decode_L16384_B8", 2, "measured"], ["prefill_L16384", 2, "measured"], ["decode_L65536_B1", 2, "measured"], ["decode_L65536_B2", 2, "measured"], ["decode_L65536_B4", 2, "measured"], ["decode_L65536_B8", 2, "measured"], ["prefill_L65536", 2, "measured"], ["decode_L131072_B1", 2, "measured"], ["decode_L131072_B2", 2, "measured"], ["decode_L131072_B4", 2, "measured"], ["decode_L131072_B8", 2, "measured"], ["prefill_L131072", 2, "measured"], ["decode_L1024_B1", 3, "measured"], ["decode_L1024_B2", 3, "measured"], ["decode_L1024_B4", 3, "measured"], ["decode_L1024_B8", 3, "measured"], ["prefill_L1024", 3, "measured"], ["decode_L16384_B1", 3, "measured"], ["decode_L16384_B2", 3, "measured"], ["decode_L16384_B4", 3, "measured"], ["decode_L16384_B8", 3, "measured"], ["prefill_L16384", 3, "measured"], ["decode_L65536_B1", 3, "measured"], ["decode_L65536_B2", 3, "measured"], ["decode_L65536_B4", 3, "measured"], ["decode_L65536_B8", 3, "measured"], ["prefill_L65536", 3, "measured"], ["decode_L131072_B1", 3, "measured"], ["decode_L131072_B2", 3, "measured"], ["decode_L131072_B4", 3, "measured"], ["decode_L131072_B8", 3, "measured"], ["prefill_L131072", 3, "measured"]], "measurement_completed_at_utc": "2026-11-03T06:27:09.718229Z"}
+MEASUREMENT_COMPLETED 2026-11-03T06:27:09.718229Z
+(Worker_TP0_EP0 pid=135428) INFO 11-03 06:27:09 [multiproc_executor.py:944] Parent process exited, terminating worker queues
+(MainProcess pid=134937) INFO 11-03 06:27:09 [multiproc_executor.py:580] [shutdown] Executor: waiting for worker exit count=8
+(MainProcess pid=134937) WARNING 11-03 06:27:14 [multiproc_executor.py:592] [shutdown] Executor: workers still running after grace period; sending SIGTERM count=1
