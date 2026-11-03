@@ -1,10 +1,10 @@
 # Attention measurement first
 
 Read `README.md`, `attention_measure_plan.md`, `docs/model_architectures.md`,
-`docs/gpu_setup_and_fixes.md`, `docs/README.md`, `report/README.md` and `bench/README.md` before changing measurement code.
+`docs/experience.md`, `docs/gpu_setup_and_fixes.md`, `docs/README.md`, `report/README.md` and `bench/README.md` before changing measurement code.
 
 - The active task is collecting trustworthy real GPU evidence for six checkpoints: Llama 3.1 70B Instruct,
-  DeepSeek V4 Flash 0731, V4.1 Flash, MiMo V2.6 Flash-MOPD, original BF16 Qwen3.8 Flash-Next,
+  DeepSeek V4 Flash 0731, V4.1 Flash, MiMo V2.6 Flash-MOPD, official FP8 Qwen3.8 Flash-Next,
   and native FP8 GLM-5.3 Flash. Freeze Llama's immutable revision before launching it.
 - `attention_measure_plan.md` is the single plan. Only architecture inventory, attention-state memory,
   decode attention timing and prefill attention timing belong in this study. Parameter inventory is
@@ -13,16 +13,29 @@ Read `README.md`, `attention_measure_plan.md`, `docs/model_architectures.md`,
   Do not import its numbers into results or write/redesign the final blog yet.
 - Prepare code and offline checks now. Run GPU work only on a user-provided, explicitly authorized
   server/session; this file transfer does not authorize rentals, downloads of weights or measurements.
-- Target one 8 x H100 80GB node, TP8, EP disabled, utilization 0.82, one model at a time.
+- Target one 8 x H100 80GB node, TP8, EP enabled (`--enable-expert-parallel`), utilization 0.82, one model at a time.
   Prefix caching and speculation/MTP off. Preserve native precision. Confirm supported settings
-  from the installed runtime and server logs; document deviations instead of silently falling back
-  to Frontier's TP8+EP / 0.90 settings.
+  from the installed runtime and server logs. V4.1 EP-off failed in the recorded TP8/HUMMING
+  deployment; dense Llama has no expert placement. Do not change utilization to 0.90 implicitly.
+- First validate every model with `--kv-cache-dtype fp8`; on failure save the attempt/log/config,
+  then try `auto`, then another documented supported runnable choice. Freeze the selected per-model
+  setting before its three valid repetitions; rerun affected model points if it later changes.
+  Record requested/resolved formats, all state-buffer dtypes, scale source/warnings and fallback
+  reason. EP/KV equality must be verified, not inferred from identical flags.
+- The pinned wheel uses CUDA 13.0: use torch 2.14.0+cu130, verify actual CUDA/driver compatibility,
+  and keep old cu126/cu130 studies and BF16-Qwen measurements separate. Use scratch/local disk,
+  never a quota-full home. Follow graph/probe/scheduler lessons and gates in `docs/experience.md`.
 - Install using `bash install.sh`: the latest nightly observed on 2026-11-02 is pinned to vLLM
   `0.33.0rc1.dev450+g17e675965`, commit `17e675965d54bef8a3eb77ea92c6bae195ef793c`.
   Archive the environment's `vllm-pin.txt` and `requirements.freeze.txt`, plus node preflight
   GPU/driver/CUDA records, with the study. Never silently
   upgrade to moving nightly or substitute the historical Frontier build. Validate six-model support
   before freezing accepted measurement runs; any required runtime change starts a new environment.
+- Qwen now uses `Qwen/Qwen3.8-Flash-Next-FP8`, key `qwen-38-fp8`, revision
+  `236dfdf285828023ca3bcd3f37366c58a3469b13`. This replaces the inherited BF16 choice in this repository
+  only. Preserve native mixed precision and verify actual attention/KV/recurrent/index dtypes;
+  the FP8 checkpoint label does not imply FP8 attention state. Do not use BF16 historical results
+  as controls or add a second Qwen deployment.
 - One fresh study identity, one frozen runtime/environment, immutable model/tokenizer/remote-code
   revisions, shared public workload and recorded actual token counts. Never combine historical
   Frontier measurements or different builds as fresh controls.

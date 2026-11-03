@@ -4,14 +4,16 @@
 
 **Deliverable:** Measured data and simple charts, with all related evidence under `report/<study-id>/` ([layout and rules](report/README.md)). **Do not write or redesign the blog yet.**
 
-**Preparation status (2026-11-02):** A selective Frontier handoff is available in
-[model architectures](docs/model_architectures.md), [GPU setup and previous fixes](docs/gpu_setup_and_fixes.md)
-and [offline trace aids](bench/README.md). No new GPU measurements exist yet. `index.html` remains
-a synthetic prototype. The current action is preparation; GPU execution requires a user-provided,
-explicitly authorized session. No rental or weight download is authorized by this handoff.
+**Updated execution policy (2026-11-03):** Read [working experience](docs/experience.md)
+before implementation or launch. It records completed and failed historical sessions on two CUDA
+environments, including BF16 Qwen; those are not the new controlled six-model comparison. The active
+plan uses official **Qwen FP8**, **TP8 + EP on**, and **FP8-first KV with documented fallback**.
+`index.html` remains a synthetic prototype. This update changes preparation and protocol only;
+GPU execution still requires a user-provided, explicitly authorized session.
 
-Use the five inherited immutable pins in the architecture document (V4 means **0731**).
-Llama's exact repository and immutable revision are still to be frozen before launch.
+Use the four unchanged Frontier checkpoint pins plus the newly pinned official Qwen FP8 revision in the architecture document (V4 means **0731**).
+The experience notes identify a Llama revision prefix (`1605565b?`); recover its full immutable
+revision/repository from the cited study manifest and verify it before launch. Do not invent the full pin.
 Read [AGENTS.md](AGENTS.md) for evidence and lifecycle rules.
 
 **Scope:** Six checkpoints:
@@ -19,7 +21,7 @@ Read [AGENTS.md](AGENTS.md) for evidence and lifecycle rules.
 2. DeepSeek V4 Flash.
 3. DeepSeek V4.1 Flash.
 4. MiMo V2.6 Flash-MOPD.
-5. Qwen3.8 Flash-Next.
+5. Qwen3.8 Flash-Next-FP8 (official mixed-precision checkpoint).
 6. GLM-5.3 Flash.
 
 The precise attention types, layer counts, parameter counts and state layouts **must be verified from the deployed checkpoints**, not copied from the earlier HTML. The HTML contains synthetic values.
@@ -42,7 +44,36 @@ The precise attention types, layer counts, parameter counts and state layouts **
   The script installs from the immutable commit index and verifies the installed version. Retain
   `vllm-pin.txt` and `requirements.freeze.txt` from the environment, plus the installer and
   GPU/driver/CUDA records collected during preflight, with the study. Validate all six models before collecting accepted results. Do not upgrade mid-study.
-- **Hardware:** one node with **8 × H100 80GB** GPUs; **TP=8**, **EP disabled**, `gpu_memory_utilization=0.82`. Run **one model at a time**.
+- **Qwen checkpoint change (2026-11-02):** use `Qwen/Qwen3.8-Flash-Next-FP8`, key
+  `qwen-38-fp8`, revision `236dfdf285828023ca3bcd3f37366c58a3469b13`; pin tokenizer/remote code too.
+  Its [config](https://huggingface.co/Qwen/Qwen3.8-Flash-Next-FP8/blob/236dfdf285828023ca3bcd3f37366c58a3469b13/config.json) specifies FP8 quantization with dynamic activations and 128 x 128
+  weight blocks, while the text dtype remains BF16 and attention projections are excluded from
+  conversion. Do not infer KV/recurrent/index dtype from the model name. Verify loaded buffers.
+  This is a deployment choice, not proof of smaller attention state or a precision-controlled comparison.
+  Replace the BF16 deployment rather than adding another model; the study still has six models/144 points.
+- **Hardware:** one node with **8 × H100 80GB** GPUs; **TP=8**, **EP enabled (`--enable-expert-parallel`)**, `gpu_memory_utilization=0.82`. Run **one model at a time**.
+- **Why EP on:** the recorded V4.1 TP8/EP-off MXFP4 expert shard fails a HUMMING
+  divisibility assertion ([experience ?7 G2](docs/experience.md)). Enable EP for every model launch
+  to keep the requested policy consistent; for dense Llama record that it has no MoE experts.
+  Attention remains TP8. Do not describe EP on as a proved fix for GLM's unrelated open startup error.
+- **CUDA environment:** the pinned vLLM wheel links CUDA 13.0. Use torch **2.14.0+cu130**
+  (`--torch-backend=cu130`), verify the installed torch/CUDA build and save the full dependency
+  freeze. Never combine the old cu126 and cu130 studies as controls. Check actual driver/forward
+  compatibility and a CUDA smoke operation before model loading; a driver string alone is insufficient.
+- **Common scheduling:** `max_num_batched_tokens=8192`, `max_num_seqs=8`,
+  `async_scheduling=False`, raw token-ID prompts with recorded workload hash. Set
+  `max_model_len=132096` only where supported; Llama stays at 131072 without an override.
+  Its 131072-token prompt plus output cannot fit: record 128K points unsupported, not extrapolated.
+- **KV dtype policy:** for every model first validate explicit `--kv-cache-dtype fp8` (Python
+  `kv_cache_dtype="fp8"`). If it fails to load or execute the required smoke/measurement shapes,
+  retain that failed attempt and try `--kv-cache-dtype auto`. If `auto` also fails, select a documented
+  model/backend-supported runnable dtype; retain the reason and exact configuration for every attempt.
+  Stop rather than retrying arbitrary combinations if no supported choice works.
+  Freeze one validated dtype/backend per model before its accepted repetitions; if a later shape
+  requires another choice, mark affected points and rerun that model's accepted grid under the final
+  choice rather than mixing settings. A fallback is not a separate precision sweep or added model.
+  FP8 may resolve to `fp8_ds_mla`; it does not imply FP8 recurrent/index/tail buffers.
+  Record K/V scale source/calibration and warnings; stock scale 1.0 is not evidence of equal accuracy.
 - Use a supported, recorded model revision, weight dtype, attention/KV dtype, runtime build, backend and configuration. **Do not force unsupported settings.** If a model requires a different setup, report it prominently; it is a *deployment comparison*, not a controlled architecture-only comparison.
 - Disable speculative decoding/MTP and cross-request prefix-cache reuse. The latter is **not** a request to run prefix-caching experiments.
 - Use identical *target token lengths* with model-specific tokenization; record **actual** token counts.
@@ -133,18 +164,39 @@ Each valid GPU point gets **3 repetitions**. Reuse already valid, equivalent raw
 
 ## 8. Agent implementation and evidence rules
 
-1. **Start with the selective local handoff**: `docs/model_architectures.md`, `docs/gpu_setup_and_fixes.md`, `docs/import_provenance.json` and `bench/README.md`. Consult the original repositories only for a specific unresolved implementation detail. The copied aids are offline diagnostics, not ready six-model measurement runners. Do not import historical serving sweeps or results into this study.
-2. Implement a **single run manifest** recording checkpoint revision, node/GPU IDs, runtime version, dtype, attention backend, TP/EP, model length, prompt tokens, chunk size, actual decode batch, repetition and timing instrumentation.
+1. **Read `docs/experience.md` first**, then the selective local handoff: `docs/model_architectures.md`, `docs/gpu_setup_and_fixes.md`, `docs/import_provenance.json` and `bench/README.md`. Consult the original repositories only for a specific unresolved implementation detail. The experience names existing GPU-runner scripts; check whether they are present and retrieve/review the referenced implementations before use. The two currently copied trace aids alone are not six-model measurement runners. Do not import historical serving sweeps or results into this study.
+2. Implement a **single run manifest** recording checkpoint revision, node/GPU IDs, vLLM/torch/CUDA versions, weight dtype, requested and resolved KV dtype/format, recurrent/index/tail dtypes, scale source, fallback attempt/reason, attention backend, TP/EP, graph mode, model length, prompt tokens, chunk size, actual decode batch, repetition and timing instrumentation. Save each attempted launch config and startup/failure log.
 3. Build one small runner for each of **memory**, **decode**, and **prefill**. Instrument fused attention/recurrent regions consistently; if isolation is not possible, record missing data and the exact reason. Do not replace missing GPU measurements with analytical estimates.
 4. Save all outputs in `report/<study-id>/`: raw per-model/experiment/repetition folders, CSVs, charts, `config/`, `logs/`, manifest and `summary.csv` with median/min/max, valid repetition count and raw IDs. Every supported memory/decode/prefill point needs three independent valid repetitions with fresh state/requests. Failed attempts stay separate and do not count; fewer than three valid runs means incomplete. Include unsupported/unavailable cases.
 5. Validate basic arithmetic, memory ownership, warmup, actual batch sizes and chunk lengths. Record model-specific differences without disguising them.
 6. Produce the **three charts** and **one architecture table** above. Label every number as `measured`, `calculated from checkpoint`, or `unverified`. No synthetic values in the final measurement outputs.
 7. Save per-model completion records as described below and `fixes.md` for any bugs encountered. Add reusable setup/download/fix lessons to `docs/` with links to the study evidence. Finish with `report/<study-id>/README.md`: what ran, what did not, and which comparisons are limited by dtype/backend/runtime differences. **Stop there. Do not write blog prose.**
 
+### Experience that the implementation must preserve
+
+| Known issue / evidence | Requirement for the new sessions |
+| --- | --- |
+| Qwen FP8 weights replace the measured BF16 checkpoint | Fresh checkpoint inventory, backend/dtype validation and matched controls; do not reuse BF16 execution results |
+| FP8 KV validation worked for historical Qwen/Llama, V4 already packed FP8, V4.1 used FP8 | Start all six with FP8, but revalidate the selected checkpoint and runtime; MiMo FP8 and GLM successful startup are not established by these notes |
+| V4 PIECEWISE sparse-indexer capture failed (F9) | Validate `FULL_DECODE_ONLY` as the recorded workaround; record graph mode and overhead |
+| Llama/MiMo probes need breakable graphs; MiMo resolved class differs from config | Verify executed class, record graph deviations, and gate on model window plus expected attention regions, not merely a report file existing |
+| Graph replay can leave stale CUDA events; eager sub-region probes have substantial overhead | Use replay-valid events, reject stale/out-of-window events, measure module-level regions; keep detailed breakdowns diagnostic |
+| Probe overhead changes decode timing | Run matched unprobed controls under identical EP/KV/runtime/workload settings; save overhead and measured-vs-adjusted bounds without claiming an exact corrected time |
+| Window/compressor blocks are freed without workers seeing frees | Obtain live block occupancy from scheduler-side metadata; do not count every historically appended block as live |
+| Physical replicas, shared aliases, compressor tails and whole-block slabs matter | Check aliases, report logical/page/slab bytes separately, count replicas, retain post-prefill and settled-decode snapshots |
+| A worker RPC exception can kill the worker | Catch unsupported property reads, return probe errors as data and fail the validation gate cleanly |
+| GLM still failed in both CUDA environments | Validate EP-on startup first; if unresolved, retain failure and mark unavailable. Changing the runtime requires a new environment/study and fresh controls |
+
+Probe controls and smoke validation are measurement-validity checks, not additional architecture
+or quality experiments. Expected module regions: Qwen 48, Llama 80, V4 43, V4.1 40, MiMo 48,
+GLM 45 only once its executed implementation is verified. Do not claim the referenced runner scripts
+exist locally until inspected. Preserve three independent valid repetitions at every supported point.
+
 ## 9. GPU execution acceptance details
 
 - Freeze a fresh study ID and one tested runtime before the first point. Historical Frontier builds
-  and results are reference material only. Verify EP disabled and utilization 0.82 in loaded config.
+  and results are reference material only. Verify TP8, EP enabled (effective for MoE; no expert placement for dense Llama),
+  utilization 0.82, the selected KV policy and actual buffer dtypes in loaded config.
 - Use exact target lengths and record per-step actual lengths. A 128K input requires additional
   supported context capacity for warmup and timed generation. Record failure if that cannot fit.
 - Before decode timing, complete prefill and at least 50 untimed warm decode steps; then measure
@@ -214,6 +266,11 @@ executed_positions_by_layer,attention_ms_per_chunk,model_ms_per_chunk,timing_met
 repeat,status,manifest
 ```
 
+For every measurement CSV, also include `config_id,ep_requested,ep_effective,
+kv_dtype_requested,kv_dtype_resolved,kv_format,state_dtype_evidence,kv_scale_source,fallback_reason`.
+Use one immutable `config_id` for each selected model deployment; link to attempted configurations
+and logs in the manifest. Do not summarize repetitions across different configurations.
+
 CSV quantities use binary MiB/GiB. `unique_kv_gib` excludes the separately reported shared/compressed,
 index/tail and recurrent categories; add `window_kv_gib` and `ordinary_kv_gib` as disjoint components
 of `unique_kv_gib`. Whole-model totals include all physical ranks; preserve per-rank raw observations.
@@ -234,6 +291,8 @@ The study is complete when:
 - Per-model completion timestamps/durations/statuses are saved; every supported measured point
   has three independent valid repetitions with raw runs and median/min/max summaries.
 - Reusable setup/download and verified fix experience is recorded in `docs/` with evidence links.
+- Every model has an FP8-first validation record, EP-on resolved settings (or dense-model N/A),
+  and an explicit recorded fallback if FP8 could not run. No setting change is hidden in a summary.
 - No optional experiment, new blog writing, or unrequested model optimization was performed.
 
 **Instruction to agent:** *Keep the experiment small and the explanations simple. We are measuring the architecture tradeoffs an AI reader can understand: model size, memory, decode speed and prefill speed. Do not expand the scope.*

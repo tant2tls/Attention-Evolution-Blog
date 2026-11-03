@@ -1,6 +1,7 @@
 # Setup and download experience
 
-These are inherited workflow lessons and preparation steps, not measurements of this new study.
+Read [experience.md](experience.md) first for later recorded sessions and verified fixes.
+The inherited suggestions below are preparation leads; they are not fresh controlled measurements.
 See [GPU setup and fixes](gpu_setup_and_fixes.md) for the historical problems and runtime pin.
 
 - Before using GPU time, inspect disk space, local filesystem, host RAM, GPU topology and driver.
@@ -33,3 +34,10 @@ See [GPU setup and fixes](gpu_setup_and_fixes.md) for the historical problems an
 After a session, add only lessons supported by its logs. State hardware, runtime/client version,
 what changed and measured benefit if available. Keep the original incident and exact fix in
 `report/<study-id>/fixes.md`, then link to it here. Do not put credentials or private host paths in docs.
+
+Current install prerequisite: use a fresh scratch/local `VLLM_VENV`, torch 2.14.0+cu130 with this
+CUDA 13 vLLM wheel, and CUDA-major-specific JIT caches. Never use quota-full NFS home for caches
+or environments. Export an absolute study-owned `HF_HOME`; unset `HF_HUB_OFFLINE` for authorized
+downloads, then restore offline operation for measurement. Review pinned remote code and record
+its hash (MiMo requires it); copy checkpoint config/inventory into the report before any authorized
+checkpoint deletion. Avoid shared-pool deletion. Re-detect node/disk/GPU availability each session.

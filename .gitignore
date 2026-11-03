@@ -1,5 +1,6 @@
 # Local runtime, weights/caches and raw GPU artifacts
 /.venv/
+/.venv-attention/
 /hf/
 /weights/
 __pycache__/

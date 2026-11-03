@@ -5,6 +5,11 @@ Historical sources: `reproduce/README.md`, five per-model guides, `bench/serve.s
 `.claude/skills/serving/SKILL.md`. This is a focused adaptation, not an invocation of the old serving workflow.
 The source hashes are in `import_provenance.json`. No old numbers become new results.
 
+Read [current working experience](experience.md) first. It adds verified CUDA-environment,
+EP, KV validation, graph/probe and scheduler fixes beyond this inherited Frontier handoff.
+The current plan uses TP8 + EP on and FP8-first KV with explicit fallback; historical defaults below
+are not fresh controls.
+
 ## Prepare the actual node
 
 Record GPU UUIDs/model/memory, interconnect topology, CPU/RAM, driver, CUDA, Python, torch, vLLM
@@ -26,11 +31,14 @@ The wheel was listed at the [official nightly index](https://wheels.vllm.ai/nigh
 immutable link under [this commit index](https://wheels.vllm.ai/17e675965d54bef8a3eb77ea92c6bae195ef793c/vllm/).
 Installation follows the [official GPU instructions](https://docs.vllm.ai/en/latest/getting_started/installation/gpu/).
 
-The script creates/uses `~/vllm-attention` (override with `VLLM_VENV`), installs the exact
+Set `VLLM_VENV` explicitly to a fresh local/scratch directory. The installer defaults to
+`./.venv-attention` relative to the calling directory, avoiding quota-full home storage, and installs the exact
 wheel, checks its version and dependency consistency, then saves `requirements.freeze.txt`
 and `vllm-pin.txt` inside the environment. Activate it in your shell after running the script.
 Use a new environment for a new runtime study; do not reinstall during live measurements.
-Copy those records and the installer into `report/<study-id>/config/`; save setup output in its `logs/`. Record GPU/driver/CUDA details
+It pins torch 2.14.0+cu130 (`--torch-backend=cu130`) and checks torch's CUDA 13.0 build,
+preventing the mixed CUDA 12/13 setup described in experience ?2.1. Check driver/forward-compatibility
+and a CUDA smoke operation before measurements. Copy those records and the installer into `report/<study-id>/config/`; save setup output in its `logs/`. Record GPU/driver/CUDA details
 in node preflight. Six-model compatibility remains to be validated on the GPU node.
 
 The historical Frontier build `a98247ab4db686ee03c66d5feb3c761e52a2f8ab`
@@ -53,10 +61,10 @@ mkdir -p "$TRITON_CACHE_DIR" "$FLASHINFER_WORKSPACE_BASE" "$TILELANG_CACHE_DIR" 
 # Copy requirements.freeze.txt and vllm-pin.txt into report/<study-id>/config/.
 ```
 
-Implement a new launch configuration: TP8, **EP disabled**, utilization **0.82**, prefix caching off,
+Implement a new launch configuration: TP8, **EP enabled (`--enable-expert-parallel`)**, utilization **0.82**, prefix caching off,
 speculation/MTP off, native precision, explicit 8192-token prefill budget. Confirm each flag in the
 installed CLI and loaded configuration; set max model length to support 131072 context plus the
-entire warmup/timed decode window where supported. Never silently inherit Frontier's EP/0.90 defaults.
+entire warmup/timed decode window where supported. Keep utilization 0.82; EP on now follows the user policy and the recorded V4.1 launch fix.
 Record text-only mode and model-specific tokenizer/parser requirements. Model pins are in
 `model_architectures.md`; no weight downloads are part of this transfer.
 
@@ -126,3 +134,14 @@ per-model completion times, configuration, logs and `fixes.md` when applicable.
 After a verified setup/download improvement, update [working experience](setup_and_download_experience.md)
 with the version, exact steps and a link to that study's incident/log. Keep model timing results and
 incident-specific details in the report; `docs/` holds reusable lessons.
+
+## Selected KV dtype and validated instrumentation
+
+Attempt `--kv-cache-dtype fp8` for every model first. If validation fails, preserve the failed
+startup/shape logs and config, try `auto`, then a documented supported runnable dtype. Freeze the
+selected setting before accepted repetitions. `fp8` may resolve to DeepSeek's packed format and
+never establishes recurrent/index/tail dtypes; save allocated-buffer evidence and scale warnings.
+Llama is dense, so EP has no expert-placement effect. V4.1's historical EP-off shard assertion is
+an established reason to enable EP; GLM's startup error remains open until revalidated.
+Use the smoke gates, replay-valid events, matched unprobed controls, graph-mode workarounds and
+scheduler occupancy checks in `experience.md`. Do not use a report file's mere existence as a gate.

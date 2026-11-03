@@ -70,3 +70,12 @@ Keep credentials/private addresses out of committed evidence. Large traces remai
 store them under the study's `raw/traces/` on the GPU node or an authorized artifact store and index
 them in `artifacts.json`. All result records and references still live within this study directory.
 Do not commit or push without request.
+
+## Current launch policy evidence
+
+Every model's `config/` and `logs/` must retain the first explicit FP8-KV attempt, requested/resolved
+KV dtype/format, effective EP setting, weight/recurrent/index/tail dtypes, scale source and warnings.
+If FP8 fails, save its error and the reason for fallback to `auto` or another supported runnable
+choice. Validate the final configuration before accepted repetitions; never aggregate repeats from
+different settings. Use TP8 + EP on (dense Llama N/A) and the frozen cu130 environment for this new
+comparison. Keep historical cu126/cu130/BF16-Qwen study folders unchanged.
