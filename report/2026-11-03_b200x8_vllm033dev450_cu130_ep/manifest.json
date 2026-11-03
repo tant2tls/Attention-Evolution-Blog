@@ -104,11 +104,19 @@
   "mimo-v26": {
    "repo": "XiaomiMiMo/MiMo-V2.6-Flash-MOPD",
    "revision": "2479e2d0029eca9a34cc7e7f55a121925f81908e",
-   "config_id": null,
-   "accepted_sessions": null,
-   "overhead_sessions": null,
-   "validation_attempts": null,
-   "config_sha256": null
+   "config_id": "mimo-v26__kv-auto__6997ba48db",
+   "accepted_sessions": [
+    "mimo-v26-s1"
+   ],
+   "overhead_sessions": [
+    "mimo-v26-overhead-s1"
+   ],
+   "validation_attempts": [
+    "mimo-v26-fp8-smoke-s1-1",
+    "mimo-v26-fp8-smoke-s1-2",
+    "mimo-v26-auto-smoke-s1-1"
+   ],
+   "config_sha256": "61bea4a0f7a0dd8969f8cae528761e26b697dd12ff63e98804c3f0945492e621"
   },
   "v41": {
    "repo": "deepseek-ai/DeepSeek-V4.1-Flash",

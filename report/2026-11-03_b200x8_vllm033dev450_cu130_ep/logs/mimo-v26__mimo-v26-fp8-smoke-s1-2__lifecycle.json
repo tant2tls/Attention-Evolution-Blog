@@ -1,0 +1,49 @@
+{
+ "study_id": "2026-11-03_b200x8_vllm033dev450_cu130_ep",
+ "model": "mimo-v26",
+ "session_id": "mimo-v26-fp8-smoke-s1-2",
+ "role": "validation fp8",
+ "cmd": [
+  "python",
+  "bench/attn_study.py",
+  "--model-key",
+  "mimo-v26",
+  "--session-id",
+  "mimo-v26-fp8-smoke-s1-2",
+  "--kv-cache-dtype",
+  "fp8",
+  "--mode",
+  "smoke"
+ ],
+ "idle_baseline_mib": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "started_at_utc": "2026-11-03T09:14:47Z",
+ "host_cpu_quota": "20800000 100000",
+ "pgid": 88637,
+ "returncode": 2,
+ "timed_out": false,
+ "measurement_completed_at_utc": null,
+ "shutdown_verified_at_utc": "2026-11-03T09:16:01Z",
+ "finished_at_utc": "2026-11-03T09:16:01Z",
+ "elapsed_seconds": 74.2,
+ "gpu_after_mib": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "status": "failed",
+ "reason": "exit code 2"
+}

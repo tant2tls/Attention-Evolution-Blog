@@ -13,3 +13,11 @@
   Llama was frozen manually at `fp8` with both attempts listed. Attempt 1 is kept as a failed attempt and
   counts toward nothing. Rerun needed: no.
 - **General lesson:** add corpus fetch + hash check to preflight (promote to docs/agent_quickstart.md).
+
+## N2. MiMo V2.6 FP8 KV unsupported on B200 FlashAttention backend
+
+- **Symptom:** `mimo-v26-fp8-smoke-s1-1` (09:13Z) failed at worker init on all ranks:
+  `NotImplementedError: FlashAttention does not support fp8 kv-cache on this device.`
+  (H100 study failed differently: `fp8_kv_dequant requires fp16 or bf16 Q`, B7 there.)
+- **Handling:** policy path unchanged — one FP8 retry, then `auto`; backends not forced. The fallback reason is
+  recorded in `config/mimo-v26__selected.json`. Both failed attempts are kept and count toward nothing.

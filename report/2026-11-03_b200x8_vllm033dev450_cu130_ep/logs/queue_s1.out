@@ -19,3 +19,13 @@
 2026-11-03T09:12:54Z B qwen-38-fp8 done; CSVs regenerated (charts/README/push are manual)
 2026-11-03T09:12:54Z QUEUE_DONE
 2026-11-03T09:13:02Z A mimo-v26 validate kv=fp8 session=mimo-v26-fp8-smoke-s1-1
+2026-11-03T09:14:46Z A mimo-v26 validation failed: mimo-v26-fp8-smoke-s1-1
+2026-11-03T09:14:46Z A mimo-v26 validate kv=fp8 session=mimo-v26-fp8-smoke-s1-2
+2026-11-03T09:16:01Z A mimo-v26 validation failed: mimo-v26-fp8-smoke-s1-2
+2026-11-03T09:16:01Z A mimo-v26 validate kv=auto session=mimo-v26-auto-smoke-s1-1
+2026-11-03T09:24:43Z A mimo-v26 frozen kv=auto
+2026-11-03T09:24:43Z B mimo-v26 accepted mimo-v26-s1 (kv=auto, expect 16 points)
+2026-11-03T09:28:31Z B mimo-v26 control mimo-v26-overhead-s1
+2026-11-03T09:32:12Z B mimo-v26 done; CSVs regenerated (charts/README/push are manual)
+2026-11-03T09:32:12Z QUEUE_DONE
+2026-11-03T09:32:20Z A v41 validate kv=fp8 session=v41-fp8-smoke-s1-1

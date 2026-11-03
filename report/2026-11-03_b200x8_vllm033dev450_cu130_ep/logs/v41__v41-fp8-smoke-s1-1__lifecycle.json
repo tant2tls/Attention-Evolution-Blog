@@ -1,0 +1,31 @@
+{
+ "study_id": "2026-11-03_b200x8_vllm033dev450_cu130_ep",
+ "model": "v41",
+ "session_id": "v41-fp8-smoke-s1-1",
+ "role": "validation fp8",
+ "cmd": [
+  "python",
+  "bench/attn_study.py",
+  "--model-key",
+  "v41",
+  "--session-id",
+  "v41-fp8-smoke-s1-1",
+  "--kv-cache-dtype",
+  "fp8",
+  "--mode",
+  "smoke"
+ ],
+ "idle_baseline_mib": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "started_at_utc": "2026-11-03T09:32:20Z",
+ "host_cpu_quota": "20800000 100000",
+ "pgid": 107283
+}
