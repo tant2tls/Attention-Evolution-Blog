@@ -1,0 +1,49 @@
+{
+ "study_id": "2026-11-03_b200x8_vllm033dev450_cu130_ep",
+ "model": "v41",
+ "session_id": "v41-s1",
+ "role": "accepted",
+ "cmd": [
+  "python",
+  "bench/attn_study.py",
+  "--model-key",
+  "v41",
+  "--session-id",
+  "v41-s1",
+  "--kv-cache-dtype",
+  "fp8",
+  "--mode",
+  "study"
+ ],
+ "idle_baseline_mib": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "started_at_utc": "2026-11-03T09:46:41Z",
+ "host_cpu_quota": "20800000 100000",
+ "pgid": 117668,
+ "returncode": 0,
+ "timed_out": false,
+ "measurement_completed_at_utc": "2026-11-03T09:52:21Z",
+ "shutdown_verified_at_utc": "2026-11-03T09:52:44Z",
+ "finished_at_utc": "2026-11-03T09:52:44Z",
+ "elapsed_seconds": 363.4,
+ "gpu_after_mib": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "status": "complete",
+ "reason": ""
+}

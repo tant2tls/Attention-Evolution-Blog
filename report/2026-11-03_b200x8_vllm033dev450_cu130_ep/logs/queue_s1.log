@@ -30,3 +30,6 @@
 2026-11-03T09:32:12Z B mimo-v26 done; CSVs regenerated (charts/README/push are manual)
 2026-11-03T09:32:12Z QUEUE_DONE
 2026-11-03T09:32:20Z A v41 validate kv=fp8 session=v41-fp8-smoke-s1-1
+2026-11-03T09:46:40Z A v41 frozen kv=fp8
+2026-11-03T09:46:40Z B v41 accepted v41-s1 (kv=fp8, expect 16 points)
+2026-11-03T09:52:44Z B v41 control v41-overhead-s1
