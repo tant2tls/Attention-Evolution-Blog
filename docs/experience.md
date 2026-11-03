@@ -227,6 +227,17 @@ Study-specific ids: F = cu126 study, G = cu130 study. Ops = operational mistakes
 | G3 | MiMo: "repository contains custom code … pass `trust_remote_code=True`" | no native config class for `model_type: mimo_v2` | fetch `configuration_mimo_v2.py` (+ modeling) at the pinned revision, review (PretrainedConfig only, no I/O), record sha256 (`773062ac…`, `a8c3cb3a…`), `trust_remote_code=True`, `download_extra` |
 | G4 | MiMo: 48 attention regions recorded but every step `model window never recorded` | probe wrapped `MiMoV2ForCausalLM`/`MiMoV2FlashForCausalLM`; vLLM runs `MiMoV2OmniForCausalLM` ("Resolved architecture" log line) | wrap the class from the engine's `Resolved architecture` line, not `config.json`; smoke gate added |
 
+### 7.1 Additional fixes, 2026-11-03 study (same vLLM commit, cu130)
+
+Details and evidence: [fixes.md](../report/2026-11-03_h100x8_vllm033dev450_cu130_ep/fixes.md).
+
+| id | symptom | cause | fix |
+| --- | --- | --- | --- |
+| B2 | dense Llama: `Number of experts in the model must be greater than 0 when expert parallelism is enabled` | this build validates EP against the expert count | EP is N/A for dense models: `enable_expert_parallel=False` for Llama only; gate requires EP on for MoE |
+| B3 | `FileNotFoundError .../triton/<hash>/_bincount_kernel.json` then `CompiledKernel has no attribute module` | JIT cache on encrypted FUSE `/root` | JIT caches on node-local disk |
+| B4 | prefill final chunk "not found", memory snapshots empty | `assign_request_id` appends a random suffix to request ids | resolve the scheduler id right after `add_request` |
+| B6 | memory per layer wrong inside V4's shared block-table group | per-layer page sizes differ within one group (37440/1728/8640 B); KV tensors overlay one buffer | use worker per-layer specs for page size; dedupe backing storages for slab bytes |
+
 Operational mistakes (do not repeat):
 - **`pkill -f <pattern>` killed my own tool shell**, because the pattern matched the command line running it.
   Kill by exact PID from `ps -eo pid,cmd | awk '$2=="bash" && $3=="script.sh"{print $1}'`.

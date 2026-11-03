@@ -41,3 +41,21 @@ or environments. Export an absolute study-owned `HF_HOME`; unset `HF_HUB_OFFLINE
 downloads, then restore offline operation for measurement. Review pinned remote code and record
 its hash (MiMo requires it); copy checkpoint config/inventory into the report before any authorized
 checkpoint deletion. Avoid shared-pool deletion. Re-detect node/disk/GPU availability each session.
+
+## 2026-11-03 session (study `2026-11-03_h100x8_vllm033dev450_cu130_ep`)
+
+Verified on one 8 × H100 80GB container, driver 580.173.02, vLLM `0.33.0rc1.dev450+g17e675965`,
+torch `2.14.0+cu130`. Evidence: [study fixes](../report/2026-11-03_h100x8_vllm033dev450_cu130_ep/fixes.md),
+[download logs](../report/2026-11-03_h100x8_vllm033dev450_cu130_ep/logs/).
+
+- **Downloads:** `bench/download_model.py` (pinned revision, `local_dir` study-owned, size check per file,
+  `logs/download_<key>.json`). With an HF token, `HF_XET_HIGH_PERFORMANCE=1` and two parallel queues
+  (`--workers 32` each) all six checkpoints (1.51 TB) finished in ~14 min: Llama 141 GB 123 s,
+  V4 0731 167 GB 134 s, Qwen FP8 186 GB 174 s, MiMo 173 GB 167 s, GLM 328 GB 311 s, V4.1 510 GB 522 s.
+  Keep the token in `$HF_HOME/token` outside Git (`chmod 600`).
+- **Check the filesystem type, not just free space.** Here `/root` was `fuse.gocryptfs` (1.7 TB): fine for
+  read-mostly weights (~2.5 s per 4.7 GB Llama shard on first load), but concurrent Triton JIT writes from
+  8 workers lost files (B3). Put all JIT caches on node-local disk (`bench/env.sh`: `/var/tmp/attn_study_jit`).
+- **Reloads are fast after the first launch:** with page cache and JIT caches warm, a Llama validation
+  launch took 105 s end to end versus 236 s cold; V4 0731's 269 s JIT kernel warmup ran only once.
+- Charts use a separate venv (`/root/attn-study/venv-report`, matplotlib) so the frozen runtime is untouched.

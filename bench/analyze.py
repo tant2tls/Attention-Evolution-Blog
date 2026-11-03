@@ -92,6 +92,8 @@ def memory_rows(study: Path, key: str, sel: dict):
     layers own nothing and reference their target. Slab bytes = |union of live block ids| x
     (sum of KV tensor sizes / num_blocks) x TP: what the shared block pool actually reserves.
     """
+    if not sel.get("accepted_sessions"):
+        return [], []
     sess = sel["accepted_sessions"][0]
     sdir = study / "raw" / key / "sessions" / sess
     kvc = load(sdir / "scheduler_kv_cache_config.json")
@@ -105,7 +107,15 @@ def memory_rows(study: Path, key: str, sel: dict):
                  if v.get("kv_sharing_target_layer_name")}
     category_override = sel.get("state_category_by_layer", {})
     groups = kvc.get("kv_cache_groups", [])
-    per_block_bytes = sum(t["size"] for t in kvc.get("kv_cache_tensors", [])) / max(kvc.get("num_blocks", 1), 1)
+    # Pool bytes reserved per block id: unique backing storages of all layer cache tensors (KVCacheTensor
+    # entries can be overlapping views of one block-outer buffer, so their sizes must not be summed).
+    storages = {}
+    for v in r0.values():
+        for t in v.get("tensors", []):
+            if t.get("storage_nbytes"):
+                storages[t["storage_ptr"]] = t["storage_nbytes"]
+    pool_bytes = sum(storages.values()) or sum(t["size"] for t in kvc.get("kv_cache_tensors", []))
+    per_block_bytes = pool_bytes / max(kvc.get("num_blocks", 1), 1)
     rows, lrows = [], []
     for d in points(study, key, "memory", sel["accepted_sessions"]):
         base = dict(model=key, revision=sc.MODELS[key]["revision"], context_tokens=d.get("context_tokens"),
@@ -127,7 +137,11 @@ def memory_rows(study: Path, key: str, sel: dict):
                 union.update(gl.get("live_ids", []))
                 specs = spec.get("kv_cache_specs") or {}
                 for ln in g.get("layer_names", []):
-                    ls = specs.get(ln, spec)
+                    # Per-layer runtime spec (worker get_kv_cache_spec) wins: page sizes differ by layer
+                    # inside one block-table group (fixes.md B6). Fall back to the group spec.
+                    lsp = (r0.get(ln) or {}).get("spec")
+                    ls = lsp if isinstance(lsp, dict) and isinstance(lsp.get("page_size_bytes"), int) \
+                        else specs.get(ln, spec)
                     page = ls.get("page_size_bytes") if isinstance(ls.get("page_size_bytes"), int) else 0
                     real = ls.get("real_page_size_bytes") if isinstance(ls.get("real_page_size_bytes"), int) else page
                     cat = category_override.get(ln) or classify(ls, ln)
@@ -141,11 +155,13 @@ def memory_rows(study: Path, key: str, sel: dict):
                     if cat == "recurrent":
                         lb = real if nlive else 0
                     else:
-                        eff = live_tokens / tps if tps > 0 else live_tokens
+                        tps = tps if tps > 0 else 1.0
+                        per_block = max(bs / tps, 1.0)  # stored entries per block (block_size counts tokens)
+                        toks = live_tokens
                         win = ls.get("sliding_window")
                         if isinstance(win, int) and win > 0:
-                            eff = min(eff, win / tps if tps > 0 else win)
-                        lb = min(eff, nlive * bs) * real / bs
+                            toks = min(toks, win)
+                        lb = min(toks / tps, nlive * per_block) * real / per_block
                     cats[cat] += owned * tp
                     logical += lb * tp
                     lrows.append(dict(model=key, revision=sc.MODELS[key]["revision"],

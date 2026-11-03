@@ -78,3 +78,23 @@ session ID.
 - **Verification:** `summary.csv` shows `valid_repeats=3` for all Llama memory points; next sessions
   report memory points in their summaries.
 - **Rerun needed:** no.
+
+## B6: per-layer page sizes differ inside one KV block-table group (memory accounting)
+
+- **Symptom (caught in analysis review before any V4 memory result was reported):** V4 0731's
+  scheduler `kv_cache_config` group 2 holds 62 layers (4×-compressed MLA KV, 128×-compressed MLA KV and
+  indexer keys) and its group-level spec shows one page size (8640 B). The worker per-layer specs from
+  `raw/v4-0731/sessions/v4-fp8-smoke1/state_buffers.json.gz` show 37440 B (4× MLA), 1728 B (128× MLA)
+  and 8640 B (indexer) per block. Multiplying live blocks by the group page size would misstate memory.
+- **Cause:** the group spec is a representative for block-table bookkeeping; physical per-layer tensors are
+  `[num_blocks, block_size/tokens_per_state, entry_bytes]` with layer-specific entry sizes.
+- **Fix:** `bench/analyze.py` uses each layer's runtime spec (`get_kv_cache_spec` captured by the probe) for
+  page size, compression and window, and the group only for the live block count. Logical payload now
+  counts `block_size / tokens_per_state` stored entries per block. Llama results are unchanged
+  (single uniform group; verified the regenerated `summary.csv` matches).
+- **Rerun needed:** no (raw evidence unchanged; analysis only).
+- **Related slab fix (same review):** `slab_gib` first summed `KVCacheTensor.size` over all tensors. In V4
+  the 8 `KVCacheTensor` entries are overlapping views of one block-outer buffer (each `size` = the whole
+  41.7 GiB pool), which would overstate the per-block reservation 8×. Analysis now dedupes the backing
+  storages of the per-layer cache tensors (`storage_ptr`, `storage_nbytes` from the probe):
+  1 storage per rank for both Llama (46.9 GiB, 327680 B/block) and V4 (41.7 GiB, 1002240 B/block).
