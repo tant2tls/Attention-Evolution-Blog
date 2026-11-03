@@ -1,5 +1,8 @@
 # Attention measurement first
 
+**Status 2026-11-03:** all blog GPU numbers exist in `report/2026-11-03_h100x8_vllm033dev450_cu130_ep/`.
+Read [plan §0](attention_measure_plan.md) before launching anything: do not run experiments no blog block needs.
+
 **Fast path for an authorized GPU session:** follow [docs/agent_quickstart.md](docs/agent_quickstart.md)
 (one queue command, gates, expected timings, failure handling). It implements the rules below; it does not relax them.
 

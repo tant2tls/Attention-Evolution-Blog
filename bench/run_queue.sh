@@ -17,7 +17,8 @@ expected() { python - "$1" <<'PY'
 import sys; sys.path.insert(0, "bench"); import study_config as s
 k = sys.argv[1]; mml = 131072 if s.MODELS[k]["extra"].get("max_model_len") == 131072 else 132096
 ok = [L for L in s.CONTEXTS if L + -(-8 * L // 8192) + 108 <= mml]
-print(6 * len(ok), 5 * len(ok))   # accepted points (mem+4 decode+prefill), control points (4 decode+prefill)
+nb = len(s.DECODE_BATCHES)
+print((2 + nb) * len(ok), (1 + nb) * len(ok))   # accepted (memory+decode+prefill), control (decode+prefill)
 PY
 }
 smoke() {  # model kv id -> 0 if the gate passed

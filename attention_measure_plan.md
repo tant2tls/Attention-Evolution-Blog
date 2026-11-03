@@ -26,6 +26,48 @@ Read [AGENTS.md](AGENTS.md) for evidence and lifecycle rules.
 
 The precise attention types, layer counts, parameter counts and state layouts **must be verified from the deployed checkpoints**, not copied from the earlier HTML. The HTML contains synthetic values.
 
+## 0. Blog-driven scope (updated 2026-11-03): measure only what a blog block needs
+
+The study [`2026-11-03_h100x8_vllm033dev450_cu130_ep`](report/2026-11-03_h100x8_vllm033dev450_cu130_ep/README.md)
+already provides **every GPU number the blog needs** (138 supported points × 3 valid repetitions; Llama 128K
+unsupported). Do **not** launch new GPU experiments for the blog. The remaining work is offline: derive and
+label numbers from saved evidence. Run GPU work again only for a trigger listed at the end of this section.
+
+| Blog block (prototype section) | Number(s) the text/figure needs | Source in the study | Status |
+| --- | --- | --- | --- |
+| Introduction: what is read / stored / runs | One per-model sentence: attention layers by type, state kind, KV format | `architecture.md`, `config/<model>__selected.json` | ready |
+| Six architectures: total vs active parameters | total, active per token, lookup-table and MTP params | `architecture.csv` (calculated from checkpoint) | ready |
+| Explore one model's path / attention variants | layer-type sequence, window sizes, shared-state owners and consumers, executed prefill positions per layer | `raw/<model>/architecture/inventory.json`, `memory_layers.csv`, `prefill.csv` (`executed_positions_by_layer`) | ready |
+| Attention storage memory, one request | whole-model GiB at 1K/16K/64K/128K, split by state category | `memory.csv` (settled decode), `charts/memory.png` | ready |
+| Attention storage memory, **many requests** | how many 128K requests fit in the KV pool at utilization 0.82; GiB for N requests | vLLM-logged pool capacity (`GPU KV cache size`, `Maximum concurrency` in `logs/<model>__<model>-s1.log`); N × per-request bytes is **calculated**, not measured | **offline task**: add a `capacity.csv` from logs and memory.csv |
+| Layer-by-layer state ownership | MiB per layer/type × layer count; shared references | `memory_layers.csv` | ready |
+| Decode attention performance | ms/step vs context at batch 1 and 8; attention share at 64K b8; probe-overhead lower bound | `decode.csv`, `summary.csv`, `overhead.csv`, `charts/decode.png` | ready |
+| Prefill attention performance | ms per 8K chunk ending at 16K/64K/128K; 1K first chunk in a side table | `prefill.csv`, `charts/prefill.png` | ready |
+| Controlled runs / caveats | KV/state dtype per model, MiMo FP8→BF16 fallback, graph-mode deviations, GLM intermittent error, Llama 128K unsupported | study `README.md` (deployment differences), `fixes.md` | ready |
+| Headline comparison across all six | use **64K** (the largest context where all six have data) | `summary.csv` | ready |
+
+**Offline tasks before writing (no GPU):**
+1. `capacity.csv`: per model, logged KV-pool tokens and maximum 128K concurrency (label `measured by vLLM pool sizing`),
+   plus calculated GiB for 1/8/max requests from `memory.csv` (label `calculated`).
+2. A single "headline at 64K" table (memory, decode b1/b8, prefill 8K, attention share) generated from `summary.csv`.
+3. Keep the prototype's synthetic numbers out: replace them from these CSVs when the blog is written.
+
+**Do not run** (no blog block needs them, or they are already answered):
+- Decode batches 2 and 4 beyond what exists, more contexts, longer decode windows, or extra repetitions.
+- Sub-region breakdowns (core vs projections), profiler traces, kernel attribution: diagnostic only and +30 % overhead.
+- BF16-vs-FP8 or any precision ablation, a second Qwen deployment, EP-off variants, utilization changes.
+- Llama 128K via overridden context limits (unsupported means unsupported).
+- MoE/FFN, throughput, energy, quality, prefix-caching or speculative-decoding experiments.
+
+**Rerun GPU work only if** (then follow §7a and keep the same grid for affected models only):
+- the runtime build or a model revision changes (new study id; the whole six-model set must share one build);
+- a reviewer finds a measurement-definition error that raw evidence cannot correct offline;
+- the blog adds a model (measure only that model under the frozen build and policy).
+For such a rerun the **minimal blog grid** is enough: memory 4 contexts; decode 4 contexts × batch **1 and 8**;
+prefill 4 points; matched unprobed control for the same decode/prefill points. That is 16 points per model
+(Llama 12) instead of 24 and removes ~40 % of the prefill tokens the decode runs spend building state.
+Select it with `ATTN_DECODE_BATCHES=1,8` (read by `bench/study_config.py` and `bench/run_queue.sh`).
+
 ## 1. The four questions our blog must answer
 
 | Question a general AI reader will ask | Number / figure needed | How to obtain it |

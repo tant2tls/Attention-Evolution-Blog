@@ -20,7 +20,9 @@ TORCH_VERSION = "2.14.0+cu130"
 
 # Contexts and batches from the plan (section 4-6).
 CONTEXTS = [1024, 16384, 65536, 131072]
-DECODE_BATCHES = [1, 2, 4, 8]
+# Full grid 1/2/4/8 was measured in study 2026-11-03. For blog-driven reruns use the minimal grid
+# ATTN_DECODE_BATCHES=1,8 (attention_measure_plan.md section 0).
+DECODE_BATCHES = [int(x) for x in os.environ.get("ATTN_DECODE_BATCHES", "1,2,4,8").split(",")]
 PREFILL_CHUNK = 8192
 FIRST_CHUNK_1K = 1024
 DECODE_WARMUP_STEPS = 50

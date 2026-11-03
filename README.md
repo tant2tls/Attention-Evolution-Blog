@@ -51,6 +51,9 @@ Qwen uses the official `Qwen/Qwen3.8-Flash-Next-FP8`, revision `236dfdf285828023
 replacing the inherited BF16 choice. See the architecture document for mixed-precision and state-dtype
 caveats; this is still a six-model deployment comparison.
 
+Blog scope (2026-11-03): the measured study already supplies every blog number; remaining work is offline
+(see [plan §0](attention_measure_plan.md)). Rerun GPU work only for a listed trigger, with `ATTN_DECODE_BATCHES=1,8`.
+
 Execution policy (2026-11-03): **TP8 + EP on**, utilization **0.82**, Qwen's official FP8 checkpoint.
 For each model validate **`--kv-cache-dtype fp8` first**; if it fails, preserve the failure, try `auto`,
 then another supported runnable choice. Record actual state formats, scale warnings and every

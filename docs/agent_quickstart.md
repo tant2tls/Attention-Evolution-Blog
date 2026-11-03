@@ -5,6 +5,9 @@ For an agent that has been **explicitly authorized** to use an 8 × H100 80GB no
 follows them. Last full run: [study 2026-11-03](../report/2026-11-03_h100x8_vllm033dev450_cu130_ep/README.md)
 (exact commands: [run_commands.md](../report/2026-11-03_h100x8_vllm033dev450_cu130_ep/config/run_commands.md)).
 
+**First check [plan §0](../attention_measure_plan.md): the blog's GPU numbers already exist. Run GPU
+work only for a listed rerun trigger, and then with the minimal grid `export ATTN_DECODE_BATCHES=1,8`.**
+
 Expected time on the same build with the JIT archive: **~15 min setup + ~2–2.5 h unattended GPU queue**.
 Without the archive add ~50 min of first-launch compilation.
 

@@ -107,7 +107,7 @@ def decode_chart(study: Path, out: Path):
     fig = plt.figure(figsize=(15, 7.5))
     gs = fig.add_gridspec(2, 4, height_ratios=[1.0, 0.75])
     axes = [fig.add_subplot(gs[0, 0])]
-    axes += [fig.add_subplot(gs[0, i], sharey=axes[0]) for i in range(1, 4)]
+    axes += [fig.add_subplot(gs[0, i], sharey=axes[0]) for i in range(1, 4)]  # 4 panels: batches 1,2,4,8 if measured
     for ax, B in zip(axes, sc.DECODE_BATCHES):
         for k in sc.MODEL_ORDER:
             xs, ys, lo, hi, full = [], [], [], [], []
