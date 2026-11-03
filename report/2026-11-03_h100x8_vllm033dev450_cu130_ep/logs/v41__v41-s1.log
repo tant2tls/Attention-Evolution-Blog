@@ -1,0 +1,506 @@
+W1103 06:36:59.386000 154774 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 06:36:59.387000 154774 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 06:36:59.388000 154774 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+(MainProcess pid=154774) INFO 11-03 06:37:11 [startup.py:96] non-default args: {'tokenizer': '/root/attn-study/weights/v41', 'kv_cache_dtype': 'fp8', 'max_model_len': 132096, 'tensor_parallel_size': 8, 'enable_expert_parallel': True, 'enable_prefix_caching': False, 'gpu_memory_utilization': 0.82, 'max_num_batched_tokens': 8192, 'max_num_seqs': 8, 'language_model_only': True, 'enable_chunked_prefill': True, 'worker_extension_cls': 'attn_probe.AttnProbeExt', 'async_scheduling': False, 'model': '/root/attn-study/weights/v41'}
+(MainProcess pid=154774) WARNING 11-03 06:37:11 [interface.py:1480] Unknown vLLM environment variable detected: VLLM_VENV
+(MainProcess pid=154774) WARNING 11-03 06:37:11 [arg_utils.py:1988] The global random seed is set to 0. Since VLLM_ENABLE_V1_MULTIPROCESSING is set to False, this may affect the random state of the Python process that launched vLLM.
+(MainProcess pid=154774) INFO 11-03 06:37:11 [config.py:985] Detected quantization_config.scale_fmt=ue8m0; enabling UE8M0 for DeepGEMM.
+(MainProcess pid=154774) INFO 11-03 06:37:11 [model.py:756] Resolved architecture: DeepseekV41ForCausalLM
+(MainProcess pid=154774) INFO 11-03 06:37:11 [model.py:781] Defaulting to tokenizer_mode='deepseek_v41' for DeepseekV41ForCausalLM
+(MainProcess pid=154774) INFO 11-03 06:37:11 [model.py:2194] Using max model len 132096
+(MainProcess pid=154774) WARNING 11-03 06:37:11 [model.py:1128] Model does not support mm_device_do_normalize, forcing mm_device_do_normalize = False.
+(MainProcess pid=154774) INFO 11-03 06:37:13 [model.py:976] All limits of multimodal modalities supported by the model are set to 0, running in text-only mode.
+(MainProcess pid=154774) INFO 11-03 06:37:13 [model.py:1033] Disabled mm_prefix attention mode because multimodal inputs are configuration-disabled. Attention backends without mm_prefix support may now be selected.
+(MainProcess pid=154774) INFO 11-03 06:37:13 [cache.py:484] Using fp8 data type to store kv cache. It reduces the GPU memory footprint and boosts the performance. Meanwhile, it may cause accuracy drop without a proper scaling factor
+(MainProcess pid=154774) INFO 11-03 06:37:13 [scheduler.py:310] Chunked prefill is enabled with max_num_batched_tokens=8192.
+(MainProcess pid=154774) INFO 11-03 06:37:13 [vllm.py:1514] Resolved Engram configuration: EngramConfig(cpu_offload=True, disk_offload=False, embedding_across_dp=False, dp_shared_memory=False, use_thp=False)
+(MainProcess pid=154774) INFO 11-03 06:37:13 [vllm.py:833] Auto-enabling VLLM_USE_BREAKABLE_CUDAGRAPH=1. Set VLLM_USE_BREAKABLE_CUDAGRAPH=0 to opt out.
+(MainProcess pid=154774) INFO 11-03 06:37:13 [kernel.py:510] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(MainProcess pid=154774) INFO 11-03 06:37:17 [compilation.py:317] Enabled custom fusions: norm_quant, act_quant, allreduce_rms
+(MainProcess pid=154774) INFO 11-03 06:37:17 [core.py:149] Initializing a V1 LLM engine (v0.33.0rc1.dev450+g17e675965) with config: model='/root/attn-study/weights/v41', speculative_config=None, tokenizer='/root/attn-study/weights/v41', skip_tokenizer_init=False, tokenizer_mode=deepseek_v41, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=132096, download_dir=None, load_format=auto, tensor_parallel_size=8, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=deepseek_v4_fp8, quantization_config=None, enforce_eager=False, aux_output_config=AuxOutputConfig(enable_return_routed_experts=False, max_bytes=None), kv_cache_dtype=fp8, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, custom_histogram_buckets=None, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=/root/attn-study/weights/v41, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.NONE: 0>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['+quant_fp8', 'all', '+quant_fp8'], 'ir_enable_torch_wrap': False, 'splitting_ops': [], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'cudagraph_decoder_replay': True, 'decoder_replay_cudagraph_capture_sizes': [], 'decoder_replay_trim_threshold': 768, 'compile_sizes': [], 'compile_ranges_endpoints': [51, 8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': True, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'fuse_allreduce_rms': True, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 16, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native']), enable_flashinfer_autotune=True, enable_rocm_segmented_attn_autotune=False, enable_cutedsl_warmup=True, enable_jit_warmup=True, monokernel=False, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None, rdna_hybrid_w4a16_prefill_dequant='disable')
+(MainProcess pid=154774) WARNING 11-03 06:37:17 [system_utils.py:157] We must use the `spawn` multiprocessing start method. Overriding VLLM_WORKER_MULTIPROC_METHOD to 'spawn'. See https://docs.vllm.ai/en/latest/usage/troubleshooting.html#python-multiprocessing for more information. Reasons: CUDA is initialized
+(MainProcess pid=154774) INFO 11-03 06:37:17 [multiproc_executor.py:167] DP group leader: node_rank=0, node_rank_within_dp=0, master_addr=127.0.0.1, mq_connect_ip=172.25.1.2 (local), world_size=8, local_world_size=8
+(MainProcess pid=154774) INFO 11-03 06:37:17 [numa_utils.py:575] Automatic NUMA binding unavailable on this host; starting unbound. Enable debug logging for the skip reason.
+(MainProcess pid=154774) INFO 11-03 06:37:17 [numa_utils.py:575] Automatic NUMA binding unavailable on this host; starting unbound. Enable debug logging for the skip reason.
+(MainProcess pid=154774) INFO 11-03 06:37:17 [numa_utils.py:575] Automatic NUMA binding unavailable on this host; starting unbound. Enable debug logging for the skip reason.
+W1103 06:37:19.208000 155248 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 06:37:19.208000 155241 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 06:37:19.208000 155239 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 06:37:19.208000 155248 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 06:37:19.208000 155241 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 06:37:19.209000 155248 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+W1103 06:37:19.209000 155241 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+W1103 06:37:19.209000 155239 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 06:37:19.209000 155239 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+W1103 06:37:19.211000 155244 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 06:37:19.212000 155244 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 06:37:19.213000 155244 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+W1103 06:37:19.214000 155245 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 06:37:19.215000 155245 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 06:37:19.215000 155245 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+W1103 06:37:19.269000 155247 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 06:37:19.269000 155243 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 06:37:19.269000 155247 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 06:37:19.270000 155247 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+W1103 06:37:19.270000 155243 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 06:37:19.270000 155243 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+W1103 06:37:19.294000 155246 torch/_opaque_base.py:6] torch._opaque_base is deprecated, use torch._custom_class_base instead
+W1103 06:37:19.295000 155246 torch/_library/opaque_object.py:288] register_opaque_type is deprecated, use register_custom_class instead
+W1103 06:37:19.295000 155246 torch/_library/opaque_object.py:211] typ='value' is deprecated, use typ='constant' instead
+(VllmWorker-1 pid=155243) INFO 11-03 06:37:32 [worker_base.py:331] Injected <class 'attn_probe.AttnProbeExt'> into <class 'vllm.v1.worker.gpu_worker.Worker'> for extended collective_rpc calls ['probe_arm', 'probe_fetch', 'probe_info', 'probe_mem', 'probe_state_buffers']
+(VllmWorker-3 pid=155241) INFO 11-03 06:37:32 [worker_base.py:331] Injected <class 'attn_probe.AttnProbeExt'> into <class 'vllm.v1.worker.gpu_worker.Worker'> for extended collective_rpc calls ['probe_arm', 'probe_fetch', 'probe_info', 'probe_mem', 'probe_state_buffers']
+(VllmWorker-5 pid=155248) INFO 11-03 06:37:32 [worker_base.py:331] Injected <class 'attn_probe.AttnProbeExt'> into <class 'vllm.v1.worker.gpu_worker.Worker'> for extended collective_rpc calls ['probe_arm', 'probe_fetch', 'probe_info', 'probe_mem', 'probe_state_buffers']
+(VllmWorker-6 pid=155244) INFO 11-03 06:37:32 [worker_base.py:331] Injected <class 'attn_probe.AttnProbeExt'> into <class 'vllm.v1.worker.gpu_worker.Worker'> for extended collective_rpc calls ['probe_arm', 'probe_fetch', 'probe_info', 'probe_mem', 'probe_state_buffers']
+(VllmWorker-7 pid=155245) INFO 11-03 06:37:32 [worker_base.py:331] Injected <class 'attn_probe.AttnProbeExt'> into <class 'vllm.v1.worker.gpu_worker.Worker'> for extended collective_rpc calls ['probe_arm', 'probe_fetch', 'probe_info', 'probe_mem', 'probe_state_buffers']
+(VllmWorker-2 pid=155246) INFO 11-03 06:37:32 [worker_base.py:331] Injected <class 'attn_probe.AttnProbeExt'> into <class 'vllm.v1.worker.gpu_worker.Worker'> for extended collective_rpc calls ['probe_arm', 'probe_fetch', 'probe_info', 'probe_mem', 'probe_state_buffers']
+(VllmWorker-4 pid=155247) INFO 11-03 06:37:33 [worker_base.py:331] Injected <class 'attn_probe.AttnProbeExt'> into <class 'vllm.v1.worker.gpu_worker.Worker'> for extended collective_rpc calls ['probe_arm', 'probe_fetch', 'probe_info', 'probe_mem', 'probe_state_buffers']
+(VllmWorker-0 pid=155239) INFO 11-03 06:37:33 [worker_base.py:331] Injected <class 'attn_probe.AttnProbeExt'> into <class 'vllm.v1.worker.gpu_worker.Worker'> for extended collective_rpc calls ['probe_arm', 'probe_fetch', 'probe_info', 'probe_mem', 'probe_state_buffers']
+(Worker pid=155239) INFO 11-03 06:37:36 [parallel_state.py:1935] world_size=8 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_2d094ba93a24448eb7be72f443f75bb9 backend=nccl
+(Worker pid=155241) INFO 11-03 06:37:37 [parallel_state.py:1935] world_size=8 rank=3 local_rank=3 distributed_init_method=file:///tmp/vllm_dist_2d094ba93a24448eb7be72f443f75bb9 backend=nccl
+(Worker pid=155243) INFO 11-03 06:37:37 [parallel_state.py:1935] world_size=8 rank=1 local_rank=1 distributed_init_method=file:///tmp/vllm_dist_2d094ba93a24448eb7be72f443f75bb9 backend=nccl
+(Worker pid=155244) INFO 11-03 06:37:37 [parallel_state.py:1935] world_size=8 rank=6 local_rank=6 distributed_init_method=file:///tmp/vllm_dist_2d094ba93a24448eb7be72f443f75bb9 backend=nccl
+(Worker pid=155245) INFO 11-03 06:37:37 [parallel_state.py:1935] world_size=8 rank=7 local_rank=7 distributed_init_method=file:///tmp/vllm_dist_2d094ba93a24448eb7be72f443f75bb9 backend=nccl
+(Worker pid=155248) INFO 11-03 06:37:37 [parallel_state.py:1935] world_size=8 rank=5 local_rank=5 distributed_init_method=file:///tmp/vllm_dist_2d094ba93a24448eb7be72f443f75bb9 backend=nccl
+(Worker pid=155246) INFO 11-03 06:37:37 [parallel_state.py:1935] world_size=8 rank=2 local_rank=2 distributed_init_method=file:///tmp/vllm_dist_2d094ba93a24448eb7be72f443f75bb9 backend=nccl
+(Worker pid=155247) INFO 11-03 06:37:37 [parallel_state.py:1935] world_size=8 rank=4 local_rank=4 distributed_init_method=file:///tmp/vllm_dist_2d094ba93a24448eb7be72f443f75bb9 backend=nccl
+(Worker pid=155239) INFO 11-03 06:37:38 [pynccl.py:148] vLLM is using nccl==2.30.7
+(Worker pid=155239) INFO 11-03 06:37:42 [cuda_communicator.py:375] Using ['FLASHINFER', 'CUSTOM', 'SYMM_MEM', 'PYNCCL'] all-reduce backends (in dispatch order) for group 'tp:0' out of potential backends: ['FLASHINFER_PCIE_IPC', 'FLASHINFER', 'NCCL_SYMM_MEM', 'QUICK_REDUCE', 'AITER_CUSTOM', 'CUSTOM', 'SYMM_MEM', 'PYNCCL'].
+(Worker pid=155239) INFO 11-03 06:37:43 [cuda_communicator.py:375] Using ['PYNCCL'] all-reduce backends (in dispatch order) for group 'ep:0' out of potential backends: ['FLASHINFER_PCIE_IPC', 'FLASHINFER', 'NCCL_SYMM_MEM', 'QUICK_REDUCE', 'AITER_CUSTOM', 'CUSTOM', 'SYMM_MEM', 'PYNCCL'].
+(Worker pid=155239) INFO 11-03 06:37:43 [parallel_state.py:2391] rank 0 in world size 8 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank 0, EPLB rank N/A
+(Worker pid=155239) INFO 11-03 06:37:43 [gpu_worker.py:520] Using V2 Model Runner
+(Worker pid=155239) WARNING 11-03 06:37:43 [flashinfer.py:151] FlashInfer's precompiled kernels are missing or do not match flashinfer-python 0.7.2.post1 (flashinfer-cubin not installed, flashinfer-jit-cache not installed). FlashInfer then downloads and compiles kernels at startup, which can take several minutes, or fails to import mismatched ones. Run `vllm download-kernels` in this Python environment to install them.
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:37:44 [model_runner.py:399] Loading model from scratch...
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:37:44 [cuda.py:571] Using backend AttentionBackendEnum.FLASH_ATTN for vit attention
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:37:44 [mm_encoder_attention.py:372] Using AttentionBackendEnum.FLASH_ATTN for MMEncoderAttention.
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:37:44 [quant_config.py:84] DeepSeek V4 expert_dtype resolved to 'fp4'
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:37:44 [__init__.py:1007] Using HummingMxfp8LinearKernel for MXFP8 GEMM
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:37:44 [attention.py:170] Using DeepSeek's fp8_ds_mla KV cache format.
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:37:44 [expert_map_manager.py:250] [EP Rank 0/8] Expert parallelism is enabled. Expert placement strategy: linear. Local/global number of experts: 48/384. Experts local to global index map: 0->0, 1->1, 2->2, 3->3, 4->4, 5->5, 6->6, 7->7, 8->8, 9->9, 10->10, 11->11, 12->12, 13->13, 14->14, 15->15, 16->16, 17->17, 18->18, 19->19, 20->20, 21->21, 22->22, 23->23, 24->24, 25->25, 26->26, 27->27, 28->28, 29->29, 30->30, 31->31, 32->32, 33->33, 34->34, 35->35, 36->36, 37->37, 38->38, 39->39, 40->40, 41->41, 42->42, 43->43, 44->44, 45->45, 46->46, 47->47.
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:37:44 [fused_humming_moe.py:125] Using grouped_contiguous gemm for humming moe
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:37:44 [mxfp4.py:844] Using 'HUMMING' Mxfp4 MoE backend.
+(Worker_TP1_EP1 pid=155243) INFO 11-03 06:37:52 [engram.py:1134] Engram table offloaded to pinned host memory: 48000347 rows x 256, 11.80 GiB per rank
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:37:52 [engram.py:1134] Engram table offloaded to pinned host memory: 48000217 rows x 256, 11.80 GiB per rank
+(Worker_TP4_EP4 pid=155247) INFO 11-03 06:37:52 [engram.py:1134] Engram table offloaded to pinned host memory: 48000873 rows x 256, 11.80 GiB per rank
+(Worker_TP6_EP6 pid=155244) INFO 11-03 06:37:52 [engram.py:1134] Engram table offloaded to pinned host memory: 48001195 rows x 256, 11.80 GiB per rank
+(Worker_TP5_EP5 pid=155248) INFO 11-03 06:37:52 [engram.py:1134] Engram table offloaded to pinned host memory: 48001041 rows x 256, 11.80 GiB per rank
+(Worker_TP7_EP7 pid=155245) INFO 11-03 06:37:52 [engram.py:1134] Engram table offloaded to pinned host memory: 48001319 rows x 256, 11.80 GiB per rank
+(Worker_TP3_EP3 pid=155241) INFO 11-03 06:37:52 [engram.py:1134] Engram table offloaded to pinned host memory: 48000671 rows x 256, 11.80 GiB per rank
+(Worker_TP2_EP2 pid=155246) INFO 11-03 06:37:52 [engram.py:1134] Engram table offloaded to pinned host memory: 48000505 rows x 256, 11.80 GiB per rank
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:37:52 [attention.py:1385] Using FP8 indexer cache for Lightning Indexer.
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:37:58 [engram.py:1134] Engram table offloaded to pinned host memory: 48001463 rows x 256, 11.80 GiB per rank
+(Worker_TP2_EP2 pid=155246) INFO 11-03 06:37:58 [engram.py:1134] Engram table offloaded to pinned host memory: 48001903 rows x 256, 11.80 GiB per rank
+(Worker_TP1_EP1 pid=155243) INFO 11-03 06:37:58 [engram.py:1134] Engram table offloaded to pinned host memory: 48001591 rows x 256, 11.80 GiB per rank
+(Worker_TP6_EP6 pid=155244) INFO 11-03 06:37:58 [engram.py:1134] Engram table offloaded to pinned host memory: 48002473 rows x 256, 11.80 GiB per rank
+(Worker_TP5_EP5 pid=155248) INFO 11-03 06:37:58 [engram.py:1134] Engram table offloaded to pinned host memory: 48002349 rows x 256, 11.80 GiB per rank
+(Worker_TP7_EP7 pid=155245) INFO 11-03 06:37:58 [engram.py:1134] Engram table offloaded to pinned host memory: 48002645 rows x 256, 11.80 GiB per rank
+(Worker_TP3_EP3 pid=155241) INFO 11-03 06:37:58 [engram.py:1134] Engram table offloaded to pinned host memory: 48002059 rows x 256, 11.80 GiB per rank
+(Worker_TP4_EP4 pid=155247) INFO 11-03 06:37:58 [engram.py:1134] Engram table offloaded to pinned host memory: 48002199 rows x 256, 11.80 GiB per rank
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:37:58 [model.py:892] Decoder SWA bounded replay: in eager prefill steps, layer 20 writes its KV for every token, and the rest of it and layers 21-39 run on each request's last 128 tokens only.
+[transformers] You are using a model of type `deepseek_v41` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] You are using a model of type `deepseek_v41` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] You are using a model of type `deepseek_v41` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] You are using a model of type `deepseek_v41` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] You are using a model of type `deepseek_v41` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] You are using a model of type `deepseek_v41` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] You are using a model of type `deepseek_v41` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+[transformers] You are using a model of type `deepseek_v41` to instantiate a model of type ``. This may be expected if you are loading a checkpoint that shares a subset of the architecture (e.g., loading a `sam2_video` checkpoint into `Sam2Model`), but is otherwise not supported and can yield errors. Please verify that the checkpoint is compatible with the model you are instantiating.
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:37:59 [engram.py:475] Built engram token map (129280 -> 99092 ids) for layers (1, 14)
+(Worker_TP0_EP0 pid=155239) WARNING 11-03 06:37:59 [compilation.py:1356] Op 'quant_fp8' not present in model, enabling with '+quant_fp8' has no effect
+(Worker_TP1_EP1 pid=155243) INFO 11-03 06:37:59 [engram.py:475] Built engram token map (129280 -> 99092 ids) for layers (1, 14)
+(Worker_TP2_EP2 pid=155246) INFO 11-03 06:37:59 [engram.py:475] Built engram token map (129280 -> 99092 ids) for layers (1, 14)
+(Worker_TP5_EP5 pid=155248) INFO 11-03 06:37:59 [engram.py:475] Built engram token map (129280 -> 99092 ids) for layers (1, 14)
+(Worker_TP6_EP6 pid=155244) INFO 11-03 06:37:59 [engram.py:475] Built engram token map (129280 -> 99092 ids) for layers (1, 14)
+(Worker_TP3_EP3 pid=155241) INFO 11-03 06:37:59 [engram.py:475] Built engram token map (129280 -> 99092 ids) for layers (1, 14)
+(Worker_TP7_EP7 pid=155245) INFO 11-03 06:37:59 [engram.py:475] Built engram token map (129280 -> 99092 ids) for layers (1, 14)
+(Worker_TP4_EP4 pid=155247) INFO 11-03 06:37:59 [engram.py:475] Built engram token map (129280 -> 99092 ids) for layers (1, 14)
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:37:59 [base_loader.py:95] Initializing model took 15.357709 seconds
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:38:00 [weight_utils.py:1125] Filesystem type for checkpoints: FUSE.GOCRYPTFS. Checkpoint size: 475.25 GiB. Available RAM: 89.83 GiB.
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:38:00 [weight_utils.py:1155] Auto-prefetch is disabled because the filesystem (FUSE.GOCRYPTFS) is not a recognized network FS (NFS/Lustre) and the checkpoint size (475.25 GiB) exceeds 90% of available RAM (89.83 GiB).
+Loading safetensors checkpoint shards:   0% Completed | 0/48 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards:   6% Completed | 3/48 [00:00<00:06,  6.49it/s]
+Loading safetensors checkpoint shards:   8% Completed | 4/48 [00:02<00:37,  1.18it/s]
+Loading safetensors checkpoint shards:  10% Completed | 5/48 [00:03<00:32,  1.33it/s]
+Loading safetensors checkpoint shards:  12% Completed | 6/48 [00:03<00:28,  1.47it/s]
+Loading safetensors checkpoint shards:  15% Completed | 7/48 [00:04<00:25,  1.63it/s]
+Loading safetensors checkpoint shards:  17% Completed | 8/48 [00:04<00:22,  1.78it/s]
+Loading safetensors checkpoint shards:  19% Completed | 9/48 [00:05<00:20,  1.88it/s]
+Loading safetensors checkpoint shards:  21% Completed | 10/48 [00:05<00:19,  1.96it/s]
+Loading safetensors checkpoint shards:  23% Completed | 11/48 [00:06<00:18,  1.99it/s]
+Loading safetensors checkpoint shards:  25% Completed | 12/48 [00:06<00:17,  2.00it/s]
+Loading safetensors checkpoint shards:  27% Completed | 13/48 [00:07<00:17,  2.01it/s]
+Loading safetensors checkpoint shards:  29% Completed | 14/48 [00:09<00:37,  1.10s/it]
+Loading safetensors checkpoint shards:  31% Completed | 15/48 [00:10<00:30,  1.10it/s]
+Loading safetensors checkpoint shards:  33% Completed | 16/48 [00:10<00:25,  1.28it/s]
+Loading safetensors checkpoint shards:  35% Completed | 17/48 [00:11<00:21,  1.44it/s]
+Loading safetensors checkpoint shards:  38% Completed | 18/48 [00:11<00:18,  1.62it/s]
+Loading safetensors checkpoint shards:  40% Completed | 19/48 [00:11<00:16,  1.78it/s]
+Loading safetensors checkpoint shards:  42% Completed | 20/48 [00:12<00:14,  1.92it/s]
+Loading safetensors checkpoint shards:  44% Completed | 21/48 [00:14<00:26,  1.00it/s]
+Loading safetensors checkpoint shards:  46% Completed | 22/48 [00:14<00:21,  1.18it/s]
+Loading safetensors checkpoint shards:  48% Completed | 23/48 [00:17<00:32,  1.28s/it]
+Loading safetensors checkpoint shards:  50% Completed | 24/48 [00:17<00:24,  1.04s/it]
+Loading safetensors checkpoint shards:  52% Completed | 25/48 [00:18<00:19,  1.16it/s]
+Loading safetensors checkpoint shards:  54% Completed | 26/48 [00:19<00:22,  1.03s/it]
+Loading safetensors checkpoint shards:  56% Completed | 27/48 [00:20<00:18,  1.16it/s]
+Loading safetensors checkpoint shards:  58% Completed | 28/48 [00:20<00:14,  1.33it/s]
+Loading safetensors checkpoint shards:  60% Completed | 29/48 [00:22<00:23,  1.21s/it]
+Loading safetensors checkpoint shards:  62% Completed | 30/48 [00:23<00:21,  1.17s/it]
+Loading safetensors checkpoint shards:  65% Completed | 31/48 [00:25<00:23,  1.40s/it]
+Loading safetensors checkpoint shards:  67% Completed | 32/48 [00:28<00:27,  1.70s/it]
+Loading safetensors checkpoint shards:  69% Completed | 33/48 [00:28<00:19,  1.33s/it]
+Loading safetensors checkpoint shards:  71% Completed | 34/48 [00:29<00:15,  1.08s/it]
+Loading safetensors checkpoint shards:  73% Completed | 35/48 [00:29<00:11,  1.13it/s]
+Loading safetensors checkpoint shards:  75% Completed | 36/48 [00:30<00:09,  1.33it/s]
+Loading safetensors checkpoint shards:  77% Completed | 37/48 [00:30<00:07,  1.52it/s]
+Loading safetensors checkpoint shards:  79% Completed | 38/48 [00:30<00:05,  1.69it/s]
+Loading safetensors checkpoint shards:  81% Completed | 39/48 [00:31<00:04,  1.81it/s]
+Loading safetensors checkpoint shards:  83% Completed | 40/48 [00:31<00:04,  1.88it/s]
+Loading safetensors checkpoint shards:  85% Completed | 41/48 [00:33<00:06,  1.09it/s]
+Loading safetensors checkpoint shards:  88% Completed | 42/48 [00:35<00:06,  1.03s/it]
+Loading safetensors checkpoint shards:  94% Completed | 45/48 [00:35<00:01,  2.13it/s]
+Loading safetensors checkpoint shards:  96% Completed | 46/48 [00:35<00:00,  2.39it/s]
+Loading safetensors checkpoint shards:  98% Completed | 47/48 [00:36<00:00,  1.81it/s]
+Loading safetensors checkpoint shards: 100% Completed | 48/48 [00:37<00:00,  1.27it/s]
+Loading safetensors checkpoint shards: 100% Completed | 48/48 [00:37<00:00,  1.27it/s]
+
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:38:38 [default_loader.py:506] Loading weights took 38.69 seconds
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:38:39 [__init__.py:1007] Using EmulationMxfp8LinearKernel for MXFP8 GEMM
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:38:39 [mxfp4.py:543] Running checkpoint MXFP8 MoE activations as block FP8 (group 128) on Hopper.
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:38:39 [mxfp4.py:2321] Using MoEPrepareAndFinalizeNoDPEPModular
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:38:39 [mxfp4.py:2322] Using HummingGroupedExperts
+(Worker_TP1_EP1 pid=155243) INFO 11-03 06:38:44 [model_runner.py:428] Model loading took 36.28 GiB memory and 61.180531 seconds
+(Worker_TP1_EP1 pid=155243) INFO 11-03 06:38:45 [interface.py:781] Setting kv cache block size to 64 for FLASHMLA_SPARSE_DSV41/DEEPSEEK_SPARSE_SWA/DEEPSEEK_V41_INDEXER/CompressorBackend backend(s).
+(Worker_TP6_EP6 pid=155244) INFO 11-03 06:38:45 [model_runner.py:428] Model loading took 36.28 GiB memory and 61.527646 seconds
+(Worker_TP7_EP7 pid=155245) INFO 11-03 06:38:45 [model_runner.py:428] Model loading took 36.28 GiB memory and 61.564753 seconds
+(Worker_TP3_EP3 pid=155241) INFO 11-03 06:38:45 [model_runner.py:428] Model loading took 36.28 GiB memory and 61.556059 seconds
+(Worker_TP6_EP6 pid=155244) INFO 11-03 06:38:45 [interface.py:781] Setting kv cache block size to 64 for FLASHMLA_SPARSE_DSV41/DEEPSEEK_SPARSE_SWA/DEEPSEEK_V41_INDEXER/CompressorBackend backend(s).
+(Worker_TP7_EP7 pid=155245) INFO 11-03 06:38:45 [interface.py:781] Setting kv cache block size to 64 for FLASHMLA_SPARSE_DSV41/DEEPSEEK_SPARSE_SWA/DEEPSEEK_V41_INDEXER/CompressorBackend backend(s).
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:38:45 [model_runner.py:428] Model loading took 36.28 GiB memory and 61.341974 seconds
+(Worker_TP5_EP5 pid=155248) INFO 11-03 06:38:45 [model_runner.py:428] Model loading took 36.28 GiB memory and 61.576242 seconds
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:38:45 [breakable_cudagraph.py:294] Breakable CUDA graph enabled
+(Worker_TP3_EP3 pid=155241) INFO 11-03 06:38:45 [interface.py:781] Setting kv cache block size to 64 for FLASHMLA_SPARSE_DSV41/DEEPSEEK_SPARSE_SWA/DEEPSEEK_V41_INDEXER/CompressorBackend backend(s).
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:38:45 [topk_topp_sampler.py:152] Using FlashInfer for top-p & top-k sampling.
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:38:45 [torch_utils.py:293] Reducing Torch threads from 16 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+(Worker_TP5_EP5 pid=155248) INFO 11-03 06:38:45 [interface.py:781] Setting kv cache block size to 64 for FLASHMLA_SPARSE_DSV41/DEEPSEEK_SPARSE_SWA/DEEPSEEK_V41_INDEXER/CompressorBackend backend(s).
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:38:45 [interface.py:781] Setting kv cache block size to 64 for FLASHMLA_SPARSE_DSV41/DEEPSEEK_SPARSE_SWA/DEEPSEEK_V41_INDEXER/CompressorBackend backend(s).
+(Worker_TP2_EP2 pid=155246) INFO 11-03 06:38:46 [model_runner.py:428] Model loading took 36.28 GiB memory and 62.230520 seconds
+(Worker_TP2_EP2 pid=155246) INFO 11-03 06:38:46 [interface.py:781] Setting kv cache block size to 64 for FLASHMLA_SPARSE_DSV41/DEEPSEEK_SPARSE_SWA/DEEPSEEK_V41_INDEXER/CompressorBackend backend(s).
+(Worker_TP4_EP4 pid=155247) INFO 11-03 06:38:46 [model_runner.py:428] Model loading took 36.28 GiB memory and 63.020985 seconds
+(Worker_TP4_EP4 pid=155247) INFO 11-03 06:38:47 [interface.py:781] Setting kv cache block size to 64 for FLASHMLA_SPARSE_DSV41/DEEPSEEK_SPARSE_SWA/DEEPSEEK_V41_INDEXER/CompressorBackend backend(s).
+(MainProcess pid=154774) INFO 11-03 06:38:47 [torch_utils.py:293] Reducing Torch threads from 16 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+(MainProcess pid=154774) INFO 11-03 06:38:47 [utils.py:397] Using BLHNC KV cache layout.
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:38:48 [deep_gemm.py:233] deep_gemm not found in site-packages, trying vendored vllm.third_party.deep_gemm
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:38:48 [deep_gemm.py:260] DeepGEMM PDL enabled on vllm.third_party.deep_gemm.
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:38:52 [deep_gemm.py:172] DeepGEMM E8M0 enabled on current platform.
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:38:57 [indexer.py:1075] DSA indexer decode path: use_flattening=False supports_varlen=False (next_n=1, use_fp4_cache=False)
+Capturing CUDA graphs (PIECEWISE):   0%|          | 0/5 [00:00<?, ?it/s](Worker_TP0_EP0 pid=155239) INFO 11-03 06:38:58 [flashinfer_all_reduce.py:235] Initialized FlashInfer Allreduce norm fusion workspace with backend=mnnvl
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+Capturing CUDA graphs (PIECEWISE):  20%|██        | 1/5 [00:03<00:12,  3.11s/it]/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+Capturing CUDA graphs (PIECEWISE):  40%|████      | 2/5 [00:03<00:04,  1.50s/it]Capturing CUDA graphs (PIECEWISE):  60%|██████    | 3/5 [00:04<00:02,  1.16s/it]Capturing CUDA graphs (PIECEWISE):  80%|████████  | 4/5 [00:04<00:00,  1.07it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 5/5 [00:05<00:00,  1.27it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 5/5 [00:05<00:00,  1.07s/it]
+Capturing CUDA graphs (FULL):   0%|          | 0/2 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):  50%|█████     | 1/2 [00:00<00:00,  3.36it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00,  3.30it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00,  3.31it/s]
+Capturing decoder replay CUDA graphs (PIECEWISE):   0%|          | 0/1 [00:00<?, ?it/s]Capturing decoder replay CUDA graphs (PIECEWISE): 100%|██████████| 1/1 [00:00<00:00,  6.20it/s]Capturing decoder replay CUDA graphs (PIECEWISE): 100%|██████████| 1/1 [00:00<00:00,  6.20it/s]
+(Worker_TP2_EP2 pid=155246) INFO 11-03 06:39:04 [model_runner.py:1191] Graph capturing finished in 7 secs, took 0.82 GiB
+(Worker_TP4_EP4 pid=155247) INFO 11-03 06:39:04 [model_runner.py:1191] Graph capturing finished in 7 secs, took 0.82 GiB
+(Worker_TP6_EP6 pid=155244) INFO 11-03 06:39:04 [model_runner.py:1191] Graph capturing finished in 7 secs, took 0.82 GiB
+(Worker_TP1_EP1 pid=155243) INFO 11-03 06:39:04 [model_runner.py:1191] Graph capturing finished in 7 secs, took 0.82 GiB
+(Worker_TP5_EP5 pid=155248) INFO 11-03 06:39:04 [model_runner.py:1191] Graph capturing finished in 7 secs, took 0.82 GiB
+(Worker_TP7_EP7 pid=155245) INFO 11-03 06:39:04 [model_runner.py:1191] Graph capturing finished in 7 secs, took 0.82 GiB
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:39:04 [model_runner.py:1191] Graph capturing finished in 7 secs, took 0.82 GiB
+(Worker_TP3_EP3 pid=155241) INFO 11-03 06:39:04 [model_runner.py:1191] Graph capturing finished in 7 secs, took 0.82 GiB
+(Worker_TP2_EP2 pid=155246) INFO 11-03 06:39:05 [gpu_worker.py:797] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.8200 is equivalent to --gpu-memory-utilization=0.8095 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.8305. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(Worker_TP4_EP4 pid=155247) INFO 11-03 06:39:05 [gpu_worker.py:797] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.8200 is equivalent to --gpu-memory-utilization=0.8095 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.8305. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:39:05 [gpu_worker.py:782] Available KV cache memory: 23.76 GiB
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:39:05 [gpu_worker.py:797] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.8200 is equivalent to --gpu-memory-utilization=0.8095 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.8305. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(Worker_TP6_EP6 pid=155244) INFO 11-03 06:39:05 [gpu_worker.py:797] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.8200 is equivalent to --gpu-memory-utilization=0.8095 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.8305. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(Worker_TP5_EP5 pid=155248) INFO 11-03 06:39:05 [gpu_worker.py:797] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.8200 is equivalent to --gpu-memory-utilization=0.8095 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.8305. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(Worker_TP1_EP1 pid=155243) INFO 11-03 06:39:05 [gpu_worker.py:797] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.8200 is equivalent to --gpu-memory-utilization=0.8095 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.8305. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(Worker_TP7_EP7 pid=155245) INFO 11-03 06:39:05 [gpu_worker.py:797] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.8200 is equivalent to --gpu-memory-utilization=0.8095 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.8305. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(Worker_TP3_EP3 pid=155241) INFO 11-03 06:39:05 [gpu_worker.py:797] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.8200 is equivalent to --gpu-memory-utilization=0.8095 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.8305. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(MainProcess pid=154774) INFO 11-03 06:39:05 [kv_cache_utils.py:1171] GPU KV cache size: 7,406,302 tokens, Maximum concurrency for 132,096 tokens per request: 56.07x
+(MainProcess pid=154774) INFO 11-03 06:39:05 [kv_cache_utils.py:867] kv cache group sizes (32, 32, 32, 32, 32, 32, 32, 64, 8)
+(MainProcess pid=154774) INFO 11-03 06:39:05 [kv_cache_utils.py:868] kv lcm block sizes 64
+(Worker_TP3_EP3 pid=155241) INFO 11-03 06:39:05 [kernel_warmup.py:237] JIT kernel warmup starting.
+(Worker_TP7_EP7 pid=155245) INFO 11-03 06:39:05 [kernel_warmup.py:237] JIT kernel warmup starting.
+(Worker_TP1_EP1 pid=155243) INFO 11-03 06:39:05 [kernel_warmup.py:237] JIT kernel warmup starting.
+(Worker_TP6_EP6 pid=155244) INFO 11-03 06:39:05 [kernel_warmup.py:237] JIT kernel warmup starting.
+(Worker_TP2_EP2 pid=155246) INFO 11-03 06:39:05 [kernel_warmup.py:237] JIT kernel warmup starting.
+(Worker_TP5_EP5 pid=155248) INFO 11-03 06:39:05 [kernel_warmup.py:237] JIT kernel warmup starting.
+(Worker_TP4_EP4 pid=155247) INFO 11-03 06:39:05 [kernel_warmup.py:237] JIT kernel warmup starting.
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:39:05 [kernel_warmup.py:237] JIT kernel warmup starting.
+JIT kernel warmup (127 compile keys):   0%|          | 0/9 [00:00<?, ?kernel/s]Elaborating:   0%|          | 0/6 [00:00<?, ?it/s]JIT kernel warmup (127 compile keys):  89%|████████▉ | 8/9 [00:00<00:00, 49.45kernel/s, CombineTopkSwaIndicesKernel (9 keys)]
+Elaborating:   0%|          | 0/6 [00:00<?, ?it/s][AElaborating:   0%|          | 0/6 [00:00<?, ?it/s]Elaborating:   0%|          | 0/6 [00:00<?, ?it/s]Elaborating:   0%|          | 0/6 [00:00<?, ?it/s]Elaborating:   0%|          | 0/6 [00:00<?, ?it/s]Elaborating:   0%|          | 0/6 [00:00<?, ?it/s]Elaborating:   0%|          | 0/6 [00:00<?, ?it/s]Elaborating:  17%|█▋        | 1/6 [00:00<00:00,  7.09it/s]Elaborating:  17%|█▋        | 1/6 [00:00<00:00,  6.84it/s]Elaborating:  33%|███▎      | 2/6 [00:00<00:00, 12.68it/s]
+Elaborating:  33%|███▎      | 2/6 [00:00<00:00, 12.40it/s][AElaborating:  33%|███▎      | 2/6 [00:00<00:00, 12.67it/s]Elaborating:  33%|███▎      | 2/6 [00:00<00:00, 12.21it/s]Elaborating:  33%|███▎      | 2/6 [00:00<00:00, 12.69it/s]Elaborating:  33%|███▎      | 2/6 [00:00<00:00, 11.77it/s]Elaborating:  50%|█████     | 3/6 [00:00<00:00, 10.74it/s]Elaborating:  50%|█████     | 3/6 [00:00<00:00, 10.41it/s]Elaborating:  67%|██████▋   | 4/6 [00:00<00:00, 12.94it/s]Elaborating:  67%|██████▋   | 4/6 [00:00<00:00, 12.92it/s]Elaborating:  67%|██████▋   | 4/6 [00:00<00:00, 12.92it/s]
+Elaborating:  67%|██████▋   | 4/6 [00:00<00:00, 12.45it/s][AElaborating:  67%|██████▋   | 4/6 [00:00<00:00, 12.31it/s]Elaborating:  67%|██████▋   | 4/6 [00:00<00:00, 11.89it/s]Elaborating:  83%|████████▎ | 5/6 [00:00<00:00, 11.80it/s]Elaborating: 100%|██████████| 6/6 [00:00<00:00, 12.96it/s]Elaborating: 100%|██████████| 6/6 [00:00<00:00, 12.93it/s]
+Elaborating:  83%|████████▎ | 5/6 [00:00<00:00, 11.47it/s]Parallel Compiling:   0%|          | 0/6 [00:00<?, ?it/s]Elaborating: 100%|██████████| 6/6 [00:00<00:00, 12.95it/s]Elaborating: 100%|██████████| 6/6 [00:00<00:00, 12.91it/s]
+Parallel Compiling:   0%|          | 0/6 [00:00<?, ?it/s]Elaborating: 100%|██████████| 6/6 [00:00<00:00, 12.94it/s]Elaborating: 100%|██████████| 6/6 [00:00<00:00, 12.91it/s]
+Parallel Compiling:   0%|          | 0/6 [00:00<?, ?it/s]
+Elaborating: 100%|██████████| 6/6 [00:00<00:00, 12.50it/s][AElaborating: 100%|██████████| 6/6 [00:00<00:00, 12.48it/s]
+
+Parallel Compiling:   0%|          | 0/6 [00:00<?, ?it/s][AParallel Compiling: 100%|██████████| 6/6 [00:00<00:00, 293.08it/s]
+Elaborating: 100%|██████████| 6/6 [00:00<00:00, 12.35it/s]Elaborating: 100%|██████████| 6/6 [00:00<00:00, 12.32it/s]
+(Worker_TP6_EP6 pid=155244) INFO 11-03 06:39:06 [kernel_warmup.py:250] JIT kernel warmup finished in 0.66s.
+Parallel Compiling:   0%|          | 0/6 [00:00<?, ?it/s]Parallel Compiling: 100%|██████████| 6/6 [00:00<00:00, 333.03it/s]
+(Worker_TP3_EP3 pid=155241) INFO 11-03 06:39:06 [kernel_warmup.py:250] JIT kernel warmup finished in 0.66s.
+Parallel Compiling: 100%|██████████| 6/6 [00:00<00:00, 346.60it/s]
+(Worker_TP7_EP7 pid=155245) INFO 11-03 06:39:06 [kernel_warmup.py:250] JIT kernel warmup finished in 0.66s.
+Elaborating: 100%|██████████| 6/6 [00:00<00:00, 11.96it/s]Elaborating: 100%|██████████| 6/6 [00:00<00:00, 11.93it/s]
+Parallel Compiling: 100%|██████████| 6/6 [00:00<00:00, 326.38it/s]
+JIT kernel warmup (127 compile keys): 100%|██████████| 9/9 [00:00<00:00, 13.55kernel/s, MHCPreNormKernel (11 keys)]          
+Parallel Compiling:   0%|          | 0/6 [00:00<?, ?it/s](Worker_TP0_EP0 pid=155239) INFO 11-03 06:39:06 [kernel_warmup.py:250] JIT kernel warmup finished in 0.67s.
+Parallel Compiling: 100%|██████████| 6/6 [00:00<00:00, 333.05it/s]
+(Worker_TP2_EP2 pid=155246) INFO 11-03 06:39:06 [kernel_warmup.py:250] JIT kernel warmup finished in 0.68s.
+Parallel Compiling: 100%|██████████| 6/6 [00:00<00:00, 363.71it/s]
+(Worker_TP4_EP4 pid=155247) INFO 11-03 06:39:06 [kernel_warmup.py:250] JIT kernel warmup finished in 0.69s.
+Elaborating: 100%|██████████| 6/6 [00:00<00:00, 11.30it/s]
+Parallel Compiling:   0%|          | 0/6 [00:00<?, ?it/s](Worker_TP0_EP0 pid=155239) INFO 11-03 06:39:06 [kernel_warmup.py:140] Warming up ll_bf16 router GEMM kernels for shapes: ((5120, 384),).
+Elaborating: 100%|██████████| 6/6 [00:00<00:00, 10.93it/s]
+Parallel Compiling:   0%|          | 0/6 [00:00<?, ?it/s]Parallel Compiling: 100%|██████████| 6/6 [00:00<00:00, 331.22it/s]
+(Worker_TP5_EP5 pid=155248) INFO 11-03 06:39:06 [kernel_warmup.py:250] JIT kernel warmup finished in 0.73s.
+Parallel Compiling: 100%|██████████| 6/6 [00:00<00:00, 387.76it/s]
+(Worker_TP1_EP1 pid=155243) INFO 11-03 06:39:06 [kernel_warmup.py:250] JIT kernel warmup finished in 0.74s.
+(Worker_TP6_EP6 pid=155244) INFO 11-03 06:39:06 [flashinfer_sparse_mla_warmup.py:328] Warming up DeepSeek V4 sparse MLA attention for mixed tokens=16.
+(Worker_TP3_EP3 pid=155241) INFO 11-03 06:39:06 [flashinfer_sparse_mla_warmup.py:328] Warming up DeepSeek V4 sparse MLA attention for mixed tokens=16.
+(Worker_TP7_EP7 pid=155245) INFO 11-03 06:39:06 [flashinfer_sparse_mla_warmup.py:328] Warming up DeepSeek V4 sparse MLA attention for mixed tokens=16.
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:39:06 [flashinfer_sparse_mla_warmup.py:328] Warming up DeepSeek V4 sparse MLA attention for mixed tokens=16.
+(Worker_TP2_EP2 pid=155246) INFO 11-03 06:39:06 [flashinfer_sparse_mla_warmup.py:328] Warming up DeepSeek V4 sparse MLA attention for mixed tokens=16.
+(Worker_TP4_EP4 pid=155247) INFO 11-03 06:39:06 [flashinfer_sparse_mla_warmup.py:328] Warming up DeepSeek V4 sparse MLA attention for mixed tokens=16.
+(Worker_TP5_EP5 pid=155248) INFO 11-03 06:39:06 [flashinfer_sparse_mla_warmup.py:328] Warming up DeepSeek V4 sparse MLA attention for mixed tokens=16.
+(Worker_TP1_EP1 pid=155243) INFO 11-03 06:39:06 [flashinfer_sparse_mla_warmup.py:328] Warming up DeepSeek V4 sparse MLA attention for mixed tokens=16.
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:39:07 [flashinfer_autotune_cache.py:106] Using legacy FlashInfer autotune cache synchronization for multi-rank deployments until FlashInfer coordinates cache hits.
+(Worker_TP4_EP4 pid=155247) INFO 11-03 06:39:07 [cache.py:484] Using fp8_ds_mla data type to store kv cache. It reduces the GPU memory footprint and boosts the performance. Meanwhile, it may cause accuracy drop without a proper scaling factor
+(Worker_TP6_EP6 pid=155244) INFO 11-03 06:39:07 [cache.py:484] Using fp8_ds_mla data type to store kv cache. It reduces the GPU memory footprint and boosts the performance. Meanwhile, it may cause accuracy drop without a proper scaling factor
+(Worker_TP7_EP7 pid=155245) INFO 11-03 06:39:07 [cache.py:484] Using fp8_ds_mla data type to store kv cache. It reduces the GPU memory footprint and boosts the performance. Meanwhile, it may cause accuracy drop without a proper scaling factor
+(Worker_TP5_EP5 pid=155248) INFO 11-03 06:39:07 [cache.py:484] Using fp8_ds_mla data type to store kv cache. It reduces the GPU memory footprint and boosts the performance. Meanwhile, it may cause accuracy drop without a proper scaling factor
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:39:07 [cache.py:484] Using fp8_ds_mla data type to store kv cache. It reduces the GPU memory footprint and boosts the performance. Meanwhile, it may cause accuracy drop without a proper scaling factor
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:39:07 [vllm.py:1514] Resolved Engram configuration: EngramConfig(cpu_offload=True, disk_offload=False, embedding_across_dp=False, dp_shared_memory=False, use_thp=False)
+(Worker_TP6_EP6 pid=155244) INFO 11-03 06:39:07 [kernel.py:510] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(Worker_TP4_EP4 pid=155247) INFO 11-03 06:39:07 [kernel.py:510] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(Worker_TP7_EP7 pid=155245) INFO 11-03 06:39:07 [kernel.py:510] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(Worker_TP5_EP5 pid=155248) INFO 11-03 06:39:07 [kernel.py:510] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:39:07 [kernel.py:510] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:39:07 [compilation.py:317] Enabled custom fusions: norm_quant, act_quant, allreduce_rms
+(Worker_TP3_EP3 pid=155241) INFO 11-03 06:39:07 [cache.py:484] Using fp8_ds_mla data type to store kv cache. It reduces the GPU memory footprint and boosts the performance. Meanwhile, it may cause accuracy drop without a proper scaling factor
+(Worker_TP2_EP2 pid=155246) INFO 11-03 06:39:07 [cache.py:484] Using fp8_ds_mla data type to store kv cache. It reduces the GPU memory footprint and boosts the performance. Meanwhile, it may cause accuracy drop without a proper scaling factor
+(Worker_TP3_EP3 pid=155241) INFO 11-03 06:39:07 [kernel.py:510] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(Worker_TP1_EP1 pid=155243) INFO 11-03 06:39:07 [cache.py:484] Using fp8_ds_mla data type to store kv cache. It reduces the GPU memory footprint and boosts the performance. Meanwhile, it may cause accuracy drop without a proper scaling factor
+(Worker_TP2_EP2 pid=155246) INFO 11-03 06:39:07 [kernel.py:510] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(Worker_TP1_EP1 pid=155243) INFO 11-03 06:39:07 [kernel.py:510] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'], gelu_and_mul_sparse=['triton', 'native'])
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:39:07 [kernel_warmup.py:539] Using FlashInfer autotune cache file: /var/tmp/attn_study_jit/cu13/vllm/flashinfer_autotune_cache/0.7.2.post1/90a/f898425564d9775ecaaa7d4848eddc17de1c69d90bb5e23a2e4d3d0d036d8d51/autotune_configs_dp0_rank0.json. Pass --disable-flashinfer-autotune to skip autotuning.
+2026-11-03 06:39:07,074 - INFO - autotuner.py:1048 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-11-03 06:39:07,074 - INFO - autotuner.py:1048 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-11-03 06:39:07,074 - INFO - autotuner.py:1048 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-11-03 06:39:07,074 - INFO - autotuner.py:1048 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-11-03 06:39:07,074 - INFO - autotuner.py:1048 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-11-03 06:39:07,074 - INFO - autotuner.py:1048 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-11-03 06:39:07,074 - INFO - autotuner.py:1048 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+2026-11-03 06:39:07,074 - INFO - autotuner.py:1048 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+(Worker_TP4_EP4 pid=155247) INFO 11-03 06:39:07 [kernel_warmup.py:414] Running FlashInfer autotune with 8192 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192).
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:39:07 [kernel_warmup.py:414] Running FlashInfer autotune with 8192 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192).
+(Worker_TP2_EP2 pid=155246) INFO 11-03 06:39:07 [kernel_warmup.py:414] Running FlashInfer autotune with 8192 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192).
+(Worker_TP1_EP1 pid=155243) INFO 11-03 06:39:07 [kernel_warmup.py:414] Running FlashInfer autotune with 8192 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192).
+(Worker_TP6_EP6 pid=155244) INFO 11-03 06:39:07 [kernel_warmup.py:414] Running FlashInfer autotune with 8192 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192).
+(Worker_TP3_EP3 pid=155241) INFO 11-03 06:39:07 [kernel_warmup.py:414] Running FlashInfer autotune with 8192 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192).
+(Worker_TP7_EP7 pid=155245) INFO 11-03 06:39:07 [kernel_warmup.py:414] Running FlashInfer autotune with 8192 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192).
+(Worker_TP5_EP5 pid=155248) INFO 11-03 06:39:07 [kernel_warmup.py:414] Running FlashInfer autotune with 8192 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192).
+2026-11-03 06:39:07,246 - INFO - autotuner.py:1071 - flashinfer.jit: [Autotuner]: Autotuning process ends
+2026-11-03 06:39:07,248 - INFO - autotuner.py:1071 - flashinfer.jit: [Autotuner]: Autotuning process ends
+2026-11-03 06:39:07,248 - INFO - autotuner.py:1071 - flashinfer.jit: [Autotuner]: Autotuning process ends
+2026-11-03 06:39:07,248 - INFO - autotuner.py:1071 - flashinfer.jit: [Autotuner]: Autotuning process ends
+2026-11-03 06:39:07,249 - INFO - autotuner.py:1071 - flashinfer.jit: [Autotuner]: Autotuning process ends
+2026-11-03 06:39:07,252 - INFO - autotuner.py:1071 - flashinfer.jit: [Autotuner]: Autotuning process ends
+2026-11-03 06:39:07,254 - INFO - autotuner.py:1071 - flashinfer.jit: [Autotuner]: Autotuning process ends
+2026-11-03 06:39:07,257 - INFO - autotuner.py:1071 - flashinfer.jit: [Autotuner]: Autotuning process ends
+Capturing CUDA graphs (PIECEWISE):   0%|          | 0/5 [00:00<?, ?it/s]/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+/root/Attention-Evolution-Blog/.venv-attention/lib/python3.12/site-packages/torch/cuda/graphs.py:630: UserWarning: The CUDA Graph is empty. This usually means that the graph was attempted to be captured on wrong device or stream. (Triggered internally at /__w/pytorch/pytorch/aten/src/ATen/cuda/CUDAGraph.cpp:249.)
+  super().capture_end_pre()
+Capturing CUDA graphs (PIECEWISE):  20%|██        | 1/5 [00:00<00:01,  3.23it/s]Capturing CUDA graphs (PIECEWISE):  40%|████      | 2/5 [00:00<00:00,  3.43it/s]Capturing CUDA graphs (PIECEWISE):  60%|██████    | 3/5 [00:00<00:00,  3.47it/s]Capturing CUDA graphs (PIECEWISE):  80%|████████  | 4/5 [00:01<00:00,  3.49it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 5/5 [00:01<00:00,  3.51it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 5/5 [00:01<00:00,  3.47it/s]
+Capturing CUDA graphs (FULL):   0%|          | 0/4 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):  25%|██▌       | 1/4 [00:00<00:00,  3.22it/s]Capturing CUDA graphs (FULL):  50%|█████     | 2/4 [00:00<00:00,  2.65it/s]Capturing CUDA graphs (FULL):  75%|███████▌  | 3/4 [00:01<00:00,  2.88it/s]Capturing CUDA graphs (FULL): 100%|██████████| 4/4 [00:01<00:00,  3.08it/s]Capturing CUDA graphs (FULL): 100%|██████████| 4/4 [00:01<00:00,  2.99it/s]
+Capturing decoder replay CUDA graphs (PIECEWISE):   0%|          | 0/1 [00:00<?, ?it/s]Capturing decoder replay CUDA graphs (PIECEWISE): 100%|██████████| 1/1 [00:00<00:00,  6.27it/s]Capturing decoder replay CUDA graphs (PIECEWISE): 100%|██████████| 1/1 [00:00<00:00,  6.27it/s]
+(Worker_TP4_EP4 pid=155247) INFO 11-03 06:39:11 [model_runner.py:1191] Graph capturing finished in 4 secs, took 0.09 GiB
+(Worker_TP4_EP4 pid=155247) INFO 11-03 06:39:11 [gpu_worker.py:1013] CUDA graph pool memory: 0.09 GiB (actual), 0.83 GiB (estimated), difference: 0.74 GiB (790.6%).
+(Worker_TP4_EP4 pid=155247) INFO 11-03 06:39:11 [gpu_worker.py:1076] Free memory on device (76.91/79.18 GiB) on startup. Desired GPU memory utilization is (0.82, 64.93 GiB). Actual usage is 37.51 GiB for consumed memory (weights + non-torch), 3.66 GiB for peak activation, and 0.09 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=25257530082` (23.52 GiB) to fit into requested memory, or `--kv-cache-memory=38129096704` (35.51 GiB) to fully utilize gpu memory. Current kv cache memory in use is 23.76 GiB.
+(Worker_TP4_EP4 pid=155247) INFO 11-03 06:39:11 [jit_monitor.py:87] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP1_EP1 pid=155243) INFO 11-03 06:39:11 [model_runner.py:1191] Graph capturing finished in 4 secs, took 0.09 GiB
+(Worker_TP1_EP1 pid=155243) INFO 11-03 06:39:11 [gpu_worker.py:1013] CUDA graph pool memory: 0.09 GiB (actual), 0.83 GiB (estimated), difference: 0.74 GiB (790.6%).
+(Worker_TP1_EP1 pid=155243) INFO 11-03 06:39:11 [gpu_worker.py:1076] Free memory on device (76.91/79.18 GiB) on startup. Desired GPU memory utilization is (0.82, 64.93 GiB). Actual usage is 37.51 GiB for consumed memory (weights + non-torch), 3.66 GiB for peak activation, and 0.09 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=25257530082` (23.52 GiB) to fit into requested memory, or `--kv-cache-memory=38129096704` (35.51 GiB) to fully utilize gpu memory. Current kv cache memory in use is 23.76 GiB.
+(Worker_TP1_EP1 pid=155243) INFO 11-03 06:39:11 [jit_monitor.py:87] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP3_EP3 pid=155241) INFO 11-03 06:39:11 [model_runner.py:1191] Graph capturing finished in 4 secs, took 0.09 GiB
+(Worker_TP3_EP3 pid=155241) INFO 11-03 06:39:11 [gpu_worker.py:1013] CUDA graph pool memory: 0.09 GiB (actual), 0.83 GiB (estimated), difference: 0.74 GiB (790.6%).
+(Worker_TP3_EP3 pid=155241) INFO 11-03 06:39:11 [gpu_worker.py:1076] Free memory on device (76.91/79.18 GiB) on startup. Desired GPU memory utilization is (0.82, 64.93 GiB). Actual usage is 37.51 GiB for consumed memory (weights + non-torch), 3.66 GiB for peak activation, and 0.09 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=25257530082` (23.52 GiB) to fit into requested memory, or `--kv-cache-memory=38129096704` (35.51 GiB) to fully utilize gpu memory. Current kv cache memory in use is 23.76 GiB.
+(Worker_TP3_EP3 pid=155241) INFO 11-03 06:39:11 [jit_monitor.py:87] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP7_EP7 pid=155245) INFO 11-03 06:39:11 [model_runner.py:1191] Graph capturing finished in 4 secs, took 0.09 GiB
+(Worker_TP7_EP7 pid=155245) INFO 11-03 06:39:11 [gpu_worker.py:1013] CUDA graph pool memory: 0.09 GiB (actual), 0.83 GiB (estimated), difference: 0.74 GiB (790.6%).
+(Worker_TP7_EP7 pid=155245) INFO 11-03 06:39:11 [gpu_worker.py:1076] Free memory on device (76.91/79.18 GiB) on startup. Desired GPU memory utilization is (0.82, 64.93 GiB). Actual usage is 37.51 GiB for consumed memory (weights + non-torch), 3.66 GiB for peak activation, and 0.09 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=25257530082` (23.52 GiB) to fit into requested memory, or `--kv-cache-memory=38129096704` (35.51 GiB) to fully utilize gpu memory. Current kv cache memory in use is 23.76 GiB.
+(Worker_TP5_EP5 pid=155248) INFO 11-03 06:39:11 [model_runner.py:1191] Graph capturing finished in 4 secs, took 0.09 GiB
+(Worker_TP5_EP5 pid=155248) INFO 11-03 06:39:11 [gpu_worker.py:1013] CUDA graph pool memory: 0.09 GiB (actual), 0.83 GiB (estimated), difference: 0.74 GiB (790.6%).
+(Worker_TP5_EP5 pid=155248) INFO 11-03 06:39:11 [gpu_worker.py:1076] Free memory on device (76.91/79.18 GiB) on startup. Desired GPU memory utilization is (0.82, 64.93 GiB). Actual usage is 37.51 GiB for consumed memory (weights + non-torch), 3.66 GiB for peak activation, and 0.09 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=25257530082` (23.52 GiB) to fit into requested memory, or `--kv-cache-memory=38129096704` (35.51 GiB) to fully utilize gpu memory. Current kv cache memory in use is 23.76 GiB.
+(Worker_TP7_EP7 pid=155245) INFO 11-03 06:39:11 [jit_monitor.py:87] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP2_EP2 pid=155246) INFO 11-03 06:39:11 [model_runner.py:1191] Graph capturing finished in 4 secs, took 0.09 GiB
+(Worker_TP2_EP2 pid=155246) INFO 11-03 06:39:11 [gpu_worker.py:1013] CUDA graph pool memory: 0.09 GiB (actual), 0.83 GiB (estimated), difference: 0.74 GiB (790.6%).
+(Worker_TP2_EP2 pid=155246) INFO 11-03 06:39:11 [gpu_worker.py:1076] Free memory on device (76.91/79.18 GiB) on startup. Desired GPU memory utilization is (0.82, 64.93 GiB). Actual usage is 37.51 GiB for consumed memory (weights + non-torch), 3.66 GiB for peak activation, and 0.09 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=25257530082` (23.52 GiB) to fit into requested memory, or `--kv-cache-memory=38129096704` (35.51 GiB) to fully utilize gpu memory. Current kv cache memory in use is 23.76 GiB.
+(Worker_TP5_EP5 pid=155248) INFO 11-03 06:39:11 [jit_monitor.py:87] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP2_EP2 pid=155246) INFO 11-03 06:39:11 [jit_monitor.py:87] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP6_EP6 pid=155244) INFO 11-03 06:39:11 [model_runner.py:1191] Graph capturing finished in 4 secs, took 0.09 GiB
+(Worker_TP6_EP6 pid=155244) INFO 11-03 06:39:11 [gpu_worker.py:1013] CUDA graph pool memory: 0.09 GiB (actual), 0.83 GiB (estimated), difference: 0.74 GiB (790.6%).
+(Worker_TP6_EP6 pid=155244) INFO 11-03 06:39:11 [gpu_worker.py:1076] Free memory on device (76.91/79.18 GiB) on startup. Desired GPU memory utilization is (0.82, 64.93 GiB). Actual usage is 37.51 GiB for consumed memory (weights + non-torch), 3.66 GiB for peak activation, and 0.09 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=25257530082` (23.52 GiB) to fit into requested memory, or `--kv-cache-memory=38129096704` (35.51 GiB) to fully utilize gpu memory. Current kv cache memory in use is 23.76 GiB.
+(Worker_TP6_EP6 pid=155244) INFO 11-03 06:39:11 [jit_monitor.py:87] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:39:11 [model_runner.py:1191] Graph capturing finished in 4 secs, took 0.09 GiB
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:39:11 [gpu_worker.py:1013] CUDA graph pool memory: 0.09 GiB (actual), 0.83 GiB (estimated), difference: 0.74 GiB (790.6%).
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:39:11 [gpu_worker.py:1076] Free memory on device (76.91/79.18 GiB) on startup. Desired GPU memory utilization is (0.82, 64.93 GiB). Actual usage is 37.51 GiB for consumed memory (weights + non-torch), 3.66 GiB for peak activation, and 0.09 GiB for CUDAGraph memory. Replace gpu_memory_utilization config with `--kv-cache-memory=25257530082` (23.52 GiB) to fit into requested memory, or `--kv-cache-memory=38129096704` (35.51 GiB) to fully utilize gpu memory. Current kv cache memory in use is 23.76 GiB.
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:39:11 [jit_monitor.py:87] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(MainProcess pid=154774) INFO 11-03 06:39:12 [core.py:430] init engine (profile, create kv cache, warmup model) took 25.33 s
+RESOLVED {"vllm": "0.33.0rc1.dev450+g17e675965", "torch": "2.14.0+cu130", "torch_cuda": "13.0", "python": "3.12.3", "tp": 8, "ep": true, "dp": 1, "pp": 1, "gpu_memory_utilization": 0.82, "kv_cache_dtype": "fp8", "block_size": 64, "prefix_caching": false, "num_gpu_blocks": 218215, "max_model_len": 132096, "model_dtype": "torch.bfloat16", "quantization": "deepseek_v4_fp8", "architectures": "['DeepseekV41ForCausalLM']", "hf_config_cls": "DeepseekV41Config", "max_num_batched_tokens": 8192, "max_num_seqs": 8, "async_scheduling": false, "chunked_prefill": true, "speculative_config": "None", "cudagraph_mode": "FULL_AND_PIECEWISE", "compilation_mode": 0, "cudagraph_capture_sizes": "[1, 2, 4, 8, 16]", "breakable_cudagraph": "1", "use_v2_model_runner": "True", "init_seconds": 122.1}
+POLICY_ERRORS []
+PROBE_INFO_RANK0 {"rank": 0, "version": "attn_probe/2026-11-03.1", "probe_layers": true, "moe": {"module": "language_model.model.layers.0.ffn.experts.routed_experts", "cls": "RoutedExperts", "local_num_experts": 48, "global_num_experts": 384, "use_ep": true}, "info": {"model_cls": "DeepseekV41ForCausalLM", "layers": [{"idx": 0, "layer": 0, "path": "language_model.model.layers.0.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 1, "layer": 1, "path": "language_model.model.layers.1.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 2, "layer": 2, "path": "language_model.model.layers.2.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 3, "layer": 3, "path": "language_model.model.layers.3.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 4, "layer": 4, "path": "language_model.model.layers.4.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 5, "layer": 5, "path": "language_model.model.layers.5.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 6, "layer": 6, "path": "language_model.model.layers.6.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 7, "layer": 7, "path": "language_model.model.layers.7.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 8, "layer": 8, "path": "language_model.model.layers.8.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 9, "layer": 9, "path": "language_model.model.layers.9.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 10, "layer": 10, "path": "language_model.model.layers.10.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 11, "layer": 11, "path": "language_model.model.layers.11.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 12, "layer": 12, "path": "language_model.model.layers.12.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 13, "layer": 13, "path": "language_model.model.layers.13.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 14, "layer": 14, "path": "language_model.model.layers.14.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 15, "layer": 15, "path": "language_model.model.layers.15.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 16, "layer": 16, "path": "language_model.model.layers.16.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 17, "layer": 17, "path": "language_model.model.layers.17.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 18, "layer": 18, "path": "language_model.model.layers.18.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 19, "layer": 19, "path": "language_model.model.layers.19.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 20, "layer": 20, "path": "language_model.model.layers.20.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 21, "layer": 21, "path": "language_model.model.layers.21.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 22, "layer": 22, "path": "language_model.model.layers.22.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 23, "layer": 23, "path": "language_model.model.layers.23.attn", "cls": "DeepseekV4FlashMLAAttention"}, {"idx": 24, "layer": 24, "path": "language_model.model.layers.24
+WARMUP start 2026-11-03T06:39:13.488425Z
+(MainProcess pid=154774) WARNING 11-03 06:39:13 [input_processor.py:417] Passing raw prompts to InputProcessor is deprecated and will be removed in the future. You should instead pass the outputs of Renderer.render_cmpl() or Renderer.render_chat().
+(Worker_TP0_EP0 pid=155239) WARNING 11-03 06:39:13 [jit_monitor.py:143] Triton kernel JIT compilation during inference: _gumbel_sample_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+POINT decode_L1024_B1 rep0 warmup measured attn=3.4824146000000002 model=9.08707139879465 ctx=1075..1124 why=[]
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:39:17 [custom_all_reduce.py:593] Using the MNNVL Lamport all-gather kernel.
+POINT decode_L1024_B2 rep0 warmup measured attn=3.5025204000000003 model=9.15975612848997 ctx=1075..1124 why=[]
+POINT decode_L1024_B4 rep0 warmup measured attn=3.5593342000000003 model=9.867039329111575 ctx=1075..1124 why=[]
+(MainProcess pid=154774) INFO 11-03 06:39:23 [loggers.py:335] Engine 000: Avg prompt throughput: 1459.9 tokens/s, Avg generation throughput: 127.3 tokens/s, Running: 8 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.2%
+POINT decode_L1024_B8 rep0 warmup measured attn=3.6895172 model=9.927984668463468 ctx=1075..1124 why=[]
+POINT prefill_L16384 rep0 warmup measured attn=65.44564 model=155.91347306966782 hist={'8192': 20, '128': 20} why=[]
+POINT prefill_L131072 rep0 warmup measured attn=83.95744 model=171.0465544462204 hist={'8192': 20, '128': 20} why=[]
+WARMUP done 2026-11-03T06:39:27.511932Z
+POINT decode_L1024_B1 rep1 accepted measured attn=3.4845666 model=8.812180429399014 ctx=1075..1124 why=[]
+POINT decode_L1024_B2 rep1 accepted measured attn=3.5061352 model=9.16615107730031 ctx=1075..1124 why=[]
+POINT decode_L1024_B4 rep1 accepted measured attn=3.5553296 model=9.730437127500773 ctx=1075..1124 why=[]
+(MainProcess pid=154774) INFO 11-03 06:39:33 [loggers.py:335] Engine 000: Avg prompt throughput: 16267.6 tokens/s, Avg generation throughput: 178.7 tokens/s, Running: 8 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.2%
+POINT decode_L1024_B8 rep1 accepted measured attn=3.683793 model=9.77500035688281 ctx=1075..1124 why=[]
+POINT prefill_L1024 rep1 accepted measured attn=75.32872 model=159.01669883728027 hist={'1024': 20, '128': 20} why=[]
+POINT decode_L16384_B1 rep1 accepted measured attn=3.5187488 model=8.947505957484246 ctx=16435..16484 why=[]
+POINT decode_L16384_B2 rep1 accepted measured attn=3.542906 model=9.154511935412884 ctx=16435..16487 why=[]
+(Worker_TP0_EP0 pid=155239) WARNING 11-03 06:39:39 [jit_monitor.py:143] Triton kernel JIT compilation during inference: _block_scores_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+POINT decode_L16384_B4 rep1 accepted measured attn=3.6067473999999997 model=9.84377856373787 ctx=16435..16491 why=[]
+(MainProcess pid=154774) INFO 11-03 06:39:43 [loggers.py:335] Engine 000: Avg prompt throughput: 19554.7 tokens/s, Avg generation throughput: 96.4 tokens/s, Running: 6 reqs, Waiting: 2 reqs, GPU KV cache usage: 1.6%
+POINT decode_L16384_B8 rep1 accepted measured attn=3.7658496 model=9.890505608469248 ctx=16435..16499 why=[]
+POINT prefill_L16384 rep1 accepted measured attn=69.02373 model=162.00962948799133 hist={'8192': 20, '128': 20} why=[]
+POINT decode_L65536_B1 rep1 accepted measured attn=3.5764356 model=8.926745564490556 ctx=65587..65636 why=[]
+(MainProcess pid=154774) INFO 11-03 06:39:53 [loggers.py:335] Engine 000: Avg prompt throughput: 26185.5 tokens/s, Avg generation throughput: 126.4 tokens/s, Running: 2 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.0%
+POINT decode_L65536_B2 rep1 accepted measured attn=3.6111704 model=9.171973790824413 ctx=65587..65645 why=[]
+POINT decode_L65536_B4 rep1 accepted measured attn=3.7137908 model=9.888065912425517 ctx=65587..65661 why=[]
+(MainProcess pid=154774) INFO 11-03 06:40:03 [loggers.py:335] Engine 000: Avg prompt throughput: 32589.0 tokens/s, Avg generation throughput: 62.1 tokens/s, Running: 2 reqs, Waiting: 6 reqs, GPU KV cache usage: 1.4%
+(MainProcess pid=154774) INFO 11-03 06:40:14 [loggers.py:335] Engine 000: Avg prompt throughput: 45448.6 tokens/s, Avg generation throughput: 22.8 tokens/s, Running: 8 reqs, Waiting: 0 reqs, GPU KV cache usage: 3.9%
+POINT decode_L65536_B8 rep1 accepted measured attn=3.9315035999999997 model=10.117619863599538 ctx=65587..65693 why=[]
+POINT prefill_L65536 rep1 accepted measured attn=71.70183 model=158.62879591435194 hist={'8192': 20, '128': 20} why=[]
+POINT decode_L131072_B1 rep1 accepted measured attn=3.6174560000000002 model=8.89232703819871 ctx=131123..131172 why=[]
+(MainProcess pid=154774) INFO 11-03 06:40:25 [loggers.py:335] Engine 000: Avg prompt throughput: 29858.4 tokens/s, Avg generation throughput: 115.6 tokens/s, Running: 1 reqs, Waiting: 1 reqs, GPU KV cache usage: 1.8%
+POINT decode_L131072_B2 rep1 accepted measured attn=3.6760452 model=9.361479783505201 ctx=131123..131189 why=[]
+(MainProcess pid=154774) INFO 11-03 06:40:35 [loggers.py:335] Engine 000: Avg prompt throughput: 25895.9 tokens/s, Avg generation throughput: 28.9 tokens/s, Running: 2 reqs, Waiting: 2 reqs, GPU KV cache usage: 2.6%
+POINT decode_L131072_B4 rep1 accepted measured attn=3.8265066 model=10.042064630836249 ctx=131123..131221 why=[]
+(MainProcess pid=154774) INFO 11-03 06:40:47 [loggers.py:335] Engine 000: Avg prompt throughput: 44025.2 tokens/s, Avg generation throughput: 56.7 tokens/s, Running: 1 reqs, Waiting: 7 reqs, GPU KV cache usage: 1.8%
+(MainProcess pid=154774) INFO 11-03 06:40:57 [loggers.py:335] Engine 000: Avg prompt throughput: 38716.0 tokens/s, Avg generation throughput: 13.0 tokens/s, Running: 5 reqs, Waiting: 3 reqs, GPU KV cache usage: 5.2%
+(MainProcess pid=154774) INFO 11-03 06:41:07 [loggers.py:335] Engine 000: Avg prompt throughput: 51832.0 tokens/s, Avg generation throughput: 32.0 tokens/s, Running: 8 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.7%
+POINT decode_L131072_B8 rep1 accepted measured attn=4.1344578 model=10.199108527153731 ctx=131123..131285 why=[]
+POINT prefill_L131072 rep1 accepted measured attn=84.0687 model=171.18998731672764 hist={'8192': 20, '128': 20} why=[]
+POINT decode_L1024_B1 rep2 accepted measured attn=3.4863242000000003 model=8.826890216618777 ctx=1075..1124 why=[]
+POINT decode_L1024_B2 rep2 accepted measured attn=3.5081580000000003 model=9.095497000068427 ctx=1075..1124 why=[]
+(MainProcess pid=154774) INFO 11-03 06:41:17 [loggers.py:335] Engine 000: Avg prompt throughput: 13810.9 tokens/s, Avg generation throughput: 186.9 tokens/s, Running: 4 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%
+POINT decode_L1024_B4 rep2 accepted measured attn=3.562139 model=9.73287425622344 ctx=1075..1124 why=[]
+POINT decode_L1024_B8 rep2 accepted measured attn=3.6808866 model=9.787376649230719 ctx=1075..1124 why=[]
+POINT prefill_L1024 rep2 accepted measured attn=78.43383 model=165.90198808908463 hist={'1024': 20, '128': 20} why=[]
+POINT decode_L16384_B1 rep2 accepted measured attn=3.5201644 model=8.841235182583333 ctx=16435..16484 why=[]
+POINT decode_L16384_B2 rep2 accepted measured attn=3.5422618 model=9.079825313687325 ctx=16435..16487 why=[]
+(MainProcess pid=154774) INFO 11-03 06:41:27 [loggers.py:335] Engine 000: Avg prompt throughput: 12387.4 tokens/s, Avg generation throughput: 199.1 tokens/s, Running: 2 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.3%
+POINT decode_L16384_B4 rep2 accepted measured attn=3.6118006000000005 model=9.850823722034693 ctx=16435..16491 why=[]
+POINT decode_L16384_B8 rep2 accepted measured attn=3.7662867999999996 model=9.892626567184925 ctx=16435..16499 why=[]
+POINT prefill_L16384 rep2 accepted measured attn=66.15892 model=156.4446748495102 hist={'8192': 20, '128': 20} why=[]
+POINT decode_L65536_B1 rep2 accepted measured attn=3.5724692 model=8.890280981063842 ctx=65587..65636 why=[]
+(MainProcess pid=154774) INFO 11-03 06:41:37 [loggers.py:335] Engine 000: Avg prompt throughput: 27543.9 tokens/s, Avg generation throughput: 110.5 tokens/s, Running: 2 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.5%
+POINT decode_L65536_B2 rep2 accepted measured attn=3.6097958 model=9.135521913319826 ctx=65587..65645 why=[]
+(MainProcess pid=154774) INFO 11-03 06:41:47 [loggers.py:335] Engine 000: Avg prompt throughput: 32727.6 tokens/s, Avg generation throughput: 79.6 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.5%
+POINT decode_L65536_B4 rep2 accepted measured attn=3.7178104000000003 model=9.978163189888 ctx=65587..65661 why=[]
+(MainProcess pid=154774) INFO 11-03 06:41:57 [loggers.py:335] Engine 000: Avg prompt throughput: 39066.4 tokens/s, Avg generation throughput: 17.5 tokens/s, Running: 7 reqs, Waiting: 1 reqs, GPU KV cache usage: 4.2%
+POINT decode_L65536_B8 rep2 accepted measured attn=3.9291394000000004 model=10.0526643230021 ctx=65587..65693 why=[]
+POINT prefill_L65536 rep2 accepted measured attn=72.11584 model=159.00226747989655 hist={'8192': 20, '128': 20} why=[]
+POINT decode_L131072_B1 rep2 accepted measured attn=3.616916 model=8.98793023198843 ctx=131123..131172 why=[]
+(MainProcess pid=154774) INFO 11-03 06:42:10 [loggers.py:335] Engine 000: Avg prompt throughput: 36584.7 tokens/s, Avg generation throughput: 106.3 tokens/s, Running: 1 reqs, Waiting: 1 reqs, GPU KV cache usage: 1.8%
+POINT decode_L131072_B2 rep2 accepted measured attn=3.6755396 model=9.409639651030302 ctx=131123..131189 why=[]
+(MainProcess pid=154774) INFO 11-03 06:42:20 [loggers.py:335] Engine 000: Avg prompt throughput: 25769.8 tokens/s, Avg generation throughput: 28.8 tokens/s, Running: 2 reqs, Waiting: 2 reqs, GPU KV cache usage: 2.6%
+POINT decode_L131072_B4 rep2 accepted measured attn=3.8203892 model=10.03533761665225 ctx=131123..131221 why=[]
+(MainProcess pid=154774) INFO 11-03 06:42:32 [loggers.py:335] Engine 000: Avg prompt throughput: 44429.2 tokens/s, Avg generation throughput: 57.2 tokens/s, Running: 1 reqs, Waiting: 7 reqs, GPU KV cache usage: 1.8%
+(MainProcess pid=154774) INFO 11-03 06:42:42 [loggers.py:335] Engine 000: Avg prompt throughput: 38792.8 tokens/s, Avg generation throughput: 13.0 tokens/s, Running: 5 reqs, Waiting: 3 reqs, GPU KV cache usage: 5.2%
+(MainProcess pid=154774) INFO 11-03 06:42:52 [loggers.py:335] Engine 000: Avg prompt throughput: 52008.8 tokens/s, Avg generation throughput: 32.1 tokens/s, Running: 8 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.7%
+POINT decode_L131072_B8 rep2 accepted measured attn=4.1417256 model=10.254810243844986 ctx=131123..131285 why=[]
+POINT prefill_L131072 rep2 accepted measured attn=84.04381 model=169.16156612336636 hist={'8192': 20, '128': 20} why=[]
+POINT decode_L1024_B1 rep3 accepted measured attn=3.4847676 model=8.84746880993247 ctx=1075..1124 why=[]
+POINT decode_L1024_B2 rep3 accepted measured attn=3.5053460000000003 model=9.123829120993614 ctx=1075..1124 why=[]
+(MainProcess pid=154774) INFO 11-03 06:43:02 [loggers.py:335] Engine 000: Avg prompt throughput: 13821.0 tokens/s, Avg generation throughput: 186.3 tokens/s, Running: 4 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%
+POINT decode_L1024_B4 rep3 accepted measured attn=3.5590829999999998 model=9.673526393026114 ctx=1075..1124 why=[]
+POINT decode_L1024_B8 rep3 accepted measured attn=3.6873261999999998 model=9.755929638445377 ctx=1075..1124 why=[]
+POINT prefill_L1024 rep3 accepted measured attn=76.34395 model=161.74054664373398 hist={'1024': 20, '128': 20} why=[]
+POINT decode_L16384_B1 rep3 accepted measured attn=3.5200216 model=8.82477635100484 ctx=16435..16484 why=[]
+POINT decode_L16384_B2 rep3 accepted measured attn=3.5484632 model=9.200886368304491 ctx=16435..16487 why=[]
+(MainProcess pid=154774) INFO 11-03 06:43:12 [loggers.py:335] Engine 000: Avg prompt throughput: 12386.5 tokens/s, Avg generation throughput: 200.0 tokens/s, Running: 1 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.1%
+POINT decode_L16384_B4 rep3 accepted measured attn=3.6120098 model=9.740631041228772 ctx=16435..16491 why=[]
+POINT decode_L16384_B8 rep3 accepted measured attn=3.7555452000000002 model=9.883842505514622 ctx=16435..16499 why=[]
+POINT prefill_L16384 rep3 accepted measured attn=67.46527 model=158.06112378835678 hist={'8192': 20, '128': 20} why=[]
+POINT decode_L65536_B1 rep3 accepted measured attn=3.5739713999999996 model=8.878340497463942 ctx=65587..65636 why=[]
+(MainProcess pid=154774) INFO 11-03 06:43:22 [loggers.py:335] Engine 000: Avg prompt throughput: 27579.5 tokens/s, Avg generation throughput: 110.4 tokens/s, Running: 2 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.5%
+POINT decode_L65536_B2 rep3 accepted measured attn=3.6120626 model=9.189880305975676 ctx=65587..65645 why=[]
+(MainProcess pid=154774) INFO 11-03 06:43:32 [loggers.py:335] Engine 000: Avg prompt throughput: 32755.0 tokens/s, Avg generation throughput: 78.8 tokens/s, Running: 2 reqs, Waiting: 0 reqs, GPU KV cache usage: 1.0%
+POINT decode_L65536_B4 rep3 accepted measured attn=3.7169374 model=9.798734095692634 ctx=65587..65661 why=[]
+(MainProcess pid=154774) INFO 11-03 06:43:42 [loggers.py:335] Engine 000: Avg prompt throughput: 39181.4 tokens/s, Avg generation throughput: 17.8 tokens/s, Running: 7 reqs, Waiting: 1 reqs, GPU KV cache usage: 4.2%
+POINT decode_L65536_B8 rep3 accepted measured attn=3.9292255999999997 model=10.040792301893234 ctx=65587..65693 why=[]
+POINT prefill_L65536 rep3 accepted measured attn=72.16996 model=158.48556401580572 hist={'8192': 20, '128': 20} why=[]
+POINT decode_L131072_B1 rep3 accepted measured attn=3.616796 model=8.874719293564558 ctx=131123..131172 why=[]
+(MainProcess pid=154774) INFO 11-03 06:43:55 [loggers.py:335] Engine 000: Avg prompt throughput: 35873.8 tokens/s, Avg generation throughput: 104.7 tokens/s, Running: 1 reqs, Waiting: 1 reqs, GPU KV cache usage: 1.8%
+POINT decode_L131072_B2 rep3 accepted measured attn=3.6784955999999998 model=9.187159005403519 ctx=131123..131189 why=[]
+(MainProcess pid=154774) INFO 11-03 06:44:05 [loggers.py:335] Engine 000: Avg prompt throughput: 26070.1 tokens/s, Avg generation throughput: 29.1 tokens/s, Running: 2 reqs, Waiting: 2 reqs, GPU KV cache usage: 2.6%
+POINT decode_L131072_B4 rep3 accepted measured attn=3.8187448 model=9.923052175492048 ctx=131123..131221 why=[]
+(MainProcess pid=154774) INFO 11-03 06:44:17 [loggers.py:335] Engine 000: Avg prompt throughput: 44540.4 tokens/s, Avg generation throughput: 57.3 tokens/s, Running: 1 reqs, Waiting: 7 reqs, GPU KV cache usage: 1.8%
+(MainProcess pid=154774) INFO 11-03 06:44:27 [loggers.py:335] Engine 000: Avg prompt throughput: 38679.9 tokens/s, Avg generation throughput: 13.0 tokens/s, Running: 5 reqs, Waiting: 3 reqs, GPU KV cache usage: 5.2%
+(MainProcess pid=154774) INFO 11-03 06:44:37 [loggers.py:335] Engine 000: Avg prompt throughput: 52372.1 tokens/s, Avg generation throughput: 37.2 tokens/s, Running: 8 reqs, Waiting: 0 reqs, GPU KV cache usage: 7.6%
+POINT decode_L131072_B8 rep3 accepted measured attn=4.1310754 model=10.185760650634766 ctx=131123..131285 why=[]
+POINT prefill_L131072 rep3 accepted measured attn=83.81039 model=168.80473873019218 hist={'8192': 20, '128': 20} why=[]
+SESSION_SUMMARY {"session": "v41-s1", "mode": "study", "points": [["decode_L1024_B1", 1, "measured"], ["memory_L1024", 1, "measured"], ["decode_L1024_B2", 1, "measured"], ["decode_L1024_B4", 1, "measured"], ["decode_L1024_B8", 1, "measured"], ["prefill_L1024", 1, "measured"], ["decode_L16384_B1", 1, "measured"], ["memory_L16384", 1, "measured"], ["decode_L16384_B2", 1, "measured"], ["decode_L16384_B4", 1, "measured"], ["decode_L16384_B8", 1, "measured"], ["prefill_L16384", 1, "measured"], ["decode_L65536_B1", 1, "measured"], ["memory_L65536", 1, "measured"], ["decode_L65536_B2", 1, "measured"], ["decode_L65536_B4", 1, "measured"], ["decode_L65536_B8", 1, "measured"], ["prefill_L65536", 1, "measured"], ["decode_L131072_B1", 1, "measured"], ["memory_L131072", 1, "measured"], ["decode_L131072_B2", 1, "measured"], ["decode_L131072_B4", 1, "measured"], ["decode_L131072_B8", 1, "measured"], ["prefill_L131072", 1, "measured"], ["decode_L1024_B1", 2, "measured"], ["memory_L1024", 2, "measured"], ["decode_L1024_B2", 2, "measured"], ["decode_L1024_B4", 2, "measured"], ["decode_L1024_B8", 2, "measured"], ["prefill_L1024", 2, "measured"], ["decode_L16384_B1", 2, "measured"], ["memory_L16384", 2, "measured"], ["decode_L16384_B2", 2, "measured"], ["decode_L16384_B4", 2, "measured"], ["decode_L16384_B8", 2, "measured"], ["prefill_L16384", 2, "measured"], ["decode_L65536_B1", 2, "measured"], ["memory_L65536", 2, "measured"], ["decode_L65536_B2", 2, "measured"], ["decode_L65536_B4", 2, "measured"], ["decode_L65536_B8", 2, "measured"], ["prefill_L65536", 2, "measured"], ["decode_L131072_B1", 2, "measured"], ["memory_L131072", 2, "measured"], ["decode_L131072_B2", 2, "measured"], ["decode_L131072_B4", 2, "measured"], ["decode_L131072_B8", 2, "measured"], ["prefill_L131072", 2, "measured"], ["decode_L1024_B1", 3, "measured"], ["memory_L1024", 3, "measured"], ["decode_L1024_B2", 3, "measured"], ["decode_L1024_B4", 3, "measured"], ["decode_L1024_B8", 3, "measured"], ["prefill_L1024", 3, "measured"], ["decode_L16384_B1", 3, "measured"], ["memory_L16384", 3, "measured"], ["decode_L16384_B2", 3, "measured"], ["decode_L16384_B4", 3, "measured"], ["decode_L16384_B8", 3, "measured"], ["prefill_L16384", 3, "measured"], ["decode_L65536_B1", 3, "measured"], ["memory_L65536", 3, "measured"], ["decode_L65536_B2", 3, "measured"], ["decode_L65536_B4", 3, "measured"], ["decode_L65536_B8", 3, "measured"], ["prefill_L65536", 3, "measured"], ["decode_L131072_B1", 3, "measured"], ["memory_L131072", 3, "measured"], ["decode_L131072_B2", 3, "measured"], ["decode_L131072_B4", 3, "measured"], ["decode_L131072_B8", 3, "measured"], ["prefill_L131072", 3, "measured"]], "measurement_completed_at_utc": "2026-11-03T06:44:43.420724Z"}
+MEASUREMENT_COMPLETED 2026-11-03T06:44:43.420724Z
+(MainProcess pid=154774) INFO 11-03 06:44:43 [multiproc_executor.py:580] [shutdown] Executor: waiting for worker exit count=8
+(Worker_TP0_EP0 pid=155239) INFO 11-03 06:44:43 [multiproc_executor.py:944] Parent process exited, terminating worker queues
+(MainProcess pid=154774) WARNING 11-03 06:44:48 [multiproc_executor.py:592] [shutdown] Executor: workers still running after grace period; sending SIGTERM count=8
+(MainProcess pid=154774) WARNING 11-03 06:44:52 [multiproc_executor.py:602] [shutdown] Executor: workers still running after SIGTERM; sending SIGKILL count=7

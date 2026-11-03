@@ -107,7 +107,34 @@ def memory_rows(study: Path, key: str, sel: dict):
         r0 = {}
     consumers = {n: v["kv_sharing_target_layer_name"] for n, v in r0.items()
                  if v.get("kv_sharing_target_layer_name")}
-    category_override = sel.get("state_category_by_layer", {})
+    # Model-internal sharing (V4.1 kv_source_layer_ids): attention modules with no cache bytes of their own
+    # read state owned by source layers. Exact source per consumer is inferred from config, not traced.
+    try:
+        acfg = json.loads((study / "raw" / key / "architecture" / "config.json").read_text())
+        acfg = acfg.get("text_config", acfg)
+    except Exception:
+        acfg = {}
+    srcs = acfg.get("kv_source_layer_ids")
+    if srcs:
+        import re as _re
+        ratios = acfg.get("compress_ratios", [])
+        for n, v in r0.items():
+            m = _re.search(r"layers\.(\d+)\.attn$", n)
+            if not m:
+                continue
+            i = int(m.group(1))
+            own = sum(t.get("nbytes", 0) for t in v.get("tensors", []))
+            if own == 0 and i not in srcs and i < acfg.get("num_hidden_layers", 0) and \
+                    (i < len(ratios) and ratios[i] != 0):
+                prev = [x for x in srcs if x <= i]
+                consumers[n] = (f"layers.{prev[-1]}.attn (inferred from kv_source_layer_ids {srcs}; not traced)"
+                                if prev else f"kv_source_layer_ids {srcs} (inferred)")
+    category_override = dict(sel.get("state_category_by_layer", {}))
+    if srcs:  # source layers own state read by other layers: "compressed / shared KV" even if uncompressed
+        for n in r0:
+            for i in srcs:
+                if n.endswith(f"layers.{i}.attn"):
+                    category_override[n] = "shared_compressed"
     groups = kvc.get("kv_cache_groups", [])
     # Pool bytes reserved per block id: unique backing storages of all layer cache tensors (KVCacheTensor
     # entries can be overlapping views of one block-outer buffer, so their sizes must not be summed).
