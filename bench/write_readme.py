@@ -5,6 +5,7 @@ import argparse
 import csv
 import json
 import sys
+import os
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -36,8 +37,8 @@ def main():
     L = []
     L.append(f"# Study `{st.name}`\n")
     L.append("Attention-state memory, decode attention time and prefill attention time for six checkpoints on one "
-             "8 × H100 80GB node, vLLM `0.33.0rc1.dev450+g17e675965` (commit `17e675965d54…`), torch "
-             "`2.14.0+cu130`, driver 580.173.02. TP8, EP on for MoE models (N/A for dense Llama), "
+             f"{os.environ.get('ATTN_NODE_DESC', '8 × H100 80GB')} node, vLLM `0.33.0rc1.dev450+g17e675965` (commit `17e675965d54…`), torch "
+             f"`2.14.0+cu130`, driver {os.environ.get('ATTN_DRIVER', '580.173.02')}. TP8, EP on for MoE models (N/A for dense Llama), "
              "`gpu_memory_utilization=0.82`, prefix caching and speculation/MTP off, 8192-token prefill budget, "
              "`max_num_seqs=8`, synchronous scheduling, FP8 KV first. Raw token-ID prompts cut from public-domain "
              "Gutenberg texts (`bench/workload.py`). Medians of three independent repetitions; "
