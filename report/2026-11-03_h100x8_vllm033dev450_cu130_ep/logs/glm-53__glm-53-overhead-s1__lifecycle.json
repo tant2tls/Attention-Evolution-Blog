@@ -1,0 +1,49 @@
+{
+ "study_id": "2026-11-03_h100x8_vllm033dev450_cu130_ep",
+ "model": "glm-53",
+ "session_id": "glm-53-overhead-s1",
+ "role": "matched unprobed control",
+ "cmd": [
+  "python",
+  "bench/attn_study.py",
+  "--model-key",
+  "glm-53",
+  "--session-id",
+  "glm-53-overhead-s1",
+  "--kv-cache-dtype",
+  "fp8",
+  "--mode",
+  "overhead"
+ ],
+ "idle_baseline_mib": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "started_at_utc": "2026-11-03T07:07:25Z",
+ "host_cpu_quota": "12800000 100000",
+ "pgid": 193409,
+ "returncode": 0,
+ "timed_out": false,
+ "measurement_completed_at_utc": "2026-11-03T07:18:32Z",
+ "shutdown_verified_at_utc": "2026-11-03T07:18:38Z",
+ "finished_at_utc": "2026-11-03T07:18:38Z",
+ "elapsed_seconds": 673.0,
+ "gpu_after_mib": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "status": "complete",
+ "reason": ""
+}

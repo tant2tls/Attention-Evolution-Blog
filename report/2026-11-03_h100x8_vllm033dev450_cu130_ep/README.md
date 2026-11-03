@@ -11,7 +11,7 @@ Attention-state memory, decode attention time and prefill attention time for six
 | Qwen3.8 Flash-Next FP8 | `qwen-38-fp8__kv-fp8__ef86bc5db1` | fp8 → fp8 | local 64 of 512 experts per rank | qwen-38-fp8-s1 / qwen-38-fp8-overhead-s1 | see completion table |
 | MiMo V2.6 Flash-MOPD | `mimo-v26__kv-auto__6997ba48db` | auto → auto | local 32 of 256 experts per rank | mimo-v26-s1 / mimo-v26-overhead-s1 | see completion table |
 | DeepSeek V4.1 Flash | `v41__kv-fp8__308c2b9d5a` | fp8 → fp8_ds_mlax48 | local 48 of 384 experts per rank | v41-s1 / v41-overhead-s1 | see completion table |
-| GLM-5.3 Flash | not frozen | | | | pending / not measured |
+| GLM-5.3 Flash | `glm-53__kv-fp8__adce6746a5` | fp8 → fp8 | local 36 of 288 experts per rank | glm-53-s1, glm-53-s2 / glm-53-overhead-s1 | see completion table |
 
 ## Per-model session completion (`model_completion.csv`)
 
@@ -37,6 +37,10 @@ Attention-state memory, decode attention time and prefill attention time for six
 | v41 | v41-fp8-smoke1 | 2026-11-03T06:27:22Z | 2026-11-03T06:36:20Z | 2026-11-03T06:36:42Z | 559.9 | 5 / 0 | complete | validation fp8:  |
 | v41 | v41-s1 | 2026-11-03T06:36:57Z | 2026-11-03T06:44:43Z | 2026-11-03T06:45:04Z | 486.9 | 24 / 24 | complete | accepted:  |
 | v41 | v41-overhead-s1 | 2026-11-03T06:45:05Z | 2026-11-03T06:52:03Z | 2026-11-03T06:52:24Z | 439.0 | 20 / 20 | complete | matched unprobed control:  |
+| glm-53 | glm-fp8-smoke1 | 2026-11-03T06:52:27Z | 2026-11-03T07:03:05Z | 2026-11-03T07:03:12Z | 645.4 | 5 / 0 | complete | validation fp8:  |
+| glm-53 | glm-53-s1 | 2026-11-03T07:03:27Z |  | 2026-11-03T07:07:25Z | 238.3 | 0 / 24 | failed | accepted: exit code 2 |
+| glm-53 | glm-53-overhead-s1 | 2026-11-03T07:07:25Z | 2026-11-03T07:18:32Z | 2026-11-03T07:18:38Z | 673.0 | 20 / 20 | complete | matched unprobed control:  |
+| glm-53 | glm-53-s2 | 2026-11-03T07:18:50Z | 2026-11-03T07:28:49Z | 2026-11-03T07:28:56Z | 606.4 | 24 / 24 | complete | accepted retry (resume of glm-53-s1 after B8):  |
 
 Validation (smoke) sessions have expected points 0; their status reflects only the validation gate.
 
@@ -44,33 +48,49 @@ Validation (smoke) sessions have expected points 0; their status reflects only t
 
 | context | Llama 3.1 70B Instruct | DeepSeek V4 Flash 0731 | Qwen3.8 Flash-Next FP8 | MiMo V2.6 Flash-MOPD | DeepSeek V4.1 Flash | GLM-5.3 Flash |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1K | 4.15 / 4.36 | 3.56 / 3.62 | 1.73 / 2.00 | 1.95 / 2.34 | 3.48 / 3.68 | – / – |
-| 16K | 4.64 / 5.50 | 3.68 / 3.93 | 1.80 / 2.13 | 2.03 / 2.61 | 3.52 / 3.77 | – / – |
-| 64K | 5.98 / 8.68 | 3.82 / 4.15 | 1.88 / 2.28 | 2.26 / 3.36 | 3.57 / 3.93 | – / – |
-| 128K | unsupported / unsupported | 3.88 / 4.46 | 1.90 / 2.43 | 2.55 / 4.33 | 3.62 / 4.13 | – / – |
+| 1K | 4.15 / 4.36 | 3.56 / 3.62 | 1.73 / 2.00 | 1.95 / 2.34 | 3.48 / 3.68 | 3.20 / 3.58 |
+| 16K | 4.64 / 5.50 | 3.68 / 3.93 | 1.80 / 2.13 | 2.03 / 2.61 | 3.52 / 3.77 | 3.30 / 3.67 |
+| 64K | 5.98 / 8.68 | 3.82 / 4.15 | 1.88 / 2.28 | 2.26 / 3.36 | 3.57 / 3.93 | 3.37 / 3.78 |
+| 128K | unsupported / unsupported | 3.88 / 4.46 | 1.90 / 2.43 | 2.55 / 4.33 | 3.62 / 4.13 | 3.38 / 3.85 |
 
 ## Prefill attention, ms per chunk (median of 3)
 
 | chunk | Llama 3.1 70B Instruct | DeepSeek V4 Flash 0731 | Qwen3.8 Flash-Next FP8 | MiMo V2.6 Flash-MOPD | DeepSeek V4.1 Flash | GLM-5.3 Flash |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1K first chunk (1024) | 25.3 | 102.4 | 63.2 | 43.0 | 76.3 | – |
-| 8K ending at 16K | 142.5 | 116.6 | 55.9 | 40.1 | 67.5 | – |
-| 8K ending at 64K | 358.1 | 165.2 | 63.9 | 69.5 | 72.1 | – |
-| 8K ending at 128K | unsupported | 239.9 | 73.9 | 109.4 | 84.0 | – |
+| 1K first chunk (1024) | 25.3 | 102.4 | 63.2 | 43.0 | 76.3 | 58.8 |
+| 8K ending at 16K | 142.5 | 116.6 | 55.9 | 40.1 | 67.5 | 231.6 |
+| 8K ending at 64K | 358.1 | 165.2 | 63.9 | 69.5 | 72.1 | 243.2 |
+| 8K ending at 128K | unsupported | 239.9 | 73.9 | 109.4 | 84.0 | 261.0 |
 
 ## Attention-state memory, GiB for one request, all 8 GPUs (settled decode, occupied blocks)
 
 | context | Llama 3.1 70B Instruct | DeepSeek V4 Flash 0731 | Qwen3.8 Flash-Next FP8 | MiMo V2.6 Flash-MOPD | DeepSeek V4.1 Flash | GLM-5.3 Flash |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1K | 0.166 | 0.176 | 0.189 | 0.073 | 0.044 | – |
-| 16K | 2.510 | 0.624 | 0.956 | 0.733 | 0.253 | – |
-| 64K | 10.010 | 2.058 | 3.499 | 2.842 | 0.922 | – |
-| 128K | unsupported | 3.969 | 6.891 | 5.655 | 1.814 | – |
+| 1K | 0.166 | 0.176 | 0.189 | 0.073 | 0.044 | 0.201 |
+| 16K | 2.510 | 0.624 | 0.956 | 0.733 | 0.253 | 0.921 |
+| 64K | 10.010 | 2.058 | 3.499 | 2.842 | 0.922 | 3.083 |
+| 128K | unsupported | 3.969 | 6.891 | 5.655 | 1.814 | 6.016 |
 
 ## Probe overhead (matched unprobed control, whole-model ms)
 
 | model | experiment | context | batch | probed | unprobed | overhead % | attention lower bound ms |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| glm-53 | decode | 1K | 1 | 7.21 | 6.68 | 7.9 | 2.67 |
+| glm-53 | decode | 1K | 2 | 7.74 | 7.24 | 6.9 | 2.81 |
+| glm-53 | decode | 1K | 4 | 8.61 | 8.08 | 6.6 | 2.92 |
+| glm-53 | decode | 1K | 8 | 9.93 | 9.55 | 4.1 | 3.19 |
+| glm-53 | decode | 128K | 1 | 7.40 | 6.87 | 7.7 | 2.84 |
+| glm-53 | decode | 128K | 2 | 7.90 | 7.40 | 6.8 | 2.99 |
+| glm-53 | decode | 128K | 4 | 8.81 | 8.29 | 6.2 | 3.13 |
+| glm-53 | decode | 128K | 8 | 10.23 | 9.95 | 2.8 | 3.57 |
+| glm-53 | decode | 16K | 1 | 7.33 | 6.78 | 8.1 | 2.76 |
+| glm-53 | decode | 16K | 2 | 7.81 | 7.32 | 6.6 | 2.90 |
+| glm-53 | decode | 16K | 4 | 8.69 | 8.18 | 6.2 | 3.01 |
+| glm-53 | decode | 16K | 8 | 10.00 | 9.58 | 4.5 | 3.24 |
+| glm-53 | decode | 64K | 1 | 7.38 | 6.86 | 7.5 | 2.85 |
+| glm-53 | decode | 64K | 2 | 7.89 | 7.39 | 6.8 | 2.97 |
+| glm-53 | decode | 64K | 4 | 8.78 | 8.26 | 6.3 | 3.08 |
+| glm-53 | decode | 64K | 8 | 10.25 | 9.77 | 4.9 | 3.31 |
 | llama-31-70b | decode | 1K | 1 | 11.03 | 10.40 | 6.1 | 3.51 |
 | llama-31-70b | decode | 1K | 2 | 11.13 | 10.49 | 6.1 | 3.51 |
 | llama-31-70b | decode | 1K | 4 | 11.30 | 10.67 | 6.0 | 3.59 |
@@ -147,6 +167,10 @@ Validation (smoke) sessions have expected points 0; their status reflects only t
 | v41 | decode | 64K | 2 | 9.17 | 8.59 | 6.8 | 3.03 |
 | v41 | decode | 64K | 4 | 9.89 | 9.12 | 8.5 | 2.95 |
 | v41 | decode | 64K | 8 | 10.05 | 9.47 | 6.1 | 3.35 |
+| glm-53 | prefill | 1K | 1 | 138.20 | 138.65 | -0.3 |  |
+| glm-53 | prefill | 128K | 1 | 393.43 | 393.17 | 0.1 |  |
+| glm-53 | prefill | 16K | 1 | 363.88 | 364.13 | -0.1 |  |
+| glm-53 | prefill | 64K | 1 | 375.03 | 374.19 | 0.2 |  |
 | llama-31-70b | prefill | 1K | 1 | 57.88 | 52.19 | 10.9 |  |
 | llama-31-70b | prefill | 16K | 1 | 374.85 | 374.19 | 0.2 |  |
 | llama-31-70b | prefill | 64K | 1 | 590.09 | 590.22 | -0.0 |  |
@@ -166,6 +190,29 @@ Validation (smoke) sessions have expected points 0; their status reflects only t
 | v41 | prefill | 128K | 1 | 169.16 | 168.87 | 0.2 |  |
 | v41 | prefill | 16K | 1 | 158.06 | 151.83 | 4.1 |  |
 | v41 | prefill | 64K | 1 | 158.63 | 158.17 | 0.3 |  |
+
+## Deployment differences that limit comparisons
+
+| model | KV / state formats actually allocated | graph mode | other deviations |
+| --- | --- | --- | --- |
+| Llama 3.1 70B Instruct | FullAttentionSpec:torch.uint8 x80<br>tensors: Attention:torch.uint8 x80 | FULL_AND_PIECEWISE, breakable=1 | env `VLLM_USE_BREAKABLE_CUDAGRAPH=1` (probes need it); engine `enable_expert_parallel=False`; max_model_len 131072 (128K points unsupported) |
+| DeepSeek V4 Flash 0731 | MLAAttentionSpec:torch.uint8 x62; SlidingWindowMLASpec:torch.float32 x62; SlidingWindowMLASpec:torch.uint8 x43<br>tensors: CompressorStateCache:torch.float32 x62; DeepseekV4FlashMLAAttention:torch.float32 x2; DeepseekV4FlashMLAAttention:torch.uint8 x41; DeepseekV4IndexerCache:torch.uint8 x21; DeepseekV4SWACache:torch.uint8 x43 | FULL_DECODE_ONLY, breakable=1 | engine `compilation_config={'cudagraph_mode': 'FULL_DECODE_ONLY'}` |
+| Qwen3.8 Flash-Next FP8 | CircularBufferSpec:torch.bfloat16 x12; MLAAttentionSpec:torch.bfloat16 x24; MambaSpec:['torch.bfloat16', 'torch.float32'] x36; MambaSpec:['torch.bfloat16'] x1<br>tensors: QSACompressedKeyCache:torch.bfloat16 x12; QSARawKeyCache:torch.bfloat16 x12; Qwen4ExpPLELayer:torch.bfloat16 x1; Qwen4ExpQSAAttention:torch.uint8 x12; QwenGatedDeltaNetAttention:torch.bfloat16 x36; QwenGatedDeltaNetAttention:torch.float32 x36 | FULL_AND_PIECEWISE, breakable=1 | engine `language_model_only=True` |
+| MiMo V2.6 Flash-MOPD | FullAttentionSpec:torch.bfloat16 x9; SlidingWindowSpec:torch.bfloat16 x39<br>tensors: Attention:torch.bfloat16 x48 | FULL_AND_PIECEWISE, breakable=1 | FP8 KV failed → `auto` (BF16) KV; see fixes.md B7; env `VLLM_USE_BREAKABLE_CUDAGRAPH=1` (probes need it); engine `trust_remote_code=True`, `language_model_only=True` |
+| DeepSeek V4.1 Flash | CircularBufferSpec:torch.float32 x3; MLAAttentionSpec:torch.uint8 x8; SlidingWindowMLASpec:torch.uint8 x40<br>tensors: CompressorStateCache:torch.float32 x3; DeepseekV4FlashMLAAttention:torch.float32 x36; DeepseekV4FlashMLAAttention:torch.uint8 x4; DeepseekV4IndexerCache:torch.uint8 x4; DeepseekV4SWACache:torch.uint8 x40 | FULL_AND_PIECEWISE, breakable=1 | engine `language_model_only=True` |
+| GLM-5.3 Flash | CircularBufferSpec:torch.bfloat16 x11; MLAAttentionSpec:torch.uint8 x22; MambaSpec:['torch.bfloat16', 'torch.float32'] x34<br>tensors: Glm5NextIndexerCache:torch.uint8 x11; Glm5NextLinearAttention:torch.bfloat16 x34; Glm5NextLinearAttention:torch.float32 x34; Glm5NextTailCache:torch.bfloat16 x11; MLAAttention:torch.uint8 x11 | FULL_AND_PIECEWISE, breakable=1 | - |
+
+FP8 K/V scales are the stock 1.0 (no calibrated scales shipped); FP8 vs BF16 state is a precision difference, not an architecture property. Weights keep each checkpoint's native mixed precision.
+
+## Missing or incomplete measurements
+
+- llama-31-70b memory context 131072: **unsupported**
+- llama-31-70b decode context 131072 batch 1: **unsupported**
+- llama-31-70b decode context 131072 batch 2: **unsupported**
+- llama-31-70b decode context 131072 batch 4: **unsupported**
+- llama-31-70b decode context 131072 batch 8: **unsupported**
+- llama-31-70b prefill context 131072: **unsupported**
+
 
 ## Definitions and limits
 

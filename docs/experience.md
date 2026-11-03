@@ -237,6 +237,8 @@ Details and evidence: [fixes.md](../report/2026-11-03_h100x8_vllm033dev450_cu130
 | B3 | `FileNotFoundError .../triton/<hash>/_bincount_kernel.json` then `CompiledKernel has no attribute module` | JIT cache on encrypted FUSE `/root` | JIT caches on node-local disk |
 | B4 | prefill final chunk "not found", memory snapshots empty | `assign_request_id` appends a random suffix to request ids | resolve the scheduler id right after `add_request` |
 | B6 | memory per layer wrong inside V4's shared block-table group | per-layer page sizes differ within one group (37440/1728/8640 B); KV tensors overlay one buffer | use worker per-layer specs for page size; dedupe backing storages for slab bytes |
+| B7 | MiMo FP8 KV: `fp8_kv_dequant requires fp16 or bf16 Q` at startup | FLASH_ATTN_DIFFKV upgrades to FA4 (diff-KV + sinks); its FP8-KV path needs a BF16/FP16 query | policy fallback to `auto` (BF16 KV); no backend forcing |
+| B8 | GLM: bare `CUDA error: invalid argument` once, mid-grid (128K b2 prefill), worker died | unknown; did not reproduce in the unprobed control or the probed retry | GLM **does start and run with EP on** (TP8+EP, FP8 KV); retry with `--resume-sessions` carrying valid (point, rep) records |
 
 Operational mistakes (do not repeat):
 - **`pkill -f <pattern>` killed my own tool shell**, because the pattern matched the command line running it.
@@ -305,7 +307,8 @@ model. Compare with care.
 ---
 
 ## 10. Open items
-1. **GLM-5.3:** try EP on (diagnostic), then Frontier's older build; otherwise bisect its custom kernels.
+1. **GLM-5.3:** with EP on it starts and completes the full grid (study `2026-11-03_h100x8_vllm033dev450_cu130_ep`);
+   one intermittent bare `CUDA error: invalid argument` remains unexplained (fixes.md B8). Bisect GLM custom kernels if it recurs.
 2. **Decode attention without probe overhead** (needs cheaper markers or CUPTI attribution of graph kernels).
 3. **Rerun Qwen, Llama and V4 in the cu130 env** if all six models must be one controlled set.
 4. **Prefill GPU-busy time** (eager prefill windows include host launch gaps; matters most for the 1K chunk).

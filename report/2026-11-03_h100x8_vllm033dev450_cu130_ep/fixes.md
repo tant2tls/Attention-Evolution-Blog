@@ -112,3 +112,33 @@ session ID.
 - **Action (policy, not a workaround):** FP8 failure preserved; next attempt `--kv-cache-dtype auto`
   (session `mimo-auto-smoke1`). No backend forcing or kernel patching.
 - **Rerun needed:** n/a. The selected MiMo deployment records `fallback_reason` with this entry.
+
+## B8: GLM-5.3 worker dies with bare `CUDA error: invalid argument` during the accepted grid
+
+- **Symptom:** session `glm-53-s1` (frozen `glm-53__kv-fp8__adce6746a5`) measured 16 points of repetition 1
+  (1K/16K/64K all batches, 128K batch 1), then during `decode_L131072_B2 rep1`, while request 0 was
+  prefilling at 128K and request 1 was waiting, worker `VllmWorker-5` printed only
+  `CUDA error: invalid argument` and died (07:07:14Z); the engine shut down, exit 2 after 238 s
+  ([log](logs/glm-53__glm-53-s1.log)). Shutdown verified (GPUs back to idle). Validation `glm-fp8-smoke1`
+  had passed 1K b1/b8, 16K and 1K prefill and **128K batch 8** in the same configuration.
+- **Relation to history:** same bare message, no Python traceback, as the historical GLM startup failure
+  (experience G1/F11). In this study GLM starts and runs with EP on (historical runs used EP off), so EP
+  was the startup difference, but an intermittent or shape-dependent failure remains.
+- **Cause:** unknown (under investigation; see the following entries).
+- **Evidence kept:** all 16 measured raw points of `glm-53-s1` remain valid evidence of that session;
+  the interrupted point has no raw record (the engine died before the runner could write one).
+- **Investigation:** the matched unprobed control `glm-53-overhead-s1` (same frozen config, layer probes off)
+  then ran the complete grid, 20 points × 3 repetitions including `decode_L131072_B2`, without error. The
+  accepted retry `glm-53-s2` (layer probes on, `--resume-sessions glm-53-s1`) measured all 8 remaining
+  points of repetition 1 plus repetitions 2–3, again without error, including `decode_L131072_B2` three
+  times. The failure did not reproduce in ~1,100 s of further GLM execution, so it is **intermittent**;
+  whether the probe's eager-prefill events contribute is not established (one failure in probed sessions,
+  zero in unprobed, too few to distinguish).
+- **Fix / handling:** no code or configuration change. Added `--resume-sessions` to `attn_study.py`: a retry
+  session carries each (point, repetition) already validly recorded by an accepted session of the **same
+  frozen config** (raw files keep their original session prefix) and measures only the rest; the session
+  summary marks carried entries `carried:<session>`. The `glm-53-s1` completion row stays `failed`; the
+  `glm-53-s2` row is `complete` (24/24 points, 72 repetitions, 16 of them carried from s1).
+- **Verification:** `summary.csv` reports `valid_repeats=3` for all 24 GLM points; raw ids show s1 (rep 1,
+  16 points) and s2 records; no duplicate (point, repetition) pairs.
+- **Rerun needed:** no. **Open:** root cause of the bare CUDA error (see docs/experience.md open items).

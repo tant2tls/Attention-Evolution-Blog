@@ -332,7 +332,9 @@ def architecture(study: Path, keys):
                          attention_types_and_counts="; ".join(f"{k}: {v}" for k, v in inv["attention"]["types"].items()),
                          state_types=sel.get("state_types", "see memory_layers.csv"),
                          dtype="; ".join(f"{k}: {v['params'] / 1e9:.1f}B" for k, v in inv["dtypes"].items()),
-                         kv_state_dtype=sel.get("kv_dtype_resolved", ""),
+                         kv_state_dtype=(sel.get("kv_format", "").split("x")[0] if sel else "")
+                         .replace("auto", "auto = BF16" if sel and "bfloat16" in sel.get("state_dtype_evidence", "")
+                                  and sel.get("kv_format") == "auto" else "auto"),
                          evidence=f"raw/{key}/architecture/inventory.json (config sha256 {inv['config_sha256'][:12]}; "
                                   f"{inv['attention']['evidence']})",
                          status=inv["label"]))
@@ -419,7 +421,7 @@ def main():
         "Packed 4-bit weights count 2 params per byte; quantization scales are excluded.\n")
     hashes = {}
     for f in sorted(study.rglob("*")):
-        if f.is_file() and "charts" not in f.parts:
+        if f.is_file() and f.name != "manifest_hashes.json":
             hashes[str(f.relative_to(study))] = hashlib.sha256(f.read_bytes()).hexdigest()
     (study / "manifest_hashes.json").write_text(json.dumps(hashes, indent=0))
     print(f"memory {len(mem)} rows, layers {len(meml)}, decode {len(dec)}, prefill {len(pre)}, overhead {len(ov)}, "

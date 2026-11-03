@@ -504,17 +504,38 @@ class Runner:
                 ok, why = self.supported(L)
                 if not ok:
                     self.write_unsupported(L, why)
+            resume = [x for x in self.a.resume_sessions.split(",") if x]
+            summary["resumed_from"] = resume
+
+            def done(exp, point, rep):
+                """Valid record of this (point, rep) from an earlier accepted session of the same config."""
+                for ss in resume:
+                    for ext in (".json", ".json.gz"):
+                        if (self.raw / exp / f"repetition-{rep}" / f"{ss}__{point}{ext}").exists():
+                            return ss
+                return None
+
             self.warmup()
             for rep in range(1, sc.REPEATS + 1):
                 for L in contexts:
                     if not self.supported(L)[0]:
                         continue
+                    pre = done("prefill", f"prefill_L{L}", rep)
                     for B in sc.DECODE_BATCHES:
+                        prev = done("decode", f"decode_L{L}_B{B}", rep)
+                        if prev and (B != 1 or done("memory", f"memory_L{L}", rep)):
+                            summary["points"].append([f"decode_L{L}_B{B}", rep, "measured", f"carried:{prev}"])
+                            if B == 1:
+                                summary["points"].append([f"memory_L{L}", rep, "measured", f"carried:{prev}"])
+                            continue
                         self.last_memory = None
                         r = self.run_decode(L, B, rep, "accepted", memory=(B == 1 and self.probe_layers))
                         summary["points"].append([r["point"], rep, r["status"]])
                         if self.last_memory:  # co-collected memory point counts too (fixes.md B5)
                             summary["points"].append(list(self.last_memory))
+                    if pre:
+                        summary["points"].append([f"prefill_L{L}", rep, "measured", f"carried:{pre}"])
+                        continue
                     r = self.run_prefill(L, rep, "accepted")
                     summary["points"].append([r["point"], rep, r["status"]])
         summary["measurement_completed_at_utc"] = utc()
@@ -534,6 +555,8 @@ def main():
     ap.add_argument("--kv-cache-dtype", default="fp8")
     ap.add_argument("--mode", choices=["smoke", "study", "overhead"], default="study")
     ap.add_argument("--contexts", default="")
+    ap.add_argument("--resume-sessions", default="", help="accepted sessions (same frozen config) whose valid "
+                    "(point, rep) records are carried instead of re-measured")
     a = ap.parse_args()
     for k, v in sc.MODELS[a.model_key]["env"].items():  # model-specific runtime env, recorded in launch.json
         os.environ.setdefault(k, v)

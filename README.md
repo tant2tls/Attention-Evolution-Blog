@@ -13,8 +13,10 @@ its numbers are not evidence. Write the final blog after measurements are review
 | `docs/gpu_setup_and_fixes.md` | Relevant setup, previous failures and fixes, plus instrumentation gaps |
 | `docs/import_provenance.json` | Source paths and SHA-256 hashes for this selective transfer |
 | `bench/trace_breakdown.py`, `bench/blog_layers.py` | Historical offline trace inspection aids, not measurement runners |
+| `bench/attn_study.py`, `attn_probe.py`, `session.py`, … | Study runners (see [bench/README.md](bench/README.md)) |
 | `bench/README.md` | Limits of those aids and requirements for the new runners |
 | `report/<study-id>/` | All study results, raw repetitions, configs, logs, charts, completion times and bug fixes |
+| [report/2026-11-03_h100x8_vllm033dev450_cu130_ep](report/2026-11-03_h100x8_vllm033dev450_cu130_ep/README.md) | Measured study: six models, memory/decode/prefill, fixes B1–B8 |
 | [report/README.md](report/README.md) | Study folder layout, three-repeat rule and completion records |
 | [docs/README.md](docs/README.md) | Reusable setup, checkpoint download and workflow experience |
 

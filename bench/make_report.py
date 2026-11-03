@@ -84,8 +84,8 @@ def memory_chart(study: Path, out: Path):
         ax.set_title(f"{CTX_LABEL[L]} context", loc="left")
         ax.set_xlabel("GiB, all 8 GPUs (occupied blocks)")
         ax.set_yticks(range(len(models)), [disp(k) for k in models])
-        ax.invert_yaxis()
         ax.margins(x=0.25)
+    axes[0].invert_yaxis()  # shared y: invert once (each call toggles), so the first model is on top
     h, l = axes[0].get_legend_handles_labels()
     seen = {}
     for hh, ll in zip(h, l):
@@ -106,7 +106,8 @@ def decode_chart(study: Path, out: Path):
     idx = summary_index(study)
     fig = plt.figure(figsize=(15, 7.5))
     gs = fig.add_gridspec(2, 4, height_ratios=[1.0, 0.75])
-    axes = [fig.add_subplot(gs[0, i]) for i in range(4)]
+    axes = [fig.add_subplot(gs[0, 0])]
+    axes += [fig.add_subplot(gs[0, i], sharey=axes[0]) for i in range(1, 4)]
     for ax, B in zip(axes, sc.DECODE_BATCHES):
         for k in sc.MODEL_ORDER:
             xs, ys, lo, hi, full = [], [], [], [], []
@@ -131,6 +132,8 @@ def decode_chart(study: Path, out: Path):
         ax.set_xlabel("context length")
         ax.set_ylim(bottom=0)
     axes[0].set_ylabel("decode attention, ms / step")
+    ymax = max((l.get_ydata().max() for ax in axes for l in ax.get_lines() if len(l.get_ydata())), default=1)
+    axes[0].set_ylim(0, ymax * 1.12)  # shared y: fit every series (incl. max whiskers margin)
     handles, labels = axes[-1].get_legend_handles_labels()
     for ax in axes[:-1]:
         h, l = ax.get_legend_handles_labels()
@@ -138,7 +141,8 @@ def decode_chart(study: Path, out: Path):
             if b not in labels:
                 handles.append(a)
                 labels.append(b)
-    fig.legend(handles, labels, loc="upper right", ncol=6, frameon=False)
+    fig.legend(handles, labels, loc="lower right", bbox_to_anchor=(0.97, 0.1), ncol=2, frameon=False,
+               title="model", fontsize=10)
     # fraction of whole-model step at 64K batch 8
     ax = fig.add_subplot(gs[1, :2])
     names, fr = [], []

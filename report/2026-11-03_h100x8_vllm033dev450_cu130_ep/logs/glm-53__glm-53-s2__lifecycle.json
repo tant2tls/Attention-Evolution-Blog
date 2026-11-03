@@ -1,0 +1,51 @@
+{
+ "study_id": "2026-11-03_h100x8_vllm033dev450_cu130_ep",
+ "model": "glm-53",
+ "session_id": "glm-53-s2",
+ "role": "accepted retry (resume of glm-53-s1 after B8)",
+ "cmd": [
+  "python",
+  "bench/attn_study.py",
+  "--model-key",
+  "glm-53",
+  "--session-id",
+  "glm-53-s2",
+  "--kv-cache-dtype",
+  "fp8",
+  "--mode",
+  "study",
+  "--resume-sessions",
+  "glm-53-s1"
+ ],
+ "idle_baseline_mib": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "started_at_utc": "2026-11-03T07:18:50Z",
+ "host_cpu_quota": "12800000 100000",
+ "pgid": 200088,
+ "returncode": 0,
+ "timed_out": false,
+ "measurement_completed_at_utc": "2026-11-03T07:28:49Z",
+ "shutdown_verified_at_utc": "2026-11-03T07:28:56Z",
+ "finished_at_utc": "2026-11-03T07:28:56Z",
+ "elapsed_seconds": 606.4,
+ "gpu_after_mib": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "status": "complete",
+ "reason": ""
+}

@@ -173,7 +173,7 @@ def main() -> int:
             pts = json.loads(sess.read_text()).get("points", [])
             if pts and isinstance(pts[0], list):
                 ok = {}
-                for name, rep, st in pts:
+                for name, rep, st, *_ in pts:
                     ok.setdefault(name, 0)
                     ok[name] += st == "measured"
                 valid_reps = sum(ok.values())

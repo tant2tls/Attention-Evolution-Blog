@@ -1,7 +1,8 @@
 # Study reports and evidence
 
 All measurement outputs belong under `report/<study-id>/`. Create a fresh study ID for a new
-runtime, node or protocol. This folder currently contains instructions only; no measurements exist.
+runtime, node or protocol. Studies: [`2026-11-03_h100x8_vllm033dev450_cu130_ep`](2026-11-03_h100x8_vllm033dev450_cu130_ep/README.md)
+(six models, TP8 + EP, FP8-first KV; 138 supported points × 3 valid repetitions, 6 Llama 128K points unsupported).
 
 ```text
 report/<study-id>/

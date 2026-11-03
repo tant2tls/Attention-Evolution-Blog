@@ -106,6 +106,44 @@ def main():
             L.append(f"| {r['model']} | {r['experiment']} | {CTX.get(r['context_tokens'], r['context_tokens'])} | "
                      f"{r['target_batch']} | {f(r['probed_model_ms'])} | {f(r['unprobed_model_ms'])} | "
                      f"{f(r['overhead_pct'], 1)} | {f(r.get('attention_lower_bound_ms', ''))} |")
+    L.append("\n## Deployment differences that limit comparisons\n")
+    L.append("| model | KV / state formats actually allocated | graph mode | other deviations |")
+    L.append("| --- | --- | --- | --- |")
+    for k in sc.MODEL_ORDER:
+        p = st / "config" / f"{k}__selected.json"
+        if not p.exists():
+            continue
+        s = json.loads(p.read_text())
+        r = s["resolved"]
+        gm = f"{r['cudagraph_mode']}, breakable={r['breakable_cudagraph'] or 'default'}"
+        dev = []
+        if s["fallback_reason"].startswith("fp8 failed"):
+            dev.append("FP8 KV failed → `auto` (BF16) KV; see fixes.md B7")
+        if sc.MODELS[k]["env"]:
+            dev.append("env " + ", ".join(f"`{a}={b}`" for a, b in sc.MODELS[k]["env"].items()) + " (probes need it)")
+        extra = {a: b for a, b in sc.MODELS[k]["extra"].items() if a not in ("max_model_len",)}
+        if extra:
+            dev.append("engine " + ", ".join(f"`{a}={b}`" for a, b in extra.items()))
+        if r["max_model_len"] != 132096:
+            dev.append(f"max_model_len {r['max_model_len']} (128K points unsupported)")
+        L.append(f"| {sc.MODELS[k]['display']} | {s['state_dtype_evidence'].replace(' | ', '<br>')} | {gm} | {'; '.join(dev) or '-'} |")
+    L.append("\nFP8 K/V scales are the stock 1.0 (no calibrated scales shipped); FP8 vs BF16 state is a precision "
+             "difference, not an architecture property. Weights keep each checkpoint's native mixed precision.\n")
+    missing = [r for r in summ if r["status"] not in ("complete",)]
+    L.append("## Missing or incomplete measurements\n")
+    if missing:
+        seen = set()
+        for r in missing:
+            key = (r["experiment"], r["model"], r["context_tokens"], r.get("target_batch", ""))
+            if key in seen:
+                continue
+            seen.add(key)
+            L.append(f"- {r['model']} {r['experiment']} context {r['context_tokens']}"
+                     + (f" batch {r['target_batch']}" if r.get("target_batch") else "") + f": **{r['status']}**")
+    not_run = [k for k in sc.MODEL_ORDER if not (st / "config" / f"{k}__selected.json").exists()]
+    for k in not_run:
+        L.append(f"- {sc.MODELS[k]['display']}: not measured yet")
+    L.append("")
     L.append("\n## Definitions and limits\n")
     L.append("""- **Attention time**: CUDA events (`external=True`, re-recorded on every CUDA-graph replay) at entry and
   exit of each decoder layer's attention module (projections, core, sparse index/compression, recurrent
@@ -128,6 +166,27 @@ def main():
 - Labels: every CSV number is `measured` unless marked; architecture numbers are `calculated from checkpoint`.
 """)
     (st / "README.md").write_text("\n".join(L))
+    # Study manifest: frozen identity, runtime/model pins, node record and workload hashes.
+    import workload as wl
+    pins = {}
+    for k in sc.MODEL_ORDER:
+        p = st / "config" / f"{k}__selected.json"
+        sel = json.loads(p.read_text()) if p.exists() else {}
+        inv = st / "raw" / k / "architecture" / "inventory.json"
+        pins[k] = dict(repo=sc.MODELS[k]["repo"], revision=sc.MODELS[k]["revision"],
+                       config_id=sel.get("config_id"), accepted_sessions=sel.get("accepted_sessions"),
+                       overhead_sessions=sel.get("overhead_sessions"),
+                       validation_attempts=sel.get("validation_attempts"),
+                       config_sha256=json.loads(inv.read_text())["config_sha256"] if inv.exists() else None)
+    man = dict(study_id=st.name, vllm=sc.VLLM_VERSION, vllm_commit=sc.VLLM_COMMIT, torch=sc.TORCH_VERSION,
+               installer="config/install.sh", pins_file="config/vllm-pin.txt",
+               freeze="config/requirements.freeze.txt", node_preflight="logs/preflight_node.txt",
+               policy=dict(sc.COMMON), contexts=sc.CONTEXTS, decode_batches=sc.DECODE_BATCHES,
+               prefill_chunk=sc.PREFILL_CHUNK, decode_warmup_steps=sc.DECODE_WARMUP_STEPS,
+               decode_measured_steps=sc.DECODE_MEASURED_STEPS, repetitions=sc.REPEATS,
+               workload=wl.describe(), models=pins, code="bench/ (see git history of this repository)",
+               evidence_hashes="manifest_hashes.json", large_external_artifacts="none (no profiler traces captured)")
+    (st / "manifest.json").write_text(json.dumps(man, indent=1, default=str))
     print("README written")
 
 

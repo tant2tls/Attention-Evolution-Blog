@@ -22,3 +22,19 @@ Keep config, logs, per-model raw repetitions, CSVs, summaries, charts, completio
 bug-fix guide together there. Every supported point requires three independent valid repetitions;
 summary medians/min/max link to all raw runs. Record model completion/cleanup timestamps even
 when a session fails or is interrupted. General setup/download lessons belong in `docs/`.
+
+## Study runners (2026-11-03)
+
+| File | Role |
+| --- | --- |
+| `study_config.py` | Frozen study id, model pins, common TP8/EP/0.82 policy, per-model engine/env deviations |
+| `env.sh` | Activate the frozen venv; study-owned `HF_HOME`; JIT caches on node-local disk |
+| `download_model.py` | Pinned-revision download into a study-owned dir with per-file size check and log |
+| `checkpoint_inventory.py` | Safetensors-header parameter inventory and config-based attention-layer counts |
+| `workload.py` | Public Gutenberg corpus → per-model raw token-ID prompts with hashes |
+| `attn_probe.py` | vLLM worker extension: replay-valid CUDA events per attention module and model window, state-buffer introspection |
+| `attn_study.py` | One engine launch: smoke / study / overhead modes, step-driven decode, prefill and co-collected memory, `--resume-sessions` |
+| `session.py` | Process-group ownership, timeout, cleanup, GPU-idle shutdown verification, `model_completion.csv` row |
+| `freeze_config.py` | Write-once per-model selected deployment (`config/<model>__selected.json`) |
+| `run_accepted.sh` | Accepted session followed by matched unprobed control |
+| `analyze.py`, `make_report.py`, `write_readme.py` | CSVs/summary/hashes, charts (separate matplotlib venv), study README + manifest |
