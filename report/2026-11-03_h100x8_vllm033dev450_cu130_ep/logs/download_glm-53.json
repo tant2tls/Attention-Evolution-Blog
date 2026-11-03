@@ -1,0 +1,16 @@
+{
+ "model": "glm-53",
+ "repo": "zai-org/GLM-5.3-Flash",
+ "revision": "eb9eb208eb0d988989d07a6a12d0fdeb5f52574a",
+ "dest": "/root/attn-study/weights/glm-53",
+ "ignore": [
+  ".eval_results/*"
+ ],
+ "started_at_utc": "2026-11-03T04:30:32.396074Z",
+ "status": "ok",
+ "files_expected": 72,
+ "files_bad": [],
+ "bytes": 328366172624,
+ "finished_at_utc": "2026-11-03T04:35:43.763311Z",
+ "elapsed_seconds": 311.4
+}

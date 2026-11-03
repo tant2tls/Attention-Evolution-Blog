@@ -1,0 +1,14 @@
+{
+ "model": "qwen-38-fp8",
+ "repo": "Qwen/Qwen3.8-Flash-Next-FP8",
+ "revision": "236dfdf285828023ca3bcd3f37366c58a3469b13",
+ "dest": "/root/attn-study/weights/qwen-38-fp8",
+ "ignore": [],
+ "started_at_utc": "2026-11-03T04:27:33.394181Z",
+ "status": "ok",
+ "files_expected": 144,
+ "files_bad": [],
+ "bytes": 185563783577,
+ "finished_at_utc": "2026-11-03T04:30:27.746657Z",
+ "elapsed_seconds": 174.4
+}

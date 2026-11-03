@@ -1,0 +1,164 @@
+{
+ "model": "mimo-v26",
+ "repo": "XiaomiMiMo/MiMo-V2.6-Flash-MOPD",
+ "revision": "2479e2d0029eca9a34cc7e7f55a121925f81908e",
+ "architectures": [
+  "MiMoV2ForCausalLM"
+ ],
+ "config_sha256": "61bea4a0f7a0dd8969f8cae528761e26b697dd12ff63e98804c3f0945492e621",
+ "weight_index_sha256": "e16ec5b736c59c8032af31004f3b99e31560eee70bd24c368c843a4d63f93b67",
+ "n_safetensors": 129,
+ "total_params": 310756322688,
+ "base_model_params": 308804995264,
+ "categories": {
+  "mtp": {
+   "params": 987820224,
+   "bytes": 1189208448,
+   "tensors": 36
+  },
+  "base_other": {
+   "params": 4733683904,
+   "bytes": 6394015616,
+   "tensors": 329
+  },
+  "vision_audio": {
+   "params": 963507200,
+   "bytes": 1927014400,
+   "tensors": 439
+  },
+  "lm_head": {
+   "params": 624951296,
+   "bytes": 1249902592,
+   "tensors": 1
+  },
+  "embedding": {
+   "params": 651165696,
+   "bytes": 1302331392,
+   "tensors": 21
+  },
+  "routed_experts": {
+   "params": 302795194368,
+   "bytes": 151397597184,
+   "tensors": 36096
+  },
+  "shared_experts": {
+   "params": 0,
+   "bytes": 0,
+   "tensors": 0
+  }
+ },
+ "dtypes": {
+  "BF16": {
+   "params": 4101308032,
+   "bytes": 8202616064
+  },
+  "F8_E4M3": {
+   "params": 3859808256,
+   "bytes": 3859808256
+  },
+  "F32": {
+   "params": 12032,
+   "bytes": 48128
+  },
+  "U8(packed fp4)": {
+   "params": 302795194368,
+   "bytes": 151397597184
+  }
+ },
+ "scale_bytes_excluded": 9463294464,
+ "packed_fp4_bytes": 151397597184,
+ "n_routed_experts": 256,
+ "experts_per_tok": 8,
+ "active_routed_fraction": 0.03125,
+ "active_params_per_token": 14820985024.0,
+ "active_definition": "base_other + shared_experts + lm_head + routed_experts*experts_per_tok/n_routed; excludes input embedding, lookup tables, MTP/draft, vision/audio",
+ "layers": 48,
+ "attention": {
+  "types": {
+   "full attention (GQA, sinks)": 9,
+   "sliding-window attention (128)": 39
+  },
+  "evidence": "hybrid_layer_pattern (0=full, 1=SWA)",
+  "detail": {
+   "full_layers": [
+    0,
+    5,
+    11,
+    17,
+    23,
+    29,
+    35,
+    41,
+    47
+   ],
+   "kv_heads": 4,
+   "swa_kv_heads": 8,
+   "head_dim": 192,
+   "v_head_dim": 128,
+   "sliding_window": 128
+  }
+ },
+ "quantization_config": {
+  "activation_scheme": "dynamic",
+  "fmt": "e4m3",
+  "ignored_layers": [
+   "model.layers.0.self_attn.o_proj",
+   "model.layers.1.self_attn.o_proj",
+   "model.layers.10.self_attn.o_proj",
+   "model.layers.11.self_attn.o_proj",
+   "model.layers.12.self_attn.o_proj",
+   "model.layers.13.self_attn.o_proj",
+   "model.layers.14.self_attn.o_proj",
+   "model.layers.15.self_attn.o_proj",
+   "model.layers.16.self_attn.o_proj",
+   "model.layers.17.self_attn.o_proj",
+   "model.layers.18.self_attn.o_proj",
+   "model.layers.19.self_attn.o_proj",
+   "model.layers.2.self_attn.o_proj",
+   "model.layers.20.self_attn.o_proj",
+   "model.layers.21.self_attn.o_proj",
+   "model.layers.22.self_attn.o_proj",
+   "model.layers.23.self_attn.o_proj",
+   "model.layers.24.self_attn.o_proj",
+   "model.layers.25.self_attn.o_proj",
+   "model.layers.26.self_attn.o_proj",
+   "model.layers.27.self_attn.o_proj",
+   "model.layers.28.self_attn.o_proj",
+   "model.layers.29.self_attn.o_proj",
+   "model.layers.3.self_attn.o_proj",
+   "model.layers.30.self_attn.o_proj",
+   "model.layers.31.self_attn.o_proj",
+   "model.layers.32.self_attn.o_proj",
+   "model.layers.33.self_attn.o_proj",
+   "model.layers.34.self_attn.o_proj",
+   "model.layers.35.self_attn.o_proj",
+   "model.layers.36.self_attn.o_proj",
+   "model.layers.37.self_attn.o_proj",
+   "model.layers.38.self_attn.o_proj",
+   "model.layers.39.self_attn.o_proj",
+   "model.layers.4.self_attn.o_proj",
+   "model.layers.40.self_attn.o_proj",
+   "model.layers.41.self_attn.o_proj",
+   "model.layers.42.self_attn.o_proj",
+   "model.layers.43.self_attn.o_proj",
+   "model.layers.44.self_attn.o_proj",
+   "model.layers.45.self_attn.o_proj",
+   "model.layers.46.self_attn.o_proj",
+   "model.layers.47.self_attn.o_proj",
+   "model.layers.5.self_attn.o_proj",
+   "model.layers.6.self_attn.o_proj",
+   "model.layers.7.self_attn.o_proj",
+   "model.layers.8.self_attn.o_proj",
+   "model.layers.9.self_attn.o_proj",
+   "model.decoder.self_attn.o_proj"
+  ],
+  "mxfp4_block_size": 32,
+  "quant_method": "fp8",
+  "store_dtype": "mxfp4",
+  "weight_block_size": [
+   128,
+   128
+  ]
+ },
+ "label": "calculated from checkpoint"
+}

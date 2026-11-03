@@ -1,0 +1,49 @@
+{
+ "study_id": "2026-11-03_h100x8_vllm033dev450_cu130_ep",
+ "model": "llama-31-70b",
+ "session_id": "llama-fp8-smoke2",
+ "role": "validation fp8",
+ "cmd": [
+  "python",
+  "bench/attn_study.py",
+  "--model-key",
+  "llama-31-70b",
+  "--session-id",
+  "llama-fp8-smoke2",
+  "--kv-cache-dtype",
+  "fp8",
+  "--mode",
+  "smoke"
+ ],
+ "idle_baseline_mib": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "started_at_utc": "2026-11-03T04:35:58Z",
+ "host_cpu_quota": "12800000 100000",
+ "pgid": 22919,
+ "returncode": 2,
+ "timed_out": false,
+ "measurement_completed_at_utc": null,
+ "shutdown_verified_at_utc": "2026-11-03T04:38:47Z",
+ "finished_at_utc": "2026-11-03T04:38:47Z",
+ "elapsed_seconds": 168.2,
+ "gpu_after_mib": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "status": "failed",
+ "reason": "exit code 2"
+}

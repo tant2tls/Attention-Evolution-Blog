@@ -1,0 +1,62 @@
+{
+ "model": "llama-31-70b",
+ "repo": "meta-llama/Llama-3.1-70B-Instruct",
+ "revision": "1605565b47bb9346c5515c34102e054115b4f98b",
+ "architectures": [
+  "LlamaForCausalLM"
+ ],
+ "config_sha256": "fa6e9124e4621df77aecf96fbfaf7975814013d2d5ab1c972e965000588a9749",
+ "weight_index_sha256": "2abe0910e23770a30ccf9b1b91804c64831c47f9c98defaa5293aa999433fc2b",
+ "n_safetensors": 30,
+ "total_params": 70553706496,
+ "base_model_params": 70553706496,
+ "categories": {
+  "embedding": {
+   "params": 1050673152,
+   "bytes": 2101346304,
+   "tensors": 1
+  },
+  "base_other": {
+   "params": 68452360192,
+   "bytes": 136904720384,
+   "tensors": 721
+  },
+  "lm_head": {
+   "params": 1050673152,
+   "bytes": 2101346304,
+   "tensors": 1
+  },
+  "shared_experts": {
+   "params": 0,
+   "bytes": 0,
+   "tensors": 0
+  }
+ },
+ "dtypes": {
+  "BF16": {
+   "params": 70553706496,
+   "bytes": 141107412992
+  }
+ },
+ "scale_bytes_excluded": 0,
+ "packed_fp4_bytes": 0,
+ "n_routed_experts": null,
+ "experts_per_tok": null,
+ "active_routed_fraction": 0.0,
+ "active_params_per_token": 69503033344.0,
+ "active_definition": "base_other + shared_experts + lm_head + routed_experts*experts_per_tok/n_routed; excludes input embedding, lookup tables, MTP/draft, vision/audio",
+ "layers": 80,
+ "attention": {
+  "types": {
+   "GQA full attention": 80
+  },
+  "evidence": "num_hidden_layers, num_key_value_heads",
+  "detail": {
+   "q_heads": 64,
+   "kv_heads": 8,
+   "head_dim": 128
+  }
+ },
+ "quantization_config": null,
+ "label": "calculated from checkpoint"
+}

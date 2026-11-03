@@ -1,0 +1,14 @@
+{
+ "model": "v4-0731",
+ "repo": "deepseek-ai/DeepSeek-V4-Flash-0731",
+ "revision": "7872f01b1d1fe23eabc4c98b48bffcef5a386062",
+ "dest": "/root/attn-study/weights/v4-0731",
+ "ignore": [],
+ "started_at_utc": "2026-11-03T04:25:30.130860Z",
+ "status": "ok",
+ "files_expected": 74,
+ "files_bad": [],
+ "bytes": 166898661074,
+ "finished_at_utc": "2026-11-03T04:27:44.504144Z",
+ "elapsed_seconds": 134.4
+}
