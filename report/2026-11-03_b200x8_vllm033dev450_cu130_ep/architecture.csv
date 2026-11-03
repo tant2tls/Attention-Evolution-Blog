@@ -1,0 +1,7 @@
+model,revision,total_params_b,base_model_params_b,active_decode_params_b,active_prefill_params_b,lookup_table_params_b,mtp_draft_params_b,layers,attention_types_and_counts,state_types,dtype,kv_state_dtype,evidence,status
+llama-31-70b,1605565b47bb9346c5515c34102e054115b4f98b,70.55,70.55,69.5,69.5,0.0,0.0,80,GQA full attention: 80,see memory_layers.csv,BF16: 70.6B,fp8,"raw/llama-31-70b/architecture/inventory.json (config sha256 fa6e9124e462; num_hidden_layers, num_key_value_heads)",calculated from checkpoint
+v4-0731,,,,,,,,,,,,,,unverified
+qwen-38-fp8,,,,,,,,,,,,,,unverified
+mimo-v26,,,,,,,,,,,,,,unverified
+v41,,,,,,,,,,,,,,unverified
+glm-53,,,,,,,,,,,,,,unverified

@@ -1,0 +1,145 @@
+{
+ "model": "v4-0731",
+ "repo": "deepseek-ai/DeepSeek-V4-Flash-0731",
+ "revision": "7872f01b1d1fe23eabc4c98b48bffcef5a386062",
+ "architectures": [
+  "DeepseekV4ForCausalLM"
+ ],
+ "config_sha256": "6c8f3d2d3b48707541b88f32f22ef3f0f8a6b57d8523281e2b8d3cdb0ae9a023",
+ "weight_index_sha256": "98efab455cf08dfbbbaaba6f570e1bf10bf927d2b4c3c453a59c2f6f0e3be92b",
+ "n_safetensors": 48,
+ "total_params": 304180418216,
+ "base_model_params": 284334567252,
+ "categories": {
+  "embedding": {
+   "params": 529530880,
+   "bytes": 1059061760,
+   "tensors": 1
+  },
+  "base_other": {
+   "params": 5167984468,
+   "bytes": 5645346896,
+   "tensors": 981
+  },
+  "shared_experts": {
+   "params": 1082130432,
+   "bytes": 1082130432,
+   "tensors": 129
+  },
+  "routed_experts": {
+   "params": 277025390592,
+   "bytes": 138512695296,
+   "tensors": 33024
+  },
+  "lm_head": {
+   "params": 529530880,
+   "bytes": 1059061760,
+   "tensors": 1
+  },
+  "mtp": {
+   "params": 19845850964,
+   "bytes": 10258831184,
+   "tensors": 2369
+  }
+ },
+ "dtypes": {
+  "BF16": {
+   "params": 1483567488,
+   "bytes": 2967134976
+  },
+  "I64": {
+   "params": 2327040,
+   "bytes": 18616320
+  },
+  "F32": {
+   "params": 37741352,
+   "bytes": 150965408
+  },
+  "F8_E4M3": {
+   "params": 6304038912,
+   "bytes": 6304038912
+  },
+  "I8(packed fp4)": {
+   "params": 296352743424,
+   "bytes": 148176371712
+  }
+ },
+ "scale_bytes_excluded": 9261409112,
+ "packed_fp4_bytes": 148176371712,
+ "n_routed_experts": 256,
+ "experts_per_tok": 6,
+ "active_routed_fraction": 0.0234375,
+ "active_params_per_token": 13272428372.0,
+ "active_definition": "base_other + shared_experts + lm_head + routed_experts*experts_per_tok/n_routed; excludes input embedding, lookup tables, MTP/draft, vision/audio",
+ "layers": 43,
+ "attention": {
+  "types": {
+   "sliding-window MLA only (compress_ratio=0)": 2,
+   "window + 4x compressed KV + indexer (compress_ratio=4)": 21,
+   "window + 128x compressed KV (compress_ratio=128)": 20
+  },
+  "evidence": "compress_ratios[:num_hidden_layers], sliding_window",
+  "detail": {
+   "compress_ratios": [
+    0,
+    0,
+    4,
+    128,
+    4,
+    128,
+    4,
+    128,
+    4,
+    128,
+    4,
+    128,
+    4,
+    128,
+    4,
+    128,
+    4,
+    128,
+    4,
+    128,
+    4,
+    128,
+    4,
+    128,
+    4,
+    128,
+    4,
+    128,
+    4,
+    128,
+    4,
+    128,
+    4,
+    128,
+    4,
+    128,
+    4,
+    128,
+    4,
+    128,
+    4,
+    128,
+    4
+   ],
+   "sliding_window": 128,
+   "head_dim": 512,
+   "kv_heads": 1,
+   "index_topk": 512
+  }
+ },
+ "quantization_config": {
+  "activation_scheme": "dynamic",
+  "fmt": "e4m3",
+  "quant_method": "fp8",
+  "scale_fmt": "ue8m0",
+  "weight_block_size": [
+   128,
+   128
+  ]
+ },
+ "label": "calculated from checkpoint"
+}

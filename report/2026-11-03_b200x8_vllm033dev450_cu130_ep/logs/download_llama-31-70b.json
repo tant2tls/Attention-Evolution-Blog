@@ -1,0 +1,16 @@
+{
+ "model": "llama-31-70b",
+ "repo": "meta-llama/Llama-3.1-70B-Instruct",
+ "revision": "1605565b47bb9346c5515c34102e054115b4f98b",
+ "dest": "/root/attn-study/weights/llama-31-70b",
+ "ignore": [
+  "original/*"
+ ],
+ "started_at_utc": "2026-11-03T07:50:01.164820Z",
+ "status": "ok",
+ "files_expected": 40,
+ "files_bad": [],
+ "bytes": 141116758507,
+ "finished_at_utc": "2026-11-03T07:58:13.245714Z",
+ "elapsed_seconds": 492.1
+}

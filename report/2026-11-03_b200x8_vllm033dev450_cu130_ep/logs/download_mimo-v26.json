@@ -1,0 +1,18 @@
+{
+ "model": "mimo-v26",
+ "repo": "XiaomiMiMo/MiMo-V2.6-Flash-MOPD",
+ "revision": "2479e2d0029eca9a34cc7e7f55a121925f81908e",
+ "dest": "/root/attn-study/weights/mimo-v26",
+ "ignore": [
+  "dflash/*",
+  "audio_tokenizer/*",
+  "assets/*"
+ ],
+ "started_at_utc": "2026-11-03T07:52:32.310342Z",
+ "status": "ok",
+ "files_expected": 142,
+ "files_bad": [],
+ "bytes": 172955366151,
+ "finished_at_utc": "2026-11-03T07:54:37.085206Z",
+ "elapsed_seconds": 124.8
+}

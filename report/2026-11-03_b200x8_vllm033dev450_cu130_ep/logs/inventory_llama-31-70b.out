@@ -1,0 +1,2 @@
+{"model": "llama-31-70b", "total_params": 70553706496, "base_model_params": 70553706496, "active_params_per_token": 69503033344.0} {'embedding': 1.051, 'base_other': 68.452, 'lm_head': 1.051, 'shared_experts': 0.0} {'GQA full attention': 80}
+{"model": "llama-31-70b", "total_params": 70553706496, "base_model_params": 70553706496, "active_params_per_token": 69503033344.0} {'embedding': 1.051, 'base_other': 68.452, 'lm_head': 1.051, 'shared_experts': 0.0} {'GQA full attention': 80}

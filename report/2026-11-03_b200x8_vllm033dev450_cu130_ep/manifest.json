@@ -1,0 +1,123 @@
+{
+ "study_id": "2026-11-03_b200x8_vllm033dev450_cu130_ep",
+ "vllm": "0.33.0rc1.dev450+g17e675965",
+ "vllm_commit": "17e675965d54bef8a3eb77ea92c6bae195ef793c",
+ "torch": "2.14.0+cu130",
+ "installer": "config/install.sh",
+ "pins_file": "config/vllm-pin.txt",
+ "freeze": "config/requirements.freeze.txt",
+ "node_preflight": "logs/preflight_node.txt",
+ "policy": {
+  "tensor_parallel_size": 8,
+  "enable_expert_parallel": true,
+  "gpu_memory_utilization": 0.82,
+  "enable_prefix_caching": false,
+  "max_num_batched_tokens": 8192,
+  "max_num_seqs": 8,
+  "async_scheduling": false,
+  "max_model_len": 132096,
+  "enable_chunked_prefill": true
+ },
+ "contexts": [
+  1024,
+  16384,
+  65536,
+  131072
+ ],
+ "decode_batches": [
+  1,
+  8
+ ],
+ "prefill_chunk": 8192,
+ "decode_warmup_steps": 50,
+ "decode_measured_steps": 50,
+ "repetitions": 3,
+ "workload": {
+  "version": "gutenberg3-cyclic-v1",
+  "stride": 104729,
+  "corpus": [
+   {
+    "url": "https://www.gutenberg.org/cache/epub/2600/pg2600.txt",
+    "file": "pg2600.txt",
+    "sha256": "2d5bb2ad5f422765e714617e21fa31bbaf8958aa79682c86fca6660fcc5d1b2b"
+   },
+   {
+    "url": "https://www.gutenberg.org/cache/epub/2701/pg2701.txt",
+    "file": "pg2701.txt",
+    "sha256": "b5e88b71a1cda068e9ab1d94344c9d932338ba6da1a66def97a1aecd9cfcc87d"
+   },
+   {
+    "url": "https://www.gutenberg.org/cache/epub/1342/pg1342.txt",
+    "file": "pg1342.txt",
+    "sha256": "3f6bb9d6f78e0293b56acd4714dd68cb7d6d1d293402031ce9d5a216bcaf9d75"
+   }
+  ],
+  "rule": "prompt(L,i,rep)=stream[(start+k) % N], start=((rep*64+i+salt*997)*STRIDE) % N; no special tokens, no chat template"
+ },
+ "models": {
+  "llama-31-70b": {
+   "repo": "meta-llama/Llama-3.1-70B-Instruct",
+   "revision": "1605565b47bb9346c5515c34102e054115b4f98b",
+   "config_id": "llama-31-70b__kv-fp8__be3bd823ed",
+   "accepted_sessions": [
+    "llama-31-70b-s1"
+   ],
+   "overhead_sessions": [
+    "llama-31-70b-overhead-s1"
+   ],
+   "validation_attempts": [
+    "llama-31-70b-fp8-smoke-s1-1",
+    "llama-31-70b-fp8-smoke-s1-2"
+   ],
+   "config_sha256": "fa6e9124e4621df77aecf96fbfaf7975814013d2d5ab1c972e965000588a9749"
+  },
+  "v4-0731": {
+   "repo": "deepseek-ai/DeepSeek-V4-Flash-0731",
+   "revision": "7872f01b1d1fe23eabc4c98b48bffcef5a386062",
+   "config_id": null,
+   "accepted_sessions": null,
+   "overhead_sessions": null,
+   "validation_attempts": null,
+   "config_sha256": null
+  },
+  "qwen-38-fp8": {
+   "repo": "Qwen/Qwen3.8-Flash-Next-FP8",
+   "revision": "236dfdf285828023ca3bcd3f37366c58a3469b13",
+   "config_id": null,
+   "accepted_sessions": null,
+   "overhead_sessions": null,
+   "validation_attempts": null,
+   "config_sha256": null
+  },
+  "mimo-v26": {
+   "repo": "XiaomiMiMo/MiMo-V2.6-Flash-MOPD",
+   "revision": "2479e2d0029eca9a34cc7e7f55a121925f81908e",
+   "config_id": null,
+   "accepted_sessions": null,
+   "overhead_sessions": null,
+   "validation_attempts": null,
+   "config_sha256": null
+  },
+  "v41": {
+   "repo": "deepseek-ai/DeepSeek-V4.1-Flash",
+   "revision": "dba1be0a40aa45a94ad051997016db3960a90277",
+   "config_id": null,
+   "accepted_sessions": null,
+   "overhead_sessions": null,
+   "validation_attempts": null,
+   "config_sha256": null
+  },
+  "glm-53": {
+   "repo": "zai-org/GLM-5.3-Flash",
+   "revision": "eb9eb208eb0d988989d07a6a12d0fdeb5f52574a",
+   "config_id": null,
+   "accepted_sessions": null,
+   "overhead_sessions": null,
+   "validation_attempts": null,
+   "config_sha256": null
+  }
+ },
+ "code": "bench/ (see git history of this repository)",
+ "evidence_hashes": "manifest_hashes.json",
+ "large_external_artifacts": "none (no profiler traces captured)"
+}

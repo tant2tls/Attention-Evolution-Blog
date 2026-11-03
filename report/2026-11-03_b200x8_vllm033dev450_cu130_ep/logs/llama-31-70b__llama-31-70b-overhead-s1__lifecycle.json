@@ -1,0 +1,49 @@
+{
+ "study_id": "2026-11-03_b200x8_vllm033dev450_cu130_ep",
+ "model": "llama-31-70b",
+ "session_id": "llama-31-70b-overhead-s1",
+ "role": "matched unprobed control",
+ "cmd": [
+  "python",
+  "bench/attn_study.py",
+  "--model-key",
+  "llama-31-70b",
+  "--session-id",
+  "llama-31-70b-overhead-s1",
+  "--kv-cache-dtype",
+  "fp8",
+  "--mode",
+  "overhead"
+ ],
+ "idle_baseline_mib": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "started_at_utc": "2026-11-03T08:19:11Z",
+ "host_cpu_quota": "20800000 100000",
+ "pgid": 38412,
+ "returncode": 0,
+ "timed_out": false,
+ "measurement_completed_at_utc": "2026-11-03T08:22:16Z",
+ "shutdown_verified_at_utc": "2026-11-03T08:22:23Z",
+ "finished_at_utc": "2026-11-03T08:22:23Z",
+ "elapsed_seconds": 191.8,
+ "gpu_after_mib": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "status": "complete",
+ "reason": ""
+}

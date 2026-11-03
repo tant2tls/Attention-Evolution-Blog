@@ -1,0 +1,9 @@
+2026-11-03T08:06:54Z A llama-31-70b validate kv=fp8 session=llama-31-70b-fp8-smoke-s1-1
+2026-11-03T08:13:28Z A llama-31-70b validation failed: llama-31-70b-fp8-smoke-s1-1
+2026-11-03T08:13:28Z A llama-31-70b validate kv=fp8 session=llama-31-70b-fp8-smoke-s1-2
+2026-11-03T08:15:45Z A llama-31-70b already frozen; skip
+2026-11-03T08:15:45Z B llama-31-70b accepted llama-31-70b-s1 (kv=fp8, expect 12 points)
+2026-11-03T08:19:11Z B llama-31-70b control llama-31-70b-overhead-s1
+2026-11-03T08:22:24Z B llama-31-70b done; CSVs regenerated (charts/README/push are manual)
+2026-11-03T08:22:24Z QUEUE_DONE
+2026-11-03T08:22:30Z A v4-0731 validate kv=fp8 session=v4-0731-fp8-smoke-s1-1
