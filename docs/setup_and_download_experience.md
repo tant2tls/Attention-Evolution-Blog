@@ -59,3 +59,7 @@ torch `2.14.0+cu130`. Evidence: [study fixes](../report/2026-11-03_h100x8_vllm03
 - **Reloads are fast after the first launch:** with page cache and JIT caches warm, a Llama validation
   launch took 105 s end to end versus 236 s cold; V4 0731's 269 s JIT kernel warmup ran only once.
 - Charts use a separate venv (`/root/attn-study/venv-report`, matplotlib) so the frozen runtime is untouched.
+- **JIT archive:** after the study the node-local JIT cache (654 MB) was archived to
+  `$ATTN_WORK_ROOT/jit-archive/cu13_vllm033dev450_g17e675965.tar`; `bench/env.sh` restores it when the local
+  cache is empty. First launches spent ~53 of 169 GPU-session minutes compiling. Only reuse it for the identical
+  vLLM/torch build (the file name carries the build).

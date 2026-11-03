@@ -140,6 +140,12 @@ Deviation checks, measured with unprobed sessions:
 
 ## 5. Runbook (copy-paste order for one model)
 
+> **Current runbook (2026-11-03):** use the two-phase order in
+> [attention_measure_plan.md §7a](../attention_measure_plan.md) and `bench/run_queue.sh` (validate all six,
+> then accepted + control in reverse order, with one resumed retry). The commands below are the older
+> per-model sequence from the historical bench and remain as reference only.
+
+
 ```bash
 # 0. node check
 hostname; nvidia-smi -L; nvidia-smi --query-gpu=driver_version --format=csv,noheader | head -1; cat /sys/fs/cgroup/cpu.max

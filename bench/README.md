@@ -36,5 +36,6 @@ when a session fails or is interrupted. General setup/download lessons belong in
 | `attn_study.py` | One engine launch: smoke / study / overhead modes, step-driven decode, prefill and co-collected memory, `--resume-sessions` |
 | `session.py` | Process-group ownership, timeout, cleanup, GPU-idle shutdown verification, `model_completion.csv` row |
 | `freeze_config.py` | Write-once per-model selected deployment (`config/<model>__selected.json`) |
-| `run_accepted.sh` | Accepted session followed by matched unprobed control |
+| `run_accepted.sh` | Accepted session followed by matched unprobed control (one model) |
+| `run_queue.sh` | Recommended: two-phase unattended queue (validate + freeze all six, then accepted + control in reverse order, one resumed retry); see plan §7a |
 | `analyze.py`, `make_report.py`, `write_readme.py` | CSVs/summary/hashes, charts (separate matplotlib venv), study README + manifest |

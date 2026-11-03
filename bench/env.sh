@@ -11,6 +11,10 @@ _cu=$(python -c 'import torch; print(torch.version.cuda.split(".")[0])')
 # lose files (fixes.md B3). The overlay root is local; it is lost if the container is rescheduled.
 export ATTN_JIT_ROOT=${ATTN_JIT_ROOT:-/var/tmp/attn_study_jit}
 _c=$ATTN_JIT_ROOT/cu$_cu
+# Restore a JIT cache archived from an earlier session of the SAME runtime build (saves ~50 min of first-launch
+# compilation, see attention_measure_plan.md section 7a). Never mix builds: the archive name carries the build.
+_jit_archive=$ATTN_WORK_ROOT/jit-archive/cu${_cu}_vllm033dev450_g17e675965.tar
+if [ ! -d "$_c/triton" ] && [ -f "$_jit_archive" ]; then mkdir -p "$ATTN_JIT_ROOT" && tar -xf "$_jit_archive" -C "$ATTN_JIT_ROOT"; fi
 export TRITON_CACHE_DIR=$_c/triton
 export TORCHINDUCTOR_CACHE_DIR=$_c/inductor
 export VLLM_CACHE_ROOT=$_c/vllm

@@ -162,6 +162,45 @@ For fair long-context comparisons, use a **fixed 8K (8192) new-token chunk** end
 
 Each valid GPU point gets **3 repetitions**. Reuse already valid, equivalent raw measurements **only after checking all setup and metric definitions**; otherwise run them again. These are workload configurations, not promises that all will fit on the available hardware.
 
+## 7a. Execution order and time budget (updated from study `2026-11-03_h100x8_vllm033dev450_cu130_ep`)
+
+The first full study took **169 GPU-session minutes** on one 8 × H100 node: validation 60 min (of which
+~53 min was one-time JIT compilation on first launch), failed attempts 15 min, accepted sessions 48 min,
+matched unprobed controls 46 min. Measured per model, warm (JIT cached, weights in page cache):
+engine init 50–120 s, accepted session 6–10 min, control 6–11 min. Cold first launch adds compilation:
+Qwen ~16 min, V4 0731 ~12 min, GLM ~8 min, V4.1 ~6 min, MiMo ~3 min, Llama ~2 min. Downloads of all six pinned
+checkpoints (1.51 TB) took ~14 min with an HF token and two parallel queues. Evidence:
+[model_completion.csv](report/2026-11-03_h100x8_vllm033dev450_cu130_ep/model_completion.csv).
+
+Run a new study in this order. Each step gates the next on content, never on a file merely existing.
+
+| # | Step | Command | Why it is faster / safer |
+| --- | --- | --- | --- |
+| 0 | Node preflight: GPUs idle, driver, cgroup, **filesystem type of every path**, disk, RAM | `bench/env.sh`; save `logs/preflight_node.txt` | B3 cost a launch: encrypted FUSE storage breaks concurrent JIT writes. JIT caches go to node-local disk |
+| 1 | Start downloads in the background (2 queues, measurement order) and pin/record revisions | `bench/download_model.py` | Overlaps 14 min of transfer with steps 2–3 |
+| 2 | Restore the JIT archive of the **same build** if present | automatic in `bench/env.sh` | Saves up to ~50 min of first-launch compilation; a different build needs a new archive |
+| 3 | Offline: checkpoint inventories, workload tokenization, single-GPU CUDA-graph event test | `bench/checkpoint_inventory.py`, `bench/workload.py` | Architecture table needs no GPU; catches probe problems in seconds |
+| 4 | **Phase A: validate all six** (FP8 first; one FP8 retry for intermittent errors; then `auto`), freeze each | `bench/run_queue.sh <suffix>` | Satisfies "validate six-model support before freezing accepted runs"; fallbacks (MiMo: B7) are known before any accepted data; every model's JIT cache is warm for phase B |
+| 5 | **Phase B: accepted session + matched control per model, in reverse order of phase A** | same script, unattended | Last-validated checkpoints are still in page cache; one resumed retry (`--resume-sessions`) keeps valid repetitions instead of rerunning a model (GLM B8) |
+| 6 | After each model: `analyze.py`, charts (separate venv), `write_readme.py`, commit/push if authorized | manual | Results are safe in Git per model; a later failure cannot lose them |
+| 7 | Archive the JIT cache for the next session on persistent storage | `tar -cf $ATTN_WORK_ROOT/jit-archive/...` | Next session starts warm |
+
+Model order for phase A: **Llama → V4 0731 → Qwen FP8 → MiMo → V4.1 → GLM**. The smallest, best-known model
+validates the harness first (Llama found B2 and B4 within minutes); models with the longest cold compile come
+before the largest download; GLM, historically unstable, runs last so its failures cannot block others.
+Phase B therefore runs GLM first (its checkpoint is still cached) and Llama last.
+
+Expected wall time for a rerun on the same build with the JIT archive: phase A ≈ 6 × 3–5 min, phase B ≈
+6 × 13–20 min, i.e. **~2–2.5 h** unattended, versus ~3 h for the first study plus debugging. Do not shortcut
+the evidence rules to go faster: keep three independent repetitions, the matched unprobed control, the
+smoke gate and one model at a time. Never compile or download for another model beside accepted timing.
+
+Known per-model settings to apply from the start (no rediscovery): Llama `enable_expert_parallel=False`
+(dense, B2) and `max_model_len=131072` (128K points `unsupported`); Llama/MiMo `VLLM_USE_BREAKABLE_CUDAGRAPH=1`;
+V4 0731 `cudagraph_mode=FULL_DECODE_ONLY`; MiMo `trust_remote_code` (hashes in
+`raw/mimo-v26/architecture/remote_code.json`) and expect FP8 KV to fail (B7) → `auto`; GLM may need the
+resumed retry (B8). All are encoded in `bench/study_config.py`.
+
 ## 8. Agent implementation and evidence rules
 
 1. **Read `docs/experience.md` first**, then the selective local handoff: `docs/model_architectures.md`, `docs/gpu_setup_and_fixes.md`, `docs/import_provenance.json` and `bench/README.md`. Consult the original repositories only for a specific unresolved implementation detail. The experience names existing GPU-runner scripts; check whether they are present and retrieve/review the referenced implementations before use. The two currently copied trace aids alone are not six-model measurement runners. Do not import historical serving sweeps or results into this study.
