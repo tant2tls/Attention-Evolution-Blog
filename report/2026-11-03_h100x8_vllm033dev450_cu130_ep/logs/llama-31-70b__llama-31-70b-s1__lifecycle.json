@@ -1,0 +1,49 @@
+{
+ "study_id": "2026-11-03_h100x8_vllm033dev450_cu130_ep",
+ "model": "llama-31-70b",
+ "session_id": "llama-31-70b-s1",
+ "role": "accepted",
+ "cmd": [
+  "python",
+  "bench/attn_study.py",
+  "--model-key",
+  "llama-31-70b",
+  "--session-id",
+  "llama-31-70b-s1",
+  "--kv-cache-dtype",
+  "fp8",
+  "--mode",
+  "study"
+ ],
+ "idle_baseline_mib": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "started_at_utc": "2026-11-03T04:46:08Z",
+ "host_cpu_quota": "12800000 100000",
+ "pgid": 35838,
+ "returncode": 0,
+ "timed_out": false,
+ "measurement_completed_at_utc": "2026-11-03T04:52:08Z",
+ "shutdown_verified_at_utc": "2026-11-03T04:52:14Z",
+ "finished_at_utc": "2026-11-03T04:52:14Z",
+ "elapsed_seconds": 365.3,
+ "gpu_after_mib": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "status": "complete",
+ "reason": ""
+}

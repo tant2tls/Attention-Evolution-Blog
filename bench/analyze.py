@@ -49,7 +49,7 @@ def points(study: Path, key: str, exp: str, sessions: list[str]):
     base = study / "raw" / key / exp
     out = []
     for sub in ("repetition-1", "repetition-2", "repetition-3", "failed-attempts", "unsupported"):
-        for f in sorted(glob.glob(str(base / sub / "*.json"))):
+        for f in sorted(glob.glob(str(base / sub / "*.json")) + glob.glob(str(base / sub / "*.json.gz"))):
             name = Path(f).name
             sess = name.split("__")[0]
             if sess not in sessions:
@@ -62,94 +62,113 @@ def points(study: Path, key: str, exp: str, sessions: list[str]):
 
 # ----------------------------------------------------------------------------- memory
 def classify(spec: dict, layer: str) -> str:
-    cls = (spec or {}).get("__cls__", "")
-    name = layer.lower()
+    """Map a runtime KV spec + layer name onto the plan's disjoint state categories."""
+    spec = spec or {}
+    cls = spec.get("__cls__", "")
+    n = layer.lower()
     if "Mamba" in cls:
         return "recurrent"
-    if "indexer" in name or "index" in name and "Indexer" in cls:
+    if "indexer" in n or ".index" in n or "Indexer" in cls:
         return "sparse_index_tail"
-    if "compressor" in name or "Compressor" in cls or "tail" in name:
+    if "compressor" in n or "state_cache" in n or "tail" in n:
         return "sparse_index_tail"
-    if "SlidingWindow" in cls or (spec or {}).get("sliding_window"):
+    if "SlidingWindow" in cls or "CircularBuffer" in cls or "RSWA" in cls or spec.get("sliding_window"):
         return "window_kv"
-    if "MLA" in cls and ("compress" in name or (spec or {}).get("compress_ratio")):
+    try:
+        tps = float(spec.get("tokens_per_state") or 1)
+    except (TypeError, ValueError):
+        tps = 1.0
+    if tps > 1:
         return "shared_compressed"
     return "ordinary_kv"
 
 
-def memory_rows(study: Path, key: str, sel: dict, sess_cfg: dict):
-    """One row per memory repetition plus per-layer/owner rows for the settled snapshot."""
-    kvc = sess_cfg["kv_cache_config"]
+def memory_rows(study: Path, key: str, sel: dict):
+    """One row per memory snapshot plus per-layer owner/consumer rows.
+
+    Per rank, a layer owns n_live(group) whole pages of page_size_bytes (scheduler block table of the
+    single request x the runtime spec). Every rank holds an identically shaped shard, so node bytes =
+    per-rank bytes x TP (replicated KV heads are physical copies and are counted). KV-sharing consumer
+    layers own nothing and reference their target. Slab bytes = |union of live block ids| x
+    (sum of KV tensor sizes / num_blocks) x TP: what the shared block pool actually reserves.
+    """
+    sess = sel["accepted_sessions"][0]
+    sdir = study / "raw" / key / "sessions" / sess
+    kvc = load(sdir / "scheduler_kv_cache_config.json")
+    tp = load(sdir / "resolved_config.json")["tp"]
+    try:
+        bufs = load(sdir / "state_buffers.json.gz")
+        r0 = [b for b in bufs if b.get("rank") == 0][0]["layers"]
+    except Exception:
+        r0 = {}
+    consumers = {n: v["kv_sharing_target_layer_name"] for n, v in r0.items()
+                 if v.get("kv_sharing_target_layer_name")}
     category_override = sel.get("state_category_by_layer", {})
     groups = kvc.get("kv_cache_groups", [])
-    tensors = kvc.get("kv_cache_tensors", [])
-    layer_tensor = {}
-    for ti, t in enumerate(tensors):
-        for ln in t.get("layers", []):
-            layer_tensor[ln] = (ti, t)
+    per_block_bytes = sum(t["size"] for t in kvc.get("kv_cache_tensors", [])) / max(kvc.get("num_blocks", 1), 1)
     rows, lrows = [], []
     for d in points(study, key, "memory", sel["accepted_sessions"]):
         base = dict(model=key, revision=sc.MODELS[key]["revision"], context_tokens=d.get("context_tokens"),
                     repeat=d.get("repeat"), status=d.get("status"), manifest=d["_path"], **extra_cols(sel))
         if d.get("status") != "measured":
-            rows.append(dict(base, snapshot_phase="", total_attention_state_gib="", why="; ".join(d.get("why", []))[:300]))
+            rows.append(dict(base, snapshot_phase="", total_attention_state_gib=d.get("status"),
+                             why="; ".join(d.get("why", []))[:300]))
             continue
         for snap in d["snapshots"]:
-            (rid, rq), = list(snap["reqs"].items())[:1] or [(None, None)]
+            rq = list(snap["reqs"].values())[0]
             live_tokens = rq["num_computed_tokens"]
             cats = dict(ordinary_kv=0, window_kv=0, shared_compressed=0, sparse_index_tail=0, recurrent=0)
-            logical = dict(cats)
-            occupied = 0
-            slab_ids = set()
-            per_layer = []
+            logical = 0.0
+            union = set()
             for gi, g in enumerate(groups):
                 spec = g.get("kv_cache_spec") or {}
-                gl = rq["groups"][gi] if gi < len(rq["groups"]) else dict(n_live=0, live_ids=[])
+                gl = rq["groups"][gi]
                 nlive = gl["n_live"]
-                slab_ids.update(gl.get("live_ids", []))
+                union.update(gl.get("live_ids", []))
                 specs = spec.get("kv_cache_specs") or {}
                 for ln in g.get("layer_names", []):
-                    lspec = specs.get(ln, spec)
-                    page = lspec.get("page_size_bytes")
-                    real = lspec.get("real_page_size_bytes", page)
-                    if not isinstance(page, int):
-                        page = 0
-                    if not isinstance(real, int):
-                        real = page
-                    cat = category_override.get(ln) or classify(lspec, ln)
-                    owned = nlive * page  # per rank, whole pages
-                    bs = lspec.get("block_size") or 1
-                    tps = lspec.get("tokens_per_state") or 1
+                    ls = specs.get(ln, spec)
+                    page = ls.get("page_size_bytes") if isinstance(ls.get("page_size_bytes"), int) else 0
+                    real = ls.get("real_page_size_bytes") if isinstance(ls.get("real_page_size_bytes"), int) else page
+                    cat = category_override.get(ln) or classify(ls, ln)
+                    owned = nlive * page
+                    bs = ls.get("block_size") or 1
+                    tps = ls.get("tokens_per_state") or 1
+                    try:
+                        tps = float(tps)
+                    except (TypeError, ValueError):
+                        tps = 1.0
                     if cat == "recurrent":
-                        log_b = real * (1 if nlive else 0)
+                        lb = real if nlive else 0
                     else:
-                        log_b = min(nlive * bs, -(-live_tokens // 1)) * real / bs if bs else 0
-                    per_layer.append((ln, cat, owned, log_b, gi))
-            ranks = sess_cfg.get("tp", 8)
-            for ln, cat, owned, log_b, gi in per_layer:
-                cats[cat] += owned * ranks
-                logical[cat] += log_b * ranks
-                occupied += owned * ranks
+                        eff = live_tokens / tps if tps > 0 else live_tokens
+                        win = ls.get("sliding_window")
+                        if isinstance(win, int) and win > 0:
+                            eff = min(eff, win / tps if tps > 0 else win)
+                        lb = min(eff, nlive * bs) * real / bs
+                    cats[cat] += owned * tp
+                    logical += lb * tp
+                    lrows.append(dict(model=key, revision=sc.MODELS[key]["revision"],
+                                      context_tokens=d["context_tokens"], layer_id=ln, attention_type=ls.get("__cls__"),
+                                      state_owner_id=f"group{gi}:{ln}", owner_or_consumer="owner",
+                                      unique_owned_mib=round(owned / MIB, 6), shared_reference="",
+                                      rank="per rank (x%d ranks)" % tp, state_category=cat, live_blocks=nlive,
+                                      page_bytes=page, repeat=d["repeat"], status="measured",
+                                      snapshot_phase=snap["phase"], manifest=d["_path"], **extra_cols(sel)))
+            for ln, tgt in sorted(consumers.items()):
                 lrows.append(dict(model=key, revision=sc.MODELS[key]["revision"], context_tokens=d["context_tokens"],
-                                  layer_id=ln, attention_type=cat, state_owner_id=f"group{gi}:{ln}",
-                                  owner_or_consumer="owner", unique_owned_mib=round(owned / MIB, 4),
-                                  shared_reference="", rank="each of 8 (identical shard shape)",
-                                  state_category=cat, repeat=d["repeat"], status="measured",
-                                  snapshot_phase=snap["phase"], manifest=d["_path"], **extra_cols(sel)))
-            for ln in sess_cfg.get("consumers", []):
-                lrows.append(dict(model=key, revision=sc.MODELS[key]["revision"], context_tokens=d["context_tokens"],
-                                  layer_id=ln["layer"], attention_type=ln.get("type", ""), state_owner_id="",
-                                  owner_or_consumer="consumer", unique_owned_mib=0,
-                                  shared_reference=ln["target"], rank="", state_category="shared reference",
+                                  layer_id=ln, attention_type=r0.get(ln, {}).get("cls", ""), state_owner_id="",
+                                  owner_or_consumer="consumer", unique_owned_mib=0, shared_reference=tgt,
+                                  rank="per rank", state_category="shared reference (counted at owner)",
                                   repeat=d["repeat"], status="measured", snapshot_phase=snap["phase"],
                                   manifest=d["_path"], **extra_cols(sel)))
+            occupied = sum(cats.values())
             mb = d.get("mem_baseline") or []
             mm = snap.get("mem") or []
             try:
                 delta = sum(b["total"] - b["free"] for b in mm) - sum(b["total"] - b["free"] for b in mb)
             except Exception:
                 delta = None
-            stride = sess_cfg.get("block_stride_bytes")
             rows.append(dict(base, snapshot_phase=snap["phase"], actual_live_tokens=live_tokens,
                              ordinary_kv_gib=cats["ordinary_kv"] / GIB, window_kv_gib=cats["window_kv"] / GIB,
                              unique_kv_gib=(cats["ordinary_kv"] + cats["window_kv"]) / GIB,
@@ -157,11 +176,11 @@ def memory_rows(study: Path, key: str, sel: dict, sess_cfg: dict):
                              sparse_index_tail_gib=cats["sparse_index_tail"] / GIB,
                              recurrent_state_gib=cats["recurrent"] / GIB,
                              total_attention_state_gib=occupied / GIB,
-                             logical_payload_gib=sum(logical.values()) / GIB,
                              occupied_block_gib=occupied / GIB,
-                             slab_gib=(len(slab_ids) * stride * ranks / GIB) if stride else "",
+                             logical_payload_gib=logical / GIB,
+                             slab_gib=len(union) * per_block_bytes * tp / GIB,
                              gpu_allocation_delta_gib=(delta / GIB) if delta is not None else "unavailable",
-                             why=""))
+                             reconciles=abs(sum(cats.values()) - occupied) < 1, why=""))
     return rows, lrows
 
 
@@ -170,7 +189,7 @@ def decode_rows(study, key, sel, sessions, probe=True):
     rows = []
     for d in points(study, key, "decode", sessions):
         rows.append(dict(model=key, revision=sc.MODELS[key]["revision"], context_tokens=d.get("context_tokens"),
-                         target_batch=d.get("target_batch"),
+                         target_batch=d.get("target_batch") or int(d["point"].split("_B")[1]),
                          actual_batch=(d.get("actual_batch") or [""])[0] if d.get("actual_batch") else "",
                          attention_ms_per_step=d.get("attention_ms_per_step", "unavailable" if probe else ""),
                          model_ms_per_step=d.get("model_ms_per_step", ""),
@@ -281,11 +300,9 @@ def main():
         sel = selected(study, key)
         if not sel:
             continue
-        sess_cfg = sel.get("memory_session_config")
-        if sess_cfg:
-            r, lr = memory_rows(study, key, sel, sess_cfg)
-            mem += r
-            meml += lr
+        r, lr = memory_rows(study, key, sel)
+        mem += r
+        meml += lr
         dec += decode_rows(study, key, sel, sel["accepted_sessions"])
         pre += prefill_rows(study, key, sel, sel["accepted_sessions"])
         ovd += decode_rows(study, key, sel, sel.get("overhead_sessions", []), probe=False)

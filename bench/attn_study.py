@@ -90,6 +90,13 @@ class Runner:
         self.stream = wl.token_stream(self.key, self.tok)
         self.record_resolved()
 
+    def internal_id(self, rid: str) -> str:
+        """vLLM appends a random suffix to request ids (assign_request_id); find the scheduler's id."""
+        hits = [k for k in self.sched.requests if k == rid or k.startswith(rid + "-")]
+        if len(hits) != 1:
+            raise RuntimeError(f"cannot resolve internal id for {rid}: {hits}")
+        return hits[0]
+
     def rpc(self, name, *args):
         return self.llm.collective_rpc(name, args=args)
 
@@ -279,7 +286,7 @@ class Runner:
 
         sp = SamplingParams(max_tokens=max_tokens, min_tokens=max_tokens, ignore_eos=True,
                             temperature=0.0, detokenize=False)
-        rids, hashes = [], []
+        rids, iids, hashes = [], [], []
         try:
             res["mem_baseline"] = self.rpc("probe_mem") if memory else None
             self.rpc("probe_arm", f"{label}:{point}:r{rep}")
@@ -288,11 +295,13 @@ class Runner:
                 rid = f"{self.sid}-{label}-{point}-r{rep}-{i}"
                 self.engine.add_request(rid, {"prompt_token_ids": ids}, sp)
                 rids.append(rid)
+                iids.append(self.internal_id(rid))
                 hashes.append(wl.prompt_hash(ids))
             res["prompt_hashes"] = hashes
             res["prompt_tokens"] = [L] * B
+            res["internal_request_ids"] = iids
             t0 = time.monotonic()
-            snaps, nsteps = self.drive(rids, L, B, memory, sc.DECODE_WARMUP_STEPS, 100000)
+            snaps, nsteps = self.drive(iids, L, B, memory, sc.DECODE_WARMUP_STEPS, 100000)
             res["wall_s"] = round(time.monotonic() - t0, 3)
             self.rpc("probe_arm", None)
             per_rank, errs = self.fetch()
@@ -355,12 +364,14 @@ class Runner:
         res["finished_at_utc"] = utc()
         ok = res["status"] == "measured"
         p = self.point_path("decode", rep, point, ok)
-        wjson(p, res, gz=False)
+        wjson(p, res, gz=True)  # per-step x per-rank x per-layer records are large; gzip is lossless
+        p = Path(str(p) + ".gz")
         print(f"POINT {point} rep{rep} {label} {res['status']} attn={res.get('attention_ms_per_step')} "
               f"model={res.get('model_ms_per_step')} ctx={res.get('context_start_tokens')}..{res.get('context_end_tokens')} "
               f"why={str(res.get('why'))[:300]}", flush=True)
         if memory:
-            self.write_memory(L, rep, label, res, p)
+            mres = self.write_memory(L, rep, label, res, p)
+            self.last_memory = (mres["point"], rep, mres["status"])
         return res
 
     def write_memory(self, L, rep, label, dec, dec_path):
@@ -372,6 +383,7 @@ class Runner:
                    mem_baseline=dec.get("mem_baseline"), status="measured" if ok else "failed",
                    why=[] if ok else ["decode run failed or settled snapshot missing"] + list(dec.get("why", [])))
         wjson(self.point_path("memory", rep, point, ok), res)
+        return res
 
     def run_prefill(self, L, rep, label):
         chunk = sc.FIRST_CHUNK_1K if L == 1024 else sc.PREFILL_CHUNK
@@ -387,8 +399,10 @@ class Runner:
             res["prompt_hashes"] = [wl.prompt_hash(ids)]
             self.rpc("probe_arm", f"{label}:{point}:r{rep}")
             self.engine.add_request(rid, {"prompt_token_ids": ids}, sp)
+            iid = self.internal_id(rid)
+            res["internal_request_ids"] = [iid]
             t0 = time.monotonic()
-            _, nsteps = self.drive([rid], L, 1, False, 0, 10000)
+            _, nsteps = self.drive([iid], L, 1, False, 0, 10000)
             res["wall_s"] = round(time.monotonic() - t0, 3)
             self.rpc("probe_arm", None)
             per_rank, errs = self.fetch()
@@ -396,8 +410,8 @@ class Runner:
             steps = self.join_ranks(per_rank)
             res["engine_steps"] = nsteps
             res["steps"] = steps
-            sel = [st for st in steps if (st.get("reqs") or {}).get(rid, {}).get("computed") == L - chunk
-                   and st["reqs"][rid].get("scheduled") == chunk and st["num_reqs"] == 1]
+            sel = [st for st in steps if (st.get("reqs") or {}).get(iid, {}).get("computed") == L - chunk
+                   and st["reqs"][iid].get("scheduled") == chunk and st["num_reqs"] == 1]
             status, why = "measured", []
             if len(sel) != 1:
                 status, why = "failed", [f"final chunk step not found ({len(sel)})"]
@@ -452,8 +466,9 @@ class Runner:
                          ("prefill", [f"prefill_L{L}"])):
             for pt in pts:
                 p = self.raw / exp / "unsupported" / f"{self.sid}__{pt}.json"
+                extra = dict(target_batch=int(pt.split("_B")[1])) if exp == "decode" else {}
                 wjson(p, dict(self.common(), experiment=exp, point=pt, context_tokens=L, status="unsupported",
-                              why=[why], t=utc()))
+                              why=[why], t=utc(), **extra))
 
     def warmup(self):
         print("WARMUP start", utc(), flush=True)
@@ -495,8 +510,11 @@ class Runner:
                     if not self.supported(L)[0]:
                         continue
                     for B in sc.DECODE_BATCHES:
+                        self.last_memory = None
                         r = self.run_decode(L, B, rep, "accepted", memory=(B == 1 and self.probe_layers))
                         summary["points"].append([r["point"], rep, r["status"]])
+                        if self.last_memory:  # co-collected memory point counts too (fixes.md B5)
+                            summary["points"].append(list(self.last_memory))
                     r = self.run_prefill(L, rep, "accepted")
                     summary["points"].append([r["point"], rep, r["status"]])
         summary["measurement_completed_at_utc"] = utc()

@@ -1,0 +1,75 @@
+{
+ "config_id": "llama-31-70b__kv-fp8__be3bd823ed",
+ "model": "llama-31-70b",
+ "revision": "1605565b47bb9346c5515c34102e054115b4f98b",
+ "validated_session": "llama-fp8-smoke4",
+ "validation_attempts": [
+  "llama-fp8-smoke1",
+  "llama-fp8-smoke2",
+  "llama-fp8-smoke3",
+  "llama-fp8-smoke4"
+ ],
+ "engine_kwargs": {
+  "tensor_parallel_size": 8,
+  "enable_expert_parallel": false,
+  "gpu_memory_utilization": 0.82,
+  "enable_prefix_caching": false,
+  "max_num_batched_tokens": 8192,
+  "max_num_seqs": 8,
+  "async_scheduling": false,
+  "max_model_len": 131072,
+  "enable_chunked_prefill": true,
+  "model": "/root/attn-study/weights/llama-31-70b",
+  "tokenizer": "/root/attn-study/weights/llama-31-70b",
+  "kv_cache_dtype": "fp8",
+  "seed": 0
+ },
+ "env": {
+  "VLLM_USE_BREAKABLE_CUDAGRAPH": "1"
+ },
+ "ep_requested": "N/A (dense)",
+ "ep_effective": "N/A (dense model, no experts)",
+ "kv_dtype_requested": "fp8",
+ "kv_dtype_resolved": "fp8",
+ "kv_format": "fp8",
+ "state_dtype_evidence": "FullAttentionSpec:torch.uint8 x80 | tensors: Attention:torch.uint8 x80",
+ "kv_scale_source": "_k_scale_float=1.0 x80; _v_scale_float=1.0 x80 (no calibrated scales shipped unless the checkpoint provides them)",
+ "fallback_reason": "none (fp8 validated)",
+ "resolved": {
+  "vllm": "0.33.0rc1.dev450+g17e675965",
+  "torch": "2.14.0+cu130",
+  "torch_cuda": "13.0",
+  "python": "3.12.3",
+  "tp": 8,
+  "ep": false,
+  "dp": 1,
+  "pp": 1,
+  "gpu_memory_utilization": 0.82,
+  "kv_cache_dtype": "fp8",
+  "block_size": 16,
+  "prefix_caching": false,
+  "num_gpu_blocks": 153663,
+  "max_model_len": 131072,
+  "model_dtype": "torch.bfloat16",
+  "quantization": null,
+  "architectures": "['LlamaForCausalLM']",
+  "hf_config_cls": "LlamaConfig",
+  "max_num_batched_tokens": 8192,
+  "max_num_seqs": 8,
+  "async_scheduling": false,
+  "chunked_prefill": true,
+  "speculative_config": "None",
+  "cudagraph_mode": "FULL_AND_PIECEWISE",
+  "compilation_mode": 0,
+  "cudagraph_capture_sizes": "[1, 2, 4, 8, 16]",
+  "breakable_cudagraph": "1",
+  "use_v2_model_runner": "True",
+  "init_seconds": 50.6
+ },
+ "accepted_sessions": [
+  "llama-31-70b-s1"
+ ],
+ "overhead_sessions": [
+  "llama-31-70b-overhead-s1"
+ ]
+}
