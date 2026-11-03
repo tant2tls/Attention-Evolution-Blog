@@ -5,6 +5,7 @@ configuration, logs and incident details under [report/<study-id>/](../report/RE
 
 | Document | Purpose |
 | --- | --- |
+| [agent_quickstart.md](agent_quickstart.md) | **Start here to run the study quickly:** commands, gates, timings, failure table |
 | [experience.md](experience.md) | Read first: recorded sessions, CUDA/EP fixes, KV checks, instrumentation and open failures |
 | [gpu_setup_and_fixes.md](gpu_setup_and_fixes.md) | Frozen runtime, node setup and inherited measurement pitfalls |
 | [setup_and_download_experience.md](setup_and_download_experience.md) | Practical setup/download workflow and avoiding repeated work |

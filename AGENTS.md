@@ -1,5 +1,8 @@
 # Attention measurement first
 
+**Fast path for an authorized GPU session:** follow [docs/agent_quickstart.md](docs/agent_quickstart.md)
+(one queue command, gates, expected timings, failure handling). It implements the rules below; it does not relax them.
+
 Read `README.md`, `attention_measure_plan.md`, `docs/model_architectures.md`,
 `docs/experience.md`, `docs/gpu_setup_and_fixes.md`, `docs/README.md`, `report/README.md` and `bench/README.md` before changing measurement code.
 
