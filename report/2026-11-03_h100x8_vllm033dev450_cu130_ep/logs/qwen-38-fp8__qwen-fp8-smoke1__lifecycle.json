@@ -1,0 +1,49 @@
+{
+ "study_id": "2026-11-03_h100x8_vllm033dev450_cu130_ep",
+ "model": "qwen-38-fp8",
+ "session_id": "qwen-fp8-smoke1",
+ "role": "validation fp8",
+ "cmd": [
+  "python",
+  "bench/attn_study.py",
+  "--model-key",
+  "qwen-38-fp8",
+  "--session-id",
+  "qwen-fp8-smoke1",
+  "--kv-cache-dtype",
+  "fp8",
+  "--mode",
+  "smoke"
+ ],
+ "idle_baseline_mib": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "started_at_utc": "2026-11-03T05:32:23Z",
+ "host_cpu_quota": "12800000 100000",
+ "pgid": 90639,
+ "returncode": 0,
+ "timed_out": false,
+ "measurement_completed_at_utc": "2026-11-03T05:50:45Z",
+ "shutdown_verified_at_utc": "2026-11-03T05:50:55Z",
+ "finished_at_utc": "2026-11-03T05:50:55Z",
+ "elapsed_seconds": 1112.7,
+ "gpu_after_mib": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "status": "complete",
+ "reason": ""
+}

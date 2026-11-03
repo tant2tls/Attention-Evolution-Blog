@@ -66,6 +66,8 @@ def classify(spec: dict, layer: str) -> str:
     spec = spec or {}
     cls = spec.get("__cls__", "")
     n = layer.lower()
+    if n.endswith(".ple"):  # Qwen per-layer-embedding buffer registered as a Mamba-type cache: not attention
+        return "non_attention_state"
     if "Mamba" in cls:
         return "recurrent"
     if "indexer" in n or ".index" in n or "Indexer" in cls:
@@ -128,6 +130,7 @@ def memory_rows(study: Path, key: str, sel: dict):
             rq = list(snap["reqs"].values())[0]
             live_tokens = rq["num_computed_tokens"]
             cats = dict(ordinary_kv=0, window_kv=0, shared_compressed=0, sparse_index_tail=0, recurrent=0)
+            other = 0
             logical = 0.0
             union = set()
             for gi, g in enumerate(groups):
@@ -162,8 +165,11 @@ def memory_rows(study: Path, key: str, sel: dict):
                         if isinstance(win, int) and win > 0:
                             toks = min(toks, win)
                         lb = min(toks / tps, nlive * per_block) * real / per_block
-                    cats[cat] += owned * tp
-                    logical += lb * tp
+                    if cat == "non_attention_state":
+                        other += owned * tp
+                    else:
+                        cats[cat] += owned * tp
+                        logical += lb * tp
                     lrows.append(dict(model=key, revision=sc.MODELS[key]["revision"],
                                       context_tokens=d["context_tokens"], layer_id=ln, attention_type=ls.get("__cls__"),
                                       state_owner_id=f"group{gi}:{ln}", owner_or_consumer="owner",
@@ -195,6 +201,7 @@ def memory_rows(study: Path, key: str, sel: dict):
                              occupied_block_gib=occupied / GIB,
                              logical_payload_gib=logical / GIB,
                              slab_gib=len(union) * per_block_bytes * tp / GIB,
+                             non_attention_state_gib=other / GIB,
                              gpu_allocation_delta_gib=(delta / GIB) if delta is not None else "unavailable",
                              reconciles=abs(sum(cats.values()) - occupied) < 1, why=""))
     return rows, lrows

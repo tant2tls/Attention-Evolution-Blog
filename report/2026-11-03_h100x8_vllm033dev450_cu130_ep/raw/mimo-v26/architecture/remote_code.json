@@ -1,0 +1,10 @@
+{
+ "trust_remote_code": true,
+ "reason": "model_type mimo_v2 has no native transformers config class (experience G3)",
+ "reviewed": "configuration_mimo_v2.py: PretrainedConfig subclass; imports copy, transformers only; no file/network I/O. vLLM executes its own MiMoV2 implementation; remote modeling code is not used by vLLM.",
+ "files": {
+  "configuration_mimo_v2.py": "773062ac9850b908eb54751b3e4dbe00e653c0e80595599409e97d0c1af2ce3e",
+  "modeling_mimo_v2.py": "a8c3cb3aae473bcc15f023010547c919f15eba6546e6ed7efb61a8937b12f3ad"
+ },
+ "revision": "2479e2d0029eca9a34cc7e7f55a121925f81908e"
+}
