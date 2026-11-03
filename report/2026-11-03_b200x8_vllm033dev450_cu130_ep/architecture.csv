@@ -1,6 +1,6 @@
 model,revision,total_params_b,base_model_params_b,active_decode_params_b,active_prefill_params_b,lookup_table_params_b,mtp_draft_params_b,layers,attention_types_and_counts,state_types,dtype,kv_state_dtype,evidence,status
 llama-31-70b,1605565b47bb9346c5515c34102e054115b4f98b,70.55,70.55,69.5,69.5,0.0,0.0,80,GQA full attention: 80,see memory_layers.csv,BF16: 70.6B,fp8,"raw/llama-31-70b/architecture/inventory.json (config sha256 fa6e9124e462; num_hidden_layers, num_key_value_heads)",calculated from checkpoint
-v4-0731,,,,,,,,,,,,,,unverified
+v4-0731,7872f01b1d1fe23eabc4c98b48bffcef5a386062,304.18,284.33,13.27,13.27,0.0,19.85,43,sliding-window MLA only (compress_ratio=0): 2; window + 4x compressed KV + indexer (compress_ratio=4): 21; window + 128x compressed KV (compress_ratio=128): 20,see memory_layers.csv,BF16: 1.5B; I64: 0.0B; F32: 0.0B; F8_E4M3: 6.3B; I8(packed fp4): 296.4B,fp8_ds_mla,"raw/v4-0731/architecture/inventory.json (config sha256 6c8f3d2d3b48; compress_ratios[:num_hidden_layers], sliding_window)",calculated from checkpoint
 qwen-38-fp8,,,,,,,,,,,,,,unverified
 mimo-v26,,,,,,,,,,,,,,unverified
 v41,,,,,,,,,,,,,,unverified

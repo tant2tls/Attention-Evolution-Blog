@@ -7,3 +7,9 @@
 2026-11-03T08:22:24Z B llama-31-70b done; CSVs regenerated (charts/README/push are manual)
 2026-11-03T08:22:24Z QUEUE_DONE
 2026-11-03T08:22:30Z A v4-0731 validate kv=fp8 session=v4-0731-fp8-smoke-s1-1
+2026-11-03T08:50:24Z A v4-0731 frozen kv=fp8
+2026-11-03T08:50:24Z B v4-0731 accepted v4-0731-s1 (kv=fp8, expect 16 points)
+2026-11-03T08:55:10Z B v4-0731 control v4-0731-overhead-s1
+2026-11-03T08:59:37Z B v4-0731 done; CSVs regenerated (charts/README/push are manual)
+2026-11-03T08:59:37Z QUEUE_DONE
+2026-11-03T08:59:44Z A qwen-38-fp8 validate kv=fp8 session=qwen-38-fp8-fp8-smoke-s1-1

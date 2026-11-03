@@ -7,7 +7,7 @@ Attention-state memory, decode attention time and prefill attention time for six
 | model | config id | KV requested → resolved | EP | accepted / control sessions | status |
 | --- | --- | --- | --- | --- | --- |
 | Llama 3.1 70B Instruct | `llama-31-70b__kv-fp8__be3bd823ed` | fp8 → fp8 | N/A (dense model, no experts) | llama-31-70b-s1 / llama-31-70b-overhead-s1 | see completion table |
-| DeepSeek V4 Flash 0731 | not frozen | | | | pending / not measured |
+| DeepSeek V4 Flash 0731 | `v4-0731__kv-fp8__cb79b0b71f` | fp8 → fp8_ds_mlax43 | local 32 of 256 experts per rank | v4-0731-s1 / v4-0731-overhead-s1 | see completion table |
 | Qwen3.8 Flash-Next FP8 | not frozen | | | | pending / not measured |
 | MiMo V2.6 Flash-MOPD | not frozen | | | | pending / not measured |
 | DeepSeek V4.1 Flash | not frozen | | | | pending / not measured |
@@ -21,6 +21,9 @@ Attention-state memory, decode attention time and prefill attention time for six
 | llama-31-70b | llama-31-70b-fp8-smoke-s1-2 | 2026-11-03T08:13:28Z | 2026-11-03T08:15:18Z | 2026-11-03T08:15:24Z | 116.2 | 5 / 0 | complete | validation fp8:  |
 | llama-31-70b | llama-31-70b-s1 | 2026-11-03T08:15:45Z | 2026-11-03T08:19:04Z | 2026-11-03T08:19:11Z | 205.8 | 12 / 12 | complete | accepted:  |
 | llama-31-70b | llama-31-70b-overhead-s1 | 2026-11-03T08:19:11Z | 2026-11-03T08:22:16Z | 2026-11-03T08:22:23Z | 191.8 | 9 / 9 | complete | matched unprobed control:  |
+| v4-0731 | v4-0731-fp8-smoke-s1-1 | 2026-11-03T08:22:30Z | 2026-11-03T08:50:17Z | 2026-11-03T08:50:24Z | 1673.3 | 5 / 0 | complete | validation fp8:  |
+| v4-0731 | v4-0731-s1 | 2026-11-03T08:50:24Z | 2026-11-03T08:55:04Z | 2026-11-03T08:55:10Z | 285.8 | 16 / 16 | complete | accepted:  |
+| v4-0731 | v4-0731-overhead-s1 | 2026-11-03T08:55:11Z | 2026-11-03T08:59:28Z | 2026-11-03T08:59:34Z | 263.9 | 12 / 12 | complete | matched unprobed control:  |
 
 Validation (smoke) sessions have expected points 0; their status reflects only the validation gate.
 
@@ -28,28 +31,28 @@ Validation (smoke) sessions have expected points 0; their status reflects only t
 
 | context | Llama 3.1 70B Instruct | DeepSeek V4 Flash 0731 | Qwen3.8 Flash-Next FP8 | MiMo V2.6 Flash-MOPD | DeepSeek V4.1 Flash | GLM-5.3 Flash |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1K | 3.56 / 3.84 | – / – | – / – | – / – | – / – | – / – |
-| 16K | 4.15 / 4.32 | – / – | – / – | – / – | – / – | – / – |
-| 64K | 5.04 / 5.63 | – / – | – / – | – / – | – / – | – / – |
-| 128K | unsupported / unsupported | – / – | – / – | – / – | – / – | – / – |
+| 1K | 3.56 / 3.84 | 3.41 / 3.63 | – / – | – / – | – / – | – / – |
+| 16K | 4.15 / 4.32 | 3.58 / 3.98 | – / – | – / – | – / – | – / – |
+| 64K | 5.04 / 5.63 | 3.81 / 4.18 | – / – | – / – | – / – | – / – |
+| 128K | unsupported / unsupported | 3.88 / 4.29 | – / – | – / – | – / – | – / – |
 
 ## Prefill attention, ms per chunk (median of 3)
 
 | chunk | Llama 3.1 70B Instruct | DeepSeek V4 Flash 0731 | Qwen3.8 Flash-Next FP8 | MiMo V2.6 Flash-MOPD | DeepSeek V4.1 Flash | GLM-5.3 Flash |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1K first chunk (1024) | 21.0 | – | – | – | – | – |
-| 8K ending at 16K | 85.9 | – | – | – | – | – |
-| 8K ending at 64K | 177.0 | – | – | – | – | – |
-| 8K ending at 128K | unsupported | – | – | – | – | – |
+| 1K first chunk (1024) | 21.0 | 81.0 | – | – | – | – |
+| 8K ending at 16K | 85.9 | 85.2 | – | – | – | – |
+| 8K ending at 64K | 177.0 | 96.5 | – | – | – | – |
+| 8K ending at 128K | unsupported | 134.2 | – | – | – | – |
 
 ## Attention-state memory, GiB for one request, all 8 GPUs (settled decode, occupied blocks)
 
 | context | Llama 3.1 70B Instruct | DeepSeek V4 Flash 0731 | Qwen3.8 Flash-Next FP8 | MiMo V2.6 Flash-MOPD | DeepSeek V4.1 Flash | GLM-5.3 Flash |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1K | 0.166 | – | – | – | – | – |
-| 16K | 2.510 | – | – | – | – | – |
-| 64K | 10.010 | – | – | – | – | – |
-| 128K | unsupported | – | – | – | – | – |
+| 1K | 0.166 | 0.176 | – | – | – | – |
+| 16K | 2.510 | 0.624 | – | – | – | – |
+| 64K | 10.010 | 2.058 | – | – | – | – |
+| 128K | unsupported | 3.969 | – | – | – | – |
 
 ## Probe overhead (matched unprobed control, whole-model ms)
 
@@ -61,15 +64,28 @@ Validation (smoke) sessions have expected points 0; their status reflects only t
 | llama-31-70b | decode | 16K | 8 | 9.32 | 7.66 | 21.6 | 2.66 |
 | llama-31-70b | decode | 64K | 1 | 9.92 | 8.57 | 15.7 | 3.69 |
 | llama-31-70b | decode | 64K | 8 | 10.61 | 8.96 | 18.5 | 3.97 |
+| v4-0731 | decode | 1K | 1 | 6.03 | 5.08 | 18.8 | 2.45 |
+| v4-0731 | decode | 1K | 8 | 7.19 | 6.06 | 18.7 | 2.50 |
+| v4-0731 | decode | 128K | 1 | 6.50 | 5.56 | 17.1 | 2.93 |
+| v4-0731 | decode | 128K | 8 | 7.87 | 6.73 | 17.0 | 3.14 |
+| v4-0731 | decode | 16K | 1 | 6.20 | 5.24 | 18.4 | 2.62 |
+| v4-0731 | decode | 16K | 8 | 7.53 | 6.41 | 17.3 | 2.87 |
+| v4-0731 | decode | 64K | 1 | 6.39 | 5.48 | 16.6 | 2.90 |
+| v4-0731 | decode | 64K | 8 | 7.76 | 6.64 | 16.8 | 3.07 |
 | llama-31-70b | prefill | 1K | 1 | 40.29 | 32.91 | 22.4 |  |
 | llama-31-70b | prefill | 16K | 1 | 213.70 | 213.51 | 0.1 |  |
 | llama-31-70b | prefill | 64K | 1 | 303.23 | 303.41 | -0.1 |  |
+| v4-0731 | prefill | 1K | 1 | 137.15 | 126.94 | 8.0 |  |
+| v4-0731 | prefill | 128K | 1 | 185.95 | 184.94 | 0.5 |  |
+| v4-0731 | prefill | 16K | 1 | 141.54 | 132.89 | 6.5 |  |
+| v4-0731 | prefill | 64K | 1 | 147.22 | 146.49 | 0.5 |  |
 
 ## Deployment differences that limit comparisons
 
 | model | KV / state formats actually allocated | graph mode | other deviations |
 | --- | --- | --- | --- |
 | Llama 3.1 70B Instruct | FullAttentionSpec:torch.uint8 x80<br>tensors: Attention:torch.uint8 x80 | FULL_AND_PIECEWISE, breakable=1 | env `VLLM_USE_BREAKABLE_CUDAGRAPH=1` (probes need it); engine `enable_expert_parallel=False`; max_model_len 131072 (128K points unsupported) |
+| DeepSeek V4 Flash 0731 | MLAAttentionSpec:torch.uint8 x62; SlidingWindowMLASpec:torch.float32 x62; SlidingWindowMLASpec:torch.uint8 x43<br>tensors: CompressorStateCache:torch.float32 x62; DeepseekV4FlashMLAAttention:torch.float32 x2; DeepseekV4FlashMLAAttention:torch.uint8 x41; DeepseekV4IndexerCache:torch.uint8 x21; DeepseekV4SWACache:torch.uint8 x43 | FULL_DECODE_ONLY, breakable=1 | engine `compilation_config={'cudagraph_mode': 'FULL_DECODE_ONLY'}` |
 
 FP8 K/V scales are the stock 1.0 (no calibrated scales shipped); FP8 vs BF16 state is a precision difference, not an architecture property. Weights keep each checkpoint's native mixed precision.
 
@@ -79,7 +95,6 @@ FP8 K/V scales are the stock 1.0 (no calibrated scales shipped); FP8 vs BF16 sta
 - llama-31-70b decode context 131072 batch 1: **unsupported**
 - llama-31-70b decode context 131072 batch 8: **unsupported**
 - llama-31-70b prefill context 131072: **unsupported**
-- DeepSeek V4 Flash 0731: not measured yet
 - Qwen3.8 Flash-Next FP8: not measured yet
 - MiMo V2.6 Flash-MOPD: not measured yet
 - DeepSeek V4.1 Flash: not measured yet

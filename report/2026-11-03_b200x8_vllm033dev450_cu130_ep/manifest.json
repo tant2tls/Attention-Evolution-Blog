@@ -74,11 +74,17 @@
   "v4-0731": {
    "repo": "deepseek-ai/DeepSeek-V4-Flash-0731",
    "revision": "7872f01b1d1fe23eabc4c98b48bffcef5a386062",
-   "config_id": null,
-   "accepted_sessions": null,
-   "overhead_sessions": null,
-   "validation_attempts": null,
-   "config_sha256": null
+   "config_id": "v4-0731__kv-fp8__cb79b0b71f",
+   "accepted_sessions": [
+    "v4-0731-s1"
+   ],
+   "overhead_sessions": [
+    "v4-0731-overhead-s1"
+   ],
+   "validation_attempts": [
+    "v4-0731-fp8-smoke-s1-1"
+   ],
+   "config_sha256": "6c8f3d2d3b48707541b88f32f22ef3f0f8a6b57d8523281e2b8d3cdb0ae9a023"
   },
   "qwen-38-fp8": {
    "repo": "Qwen/Qwen3.8-Flash-Next-FP8",

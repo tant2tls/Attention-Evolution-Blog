@@ -3,7 +3,7 @@
 | model | total params (B) | active / token (B) | lookup tables (B) | layers | attention types | KV/state dtype | status |
 | --- | ---: | ---: | ---: | ---: | --- | --- | --- |
 | Llama 3.1 70B Instruct | 70.55 | 69.5 | 0.0 | 80 | GQA full attention: 80 | fp8 | calculated from checkpoint |
-| v4-0731 | unverified | | | | | | unverified |
+| DeepSeek V4 Flash 0731 | 304.18 | 13.27 | 0.0 | 43 | sliding-window MLA only (compress_ratio=0): 2; window + 4x compressed KV + indexer (compress_ratio=4): 21; window + 128x compressed KV (compress_ratio=128): 20 | fp8_ds_mla | calculated from checkpoint |
 | qwen-38-fp8 | unverified | | | | | | unverified |
 | mimo-v26 | unverified | | | | | | unverified |
 | v41 | unverified | | | | | | unverified |
