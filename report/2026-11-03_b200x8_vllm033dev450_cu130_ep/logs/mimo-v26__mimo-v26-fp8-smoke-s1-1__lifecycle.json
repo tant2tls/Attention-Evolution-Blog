@@ -1,0 +1,31 @@
+{
+ "study_id": "2026-11-03_b200x8_vllm033dev450_cu130_ep",
+ "model": "mimo-v26",
+ "session_id": "mimo-v26-fp8-smoke-s1-1",
+ "role": "validation fp8",
+ "cmd": [
+  "python",
+  "bench/attn_study.py",
+  "--model-key",
+  "mimo-v26",
+  "--session-id",
+  "mimo-v26-fp8-smoke-s1-1",
+  "--kv-cache-dtype",
+  "fp8",
+  "--mode",
+  "smoke"
+ ],
+ "idle_baseline_mib": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "started_at_utc": "2026-11-03T09:13:03Z",
+ "host_cpu_quota": "20800000 100000",
+ "pgid": 85884
+}

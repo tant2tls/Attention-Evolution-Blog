@@ -1,0 +1,1 @@
+{"model": "mimo-v26", "total_params": 310756322688, "base_model_params": 308804995264, "active_params_per_token": 14820985024.0} {'mtp': 0.988, 'base_other': 4.734, 'vision_audio': 0.964, 'lm_head': 0.625, 'embedding': 0.651, 'routed_experts': 302.795, 'shared_experts': 0.0} {'full attention (GQA, sinks)': 9, 'sliding-window attention (128)': 39}

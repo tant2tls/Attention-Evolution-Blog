@@ -13,3 +13,9 @@
 2026-11-03T08:59:37Z B v4-0731 done; CSVs regenerated (charts/README/push are manual)
 2026-11-03T08:59:37Z QUEUE_DONE
 2026-11-03T08:59:44Z A qwen-38-fp8 validate kv=fp8 session=qwen-38-fp8-fp8-smoke-s1-1
+2026-11-03T09:04:28Z A qwen-38-fp8 frozen kv=fp8
+2026-11-03T09:04:28Z B qwen-38-fp8 accepted qwen-38-fp8-s1 (kv=fp8, expect 16 points)
+2026-11-03T09:08:44Z B qwen-38-fp8 control qwen-38-fp8-overhead-s1
+2026-11-03T09:12:54Z B qwen-38-fp8 done; CSVs regenerated (charts/README/push are manual)
+2026-11-03T09:12:54Z QUEUE_DONE
+2026-11-03T09:13:02Z A mimo-v26 validate kv=fp8 session=mimo-v26-fp8-smoke-s1-1

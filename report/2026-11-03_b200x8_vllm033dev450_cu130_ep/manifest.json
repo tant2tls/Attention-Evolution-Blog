@@ -89,11 +89,17 @@
   "qwen-38-fp8": {
    "repo": "Qwen/Qwen3.8-Flash-Next-FP8",
    "revision": "236dfdf285828023ca3bcd3f37366c58a3469b13",
-   "config_id": null,
-   "accepted_sessions": null,
-   "overhead_sessions": null,
-   "validation_attempts": null,
-   "config_sha256": null
+   "config_id": "qwen-38-fp8__kv-fp8__ef86bc5db1",
+   "accepted_sessions": [
+    "qwen-38-fp8-s1"
+   ],
+   "overhead_sessions": [
+    "qwen-38-fp8-overhead-s1"
+   ],
+   "validation_attempts": [
+    "qwen-38-fp8-fp8-smoke-s1-1"
+   ],
+   "config_sha256": "c22eb0a053eed62e18f0184d3ca62d3798f208c3e00b9feee939fc3dbacdc8ca"
   },
   "mimo-v26": {
    "repo": "XiaomiMiMo/MiMo-V2.6-Flash-MOPD",
