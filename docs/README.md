@@ -10,6 +10,7 @@ configuration, logs and incident details under [report/<study-id>/](../report/RE
 | [gpu_setup_and_fixes.md](gpu_setup_and_fixes.md) | Frozen runtime, node setup and inherited measurement pitfalls |
 | [setup_and_download_experience.md](setup_and_download_experience.md) | Practical setup/download workflow and avoiding repeated work |
 | [model_architectures.md](model_architectures.md) | Checkpoint identities and attention architecture inspection leads |
+| [article_review.md](article_review.md) | H100 article evidence audit, metric definitions, limits and reproduction |
 | `import_provenance.json` | Hashes of the Frontier source material originally imported |
 
 After a useful fix or setup/download improvement, add a short reusable lesson here: symptom/task,

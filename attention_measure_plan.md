@@ -2,13 +2,13 @@
 
 **Purpose:** Guide a coding agent to collect the **smallest complete set of trustworthy numbers** needed for an accessible blog explaining how attention evolved from Llama 3.1 70B to five frontier models.
 
-**Deliverable:** Measured data and simple charts, with all related evidence under `report/<study-id>/` ([layout and rules](report/README.md)). **Do not write or redesign the blog yet.**
+**Deliverable:** Measured data and simple charts, with all related evidence under `report/<study-id>/` ([layout and rules](report/README.md)). **Article refinement authorized on 2026-11-05; preserve the six-section structure and use the completed H100 study only.**
 
 **Updated execution policy (2026-11-03):** Read [working experience](docs/experience.md)
 before implementation or launch. It records completed and failed historical sessions on two CUDA
 environments, including BF16 Qwen; those are not the new controlled six-model comparison. The active
 plan uses official **Qwen FP8**, **TP8 + EP on**, and **FP8-first KV with documented fallback**.
-`index.html` remains a synthetic prototype. This update changes preparation and protocol only;
+`index.html` was the synthetic prototype; it is now generated from the selected H100 evidence for the authorized article refinement. This update changes preparation and protocol only;
 GPU execution still requires a user-provided, explicitly authorized session.
 
 Use the four unchanged Frontier checkpoint pins plus the newly pinned official Qwen FP8 revision in the architecture document (V4 means **0731**).
@@ -24,7 +24,7 @@ Read [AGENTS.md](AGENTS.md) for evidence and lifecycle rules.
 5. Qwen3.8 Flash-Next-FP8 (official mixed-precision checkpoint).
 6. GLM-5.3 Flash.
 
-The precise attention types, layer counts, parameter counts and state layouts **must be verified from the deployed checkpoints**, not copied from the earlier HTML. The HTML contains synthetic values.
+The precise attention types, layer counts, parameter counts and state layouts **must be verified from the deployed checkpoints**, not copied from the earlier HTML. Use the article builder and its checked evidence rather than the earlier synthetic HTML formulas.
 
 ## 0. Blog-driven scope (updated 2026-11-03): measure only what a blog block needs
 
@@ -377,3 +377,11 @@ The study is complete when:
 - No optional experiment, new blog writing, or unrequested model optimization was performed.
 
 **Instruction to agent:** *Keep the experiment small and the explanations simple. We are measuring the architecture tradeoffs an AI reader can understand: model size, memory, decode speed and prefill speed. Do not expand the scope.*
+
+## Article refinement status (2026-11-05)
+
+The user authorized refining `index.html` for the lab website. The root article is generated from
+only the completed H100 study; incomplete B200 results are excluded. Sections were refined in
+order (introduction, architectures, variants, memory, decode, prefill), followed by a browser/editorial
+pass. See [article review](docs/article_review.md) for metric definitions, evidence checks and build
+commands. This authoring update does not authorize new GPU experiments or publication.

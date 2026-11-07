@@ -1,0 +1,7 @@
+model,memory_gib_settled,memory_gib_post_prefill,decode_attn_ms_b1,decode_attn_ms_b8,decode_attn_lower_bound_ms_b8,decode_model_ms_b8,decode_attn_share_b8_pct,prefill_attn_ms_8k_ending_64k,prefill_model_ms_8k_ending_64k,prefill_attn_share_pct,basis
+Llama 3.1 70B Instruct,10.01,10.0,5.98,8.68,8.03,15.94,54.5,358.1,590.1,60.7,decode/prefill: probed medians (3 reps); attention_lower_bound from overhead.csv
+DeepSeek V4 Flash 0731,2.058,21.861,3.82,4.15,3.66,10.19,40.8,165.2,279.4,59.1,decode/prefill: probed medians (3 reps); attention_lower_bound from overhead.csv
+Qwen3.8 Flash-Next FP8,3.499,3.499,1.88,2.28,1.69,7.87,29.0,63.9,174.9,36.5,decode/prefill: probed medians (3 reps); attention_lower_bound from overhead.csv
+MiMo V2.6 Flash-MOPD,2.842,4.36,2.26,3.36,2.97,8.34,40.3,69.5,170.8,40.7,decode/prefill: probed medians (3 reps); attention_lower_bound from overhead.csv
+DeepSeek V4.1 Flash,0.922,2.366,3.57,3.93,3.35,10.05,39.1,72.1,158.6,45.5,decode/prefill: probed medians (3 reps); attention_lower_bound from overhead.csv
+GLM-5.3 Flash,3.083,3.083,3.37,3.78,3.31,10.25,36.9,243.2,375.0,64.9,decode/prefill: probed medians (3 reps); attention_lower_bound from overhead.csv

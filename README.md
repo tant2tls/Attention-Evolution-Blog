@@ -1,15 +1,19 @@
 # Attention evolution: GPU measurement workspace
 
 Read [AGENTS.md](AGENTS.md), then [attention_measure_plan.md](attention_measure_plan.md).
-The current deliverable is real GPU evidence for architecture inventory, attention-state memory,
-decode attention time and prefill attention time. The existing `index.html` is a synthetic prototype;
-its numbers are not evidence. Write the final blog after measurements are reviewed.
+The root [article](index.html) follows six attention architectures using completed H100 measurements.
+It keeps the six-section structure and adds explanatory vector diagrams, interactive measured charts
+and links to frozen evidence. B200 results are incomplete and are excluded.
+See [article review](docs/article_review.md) for evidence checks, interpretation limits and build commands.
 
 | Location | Purpose |
 | --- | --- |
+| `index.html` | Generated H100 article; preserve its six-section structure |
+| `bench/build_attention_article.py` | Evidence audit and reproducible article build (`--check` supported) |
+| `assets/attention/` | Seven explanatory SVGs and article data with source hashes |
 | `install.sh` | Linux GPU installer: exact latest-observed vLLM version/commit and environment capture |
 | `attention_measure_plan.md` | Single experiment plan and acceptance rules |
-| `docs/model_architectures.md` | Four inherited checkpoint pins plus official Qwen FP8; Llama remains to pin |
+| `docs/model_architectures.md` | Checkpoint pins and attention implementation leads; the measured manifest pins all six |
 | `docs/gpu_setup_and_fixes.md` | Relevant setup, previous failures and fixes, plus instrumentation gaps |
 | `docs/import_provenance.json` | Source paths and SHA-256 hashes for this selective transfer |
 | `bench/trace_breakdown.py`, `bench/blog_layers.py` | Historical offline trace inspection aids, not measurement runners |
@@ -36,7 +40,7 @@ and `vllm-pin.txt` inside that environment. After installation, run
 `source .venv-attention/bin/activate` in your shell (adjust if you overrode the path).
 Copy those two records into `report/<study-id>/config/` before measuring; collect GPU/driver
 and CUDA details during node preflight. Use a new environment for any new runtime study.
-Six-model compatibility and complete launch configuration still need validation before measurements.
+The selected H100 manifest records the validated settings and completed repetitions for all six models.
 For reproducing resolved dependencies, use the saved freeze and the same commit index on matching
 hardware/Python; the installer pins vLLM and torch 2.14.0+cu130, while the full dependency
 resolution is recorded on the node. Check driver/forward compatibility before GPU measurement.
@@ -59,3 +63,15 @@ For each model validate **`--kv-cache-dtype fp8` first**; if it fails, preserve 
 then another supported runnable choice. Record actual state formats, scale warnings and every
 fallback, and keep one selected configuration per model's three valid repetitions. See the plan
 for smoke/overhead checks and the recorded V4.1 EP-off failure that motivated this policy.
+
+## Build or check the article (no GPU)
+
+```bash
+python bench/build_attention_article.py
+python bench/build_attention_article.py --check
+```
+
+The builder checks the H100 evidence ledger, three valid repetitions per supported point, configuration
+and revision agreement, actual decode batches/warmup, CSV medians, and per-layer memory reconciliation.
+It writes `index.html` and `assets/attention/` only. It does not change report evidence. Earlier local
+`blog/` experiments and their builder files are separate from this root article workflow.
